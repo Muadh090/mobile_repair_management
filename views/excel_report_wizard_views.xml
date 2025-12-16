@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_excel_report_wizard_form" model="ir.ui.view">
+        <field name="name">excel.report.wizard.form</field>
+        <field name="model">excel.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Excel Report">
+                <sheet>
+                    <group>
+                        <group string="Date Range">
+                            <field name="date_from" required="1"/>
+                            <field name="date_to" required="1"/>
+                        </group>
+                        <group string="Filters">
+                            <field name="state"/>
+                            <field name="warranty"/>
+                            <field name="team_id"/>
+                            <field name="brand_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_report" string="Generate Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_excel_report_wizard" model="ir.actions.act_window">
+        <field name="name">Excel Report</field>
+        <field name="res_model">excel.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

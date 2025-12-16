@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Brand Views -->
+    <record id="view_repair_brand_tree" model="ir.ui.view">
+        <field name="name">repair.brand.tree</field>
+        <field name="model">repair.brand</field>
+        <field name="arch" type="xml">
+            <tree string="Brands">
+                <field name="name"/>
+                <field name="logo" widget="image" class="oe_avatar"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_repair_brand_form" model="ir.ui.view">
+        <field name="name">repair.brand.form</field>
+        <field name="model">repair.brand</field>
+        <field name="arch" type="xml">
+            <form string="Brand">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_repair_brand)d" type="action" 
+                                class="oe_stat_button" icon="fa-list">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Brands</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="logo" widget="image" class="oe_avatar" options="{'preview_image': 'logo', 'size': [90, 90]}"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <field name="description" widget="html"/>
+                        </page>
+                        <page string="Series">
+                            <field name="series_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="active"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Models">
+                            <field name="model_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="image" widget="image" class="oe_avatar"/>
+                                    <field name="active"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Brand Action -->
+    <record id="action_repair_brand" model="ir.actions.act_window">
+        <field name="name">Brands</field>
+        <field name="res_model">repair.brand</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Series Views -->
+    <record id="view_repair_series_tree" model="ir.ui.view">
+        <field name="name">repair.series.tree</field>
+        <field name="model">repair.series</field>
+        <field name="arch" type="xml">
+            <tree string="Series">
+                <field name="name"/>
+                <field name="brand_id"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_repair_series_form" model="ir.ui.view">
+        <field name="name">repair.series.form</field>
+        <field name="model">repair.series</field>
+        <field name="arch" type="xml">
+            <form string="Series">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="brand_id" required="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <field name="description" widget="html"/>
+                    <field name="model_ids">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                            <field name="specifications"/>
+                            <field name="active"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Series Action -->
+    <record id="action_repair_series" model="ir.actions.act_window">
+        <field name="name">Series</field>
+        <field name="res_model">repair.series</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Model Views -->
+    <record id="view_repair_model_tree" model="ir.ui.view">
+        <field name="name">repair.model.tree</field>
+        <field name="model">repair.model</field>
+        <field name="arch" type="xml">
+            <tree string="Models">
+                <field name="name"/>
+                <field name="brand_id"/>
+                <field name="series_id"/>
+                <field name="image" widget="image" class="oe_avatar"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_repair_model_form" model="ir.ui.view">
+        <field name="name">repair.model.form</field>
+        <field name="model">repair.model</field>
+        <field name="arch" type="xml">
+            <form string="Model">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="brand_id" required="1"/>
+                            <field name="series_id" domain="[('brand_id', '=', brand_id)]"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image', 'size': [90, 90]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <field name="description" widget="html"/>
+                        </page>
+                        <page string="Specifications">
+                            <field name="specifications" widget="html"/>
+                        </page>
+                        <page string="Common Issues">
+                            <field name="common_issues" widget="html"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Model Action -->
+    <record id="action_repair_model" model="ir.actions.act_window">
+        <field name="name">Models</field>
+        <field name="res_model">repair.model</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

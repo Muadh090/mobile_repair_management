@@ -1,0 +1,100 @@
+/* Report Styling */
+.report-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.report-header {
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.report-title {
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.section {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.section h4 {
+    color: #4CAF50;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.table th {
+    background-color: #f5f5f5;
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #ddd;
+}
+
+.total-section {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.signature-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    color: #666;
+}
+
+/* Print Styles */
+@media print {
+    .page-break {
+        page-break-after: always;
+    }
+    
+    .no-print {
+        display: none;
+    }
+    
+    .report-container {
+        padding: 0;
+    }
+    
+    .section {
+        border: none;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    
+    .table th {
+        background-color: #f5f5f5 !important;
+        -webkit-print-color-adjust: exact;
+    }
+}

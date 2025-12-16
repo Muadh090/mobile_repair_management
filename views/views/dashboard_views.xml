@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard View -->
+    <record id="view_repair_dashboard" model="ir.ui.view">
+        <field name="name">repair.dashboard</field>
+        <field name="model">job.card</field>
+        <field name="arch" type="xml">
+            <dashboard string="Mobile Repair Dashboard">
+                <view type="pie" string="Job Cards by State">
+                    <field name="state" type="row"/>
+                    <field name="id" type="measure"/>
+                </view>
+                
+                <view type="pie" string="Inspection Types">
+                    <field name="inspection_type" type="row"/>
+                    <field name="id" type="measure"/>
+                </view>
+                
+                <view type="pie" string="Delivery Types">
+                    <field name="delivery_type" type="row"/>
+                    <field name="id" type="measure"/>
+                </view>
+                
+                <view type="bar" string="Invoiced Amount by Month">
+                    <field name="create_date:month" type="row"/>
+                    <field name="total_amount" type="measure" operator="+"/>
+                    <filter name="filter_invoiced" domain="[('invoice_status','=','invoiced')]"/>
+                </view>
+                
+                <group>
+                    <aggregate name="total_job_cards" string="Total Job Cards" 
+                              measure="id" operator="count"/>
+                    <aggregate name="draft_job_cards" string="Draft" 
+                              measure="id" operator="count" 
+                              domain="[('state','=','draft')]"/>
+                    <aggregate name="requested_job_cards" string="Requested" 
+                              measure="id" operator="count" 
+                              domain="[('state','=','requested')]"/>
+                    <aggregate name="quotation_job_cards" string="Quotation" 
+                              measure="id" operator="count" 
+                              domain="[('state','=','quotation')]"/>
+                    <aggregate name="approved_job_cards" string="Approved" 
+                              measure="id" operator="count" 
+                              domain="[('state','=','approved')]"/>
+                    <aggregate name="completed_job_cards" string="Completed" 
+                              measure="id" operator="count" 
+                              domain="[('state','=','completed')]"/>
+                    <aggregate name="rejected_job_cards" string="Rejected" 
+                              measure="id" operator="count" 
+                              domain="[('state','=','rejected')]"/>
+                </group>
+                
+                <view type="list" string="Recent Job Cards">
+                    <field name="name"/>
+                    <field name="customer_id"/>
+                    <field name="brand_id"/>
+                    <field name="state"/>
+                    <field name="total_amount"/>
+                    <field name="create_date"/>
+                </view>
+            </dashboard>
+        </field>
+    </record>
+
+    <!-- Dashboard Action -->
+    <record id="action_repair_dashboard" model="ir.actions.act_window">
+        <field name="name">Repair Dashboard</field>
+        <field name="res_model">job.card</field>
+        <field name="view_mode">dashboard,pivot,graph</field>
+        <field name="view_id" ref="view_repair_dashboard"/>
+        <field name="target">current</field>
+    </record>
+</odoo>

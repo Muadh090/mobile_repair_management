@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Use quotation template defined in job_card_report_template.xml -->
+    <report
+        id="action_job_card_report_template"
+        string="Job Card / Quotation"
+        model="job.card"
+        report_type="qweb-pdf"
+        name="mobile_repair_management.job_card_report_template"
+        file="mobile_repair_management.job_card_report_template"
+        print_report_name="'Job Card - %s' % (object.name)"
+    />
+</odoo>

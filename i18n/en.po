@@ -1,0 +1,725 @@
+# Mobile Repair Management module for Odoo 18
+# Copyright (C) 2025 Amoj services
+# This file is distributed under the same license as the Odoo package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_repair_brand
+msgid "Mobile Brand"
+msgstr "Mobile Brand"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_repair_series
+msgid "Mobile Series"
+msgstr "Mobile Series"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_repair_model
+msgid "Mobile Model"
+msgstr "Mobile Model"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_repair_team
+msgid "Repair Team"
+msgstr "Repair Team"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_repair_service
+msgid "Repair Service"
+msgstr "Repair Service"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_job_card
+msgid "Repair Job Card"
+msgstr "Repair Job Card"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_job_card_service_line
+msgid "Job Card Service Line"
+msgstr "Job Card Service Line"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_job_card_part_line
+msgid "Job Card Part Line"
+msgstr "Job Card Part Line"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_repair_timesheet
+msgid "Repair Timesheet"
+msgstr "Repair Timesheet"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_excel_report_wizard
+msgid "Excel Report Wizard"
+msgstr "Excel Report Wizard"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_assign_team_wizard
+msgid "Assign Repair Team Wizard"
+msgstr "Assign Repair Team Wizard"
+
+#. module: mobile_repair_management
+#: model:ir.model,name:mobile_repair_management.model_timesheet_wizard
+msgid "Timesheet Entry Wizard"
+msgstr "Timesheet Entry Wizard"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_brand__name
+msgid "Brand Name"
+msgstr "Brand Name"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_series__name
+msgid "Series Name"
+msgstr "Series Name"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_model__name
+msgid "Model Name"
+msgstr "Model Name"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_team__name
+msgid "Team Name"
+msgstr "Team Name"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_service__name
+msgid "Service Name"
+msgstr "Service Name"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__name
+msgid "Job Card Number"
+msgstr "Job Card Number"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_brand__logo
+msgid "Brand Logo"
+msgstr "Brand Logo"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_team__manager_id
+msgid "Team Manager"
+msgstr "Team Manager"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_team__member_ids
+msgid "Team Members"
+msgstr "Team Members"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_service__service_type
+msgid "Service Type"
+msgstr "Service Type"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__repair_service__service_type__basic
+msgid "Basic Service"
+msgstr "Basic Service"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__repair_service__service_type__premium
+msgid "Premium Service"
+msgstr "Premium Service"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__repair_service__service_type__high_end
+msgid "High-end Service"
+msgstr "High-end Service"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__repair_service__service_type__motherboard
+msgid "Motherboard Service"
+msgstr "Motherboard Service"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__repair_service__service_type__screen
+msgid "Screen Replacement"
+msgstr "Screen Replacement"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__repair_service__service_type__battery
+msgid "Battery Replacement"
+msgstr "Battery Replacement"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__repair_service__service_type__software
+msgid "Software/OS"
+msgstr "Software/OS"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_service__price
+msgid "Price"
+msgstr "Price"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_service__duration
+msgid "Duration (hours)"
+msgstr "Duration (hours)"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__state
+msgid "Status"
+msgstr "Status"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__draft
+msgid "Draft"
+msgstr "Draft"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__requested
+msgid "Requested"
+msgstr "Requested"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__quotation
+msgid "Quotation"
+msgstr "Quotation"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__approved
+msgid "Approved"
+msgstr "Approved"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__parts_requested
+msgid "Parts Requested"
+msgstr "Parts Requested"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__parts_arrived
+msgid "Parts Arrived"
+msgstr "Parts Arrived"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__in_progress
+msgid "In Progress"
+msgstr "In Progress"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__completed
+msgid "Completed"
+msgstr "Completed"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__rejected
+msgid "Rejected"
+msgstr "Rejected"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__customer_id
+msgid "Customer"
+msgstr "Customer"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__customer_phone
+msgid "Customer Phone"
+msgstr "Customer Phone"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__customer_email
+msgid "Customer Email"
+msgstr "Customer Email"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__brand_id
+msgid "Brand"
+msgstr "Brand"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__series_id
+msgid "Series"
+msgstr "Series"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__model_id
+msgid "Model"
+msgstr "Model"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__imei
+msgid "IMEI Number"
+msgstr "IMEI Number"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__serial_number
+msgid "Serial Number"
+msgstr "Serial Number"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__device_condition
+msgid "Device Condition"
+msgstr "Device Condition"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__device_condition__new
+msgid "New"
+msgstr "New"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__device_condition__good
+msgid "Good"
+msgstr "Good"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__device_condition__fair
+msgid "Fair"
+msgstr "Fair"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__device_condition__poor
+msgid "Poor"
+msgstr "Poor"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__device_condition__broken
+msgid "Broken"
+msgstr "Broken"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__device_accessories
+msgid "Device Accessories"
+msgstr "Device Accessories"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__problem_description
+msgid "Problem Description"
+msgstr "Problem Description"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__warranty
+msgid "Under Warranty"
+msgstr "Under Warranty"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__warranty_number
+msgid "Warranty Number"
+msgstr "Warranty Number"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__warranty_expiry_date
+msgid "Warranty Expiry Date"
+msgstr "Warranty Expiry Date"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__inspection_date
+msgid "Inspection Date"
+msgstr "Inspection Date"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__inspection_type
+msgid "Inspection Type"
+msgstr "Inspection Type"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__inspection_type__basic
+msgid "Basic Inspection"
+msgstr "Basic Inspection"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__inspection_type__detailed
+msgid "Detailed Inspection"
+msgstr "Detailed Inspection"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__inspection_type__technical
+msgid "Technical Inspection"
+msgstr "Technical Inspection"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__delivery_type
+msgid "Delivery Type"
+msgstr "Delivery Type"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__delivery_type__pickup
+msgid "Customer Pickup"
+msgstr "Customer Pickup"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__delivery_type__delivery
+msgid "Home Delivery"
+msgstr "Home Delivery"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__delivery_type__courier
+msgid "Courier Service"
+msgstr "Courier Service"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__service_ids
+msgid "Services"
+msgstr "Services"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__part_ids
+msgid "Parts"
+msgstr "Parts"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__service_total
+msgid "Service Total"
+msgstr "Service Total"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__part_total
+msgid "Parts Total"
+msgstr "Parts Total"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__subtotal
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__tax_amount
+msgid "Tax Amount"
+msgstr "Tax Amount"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__total_amount
+msgid "Total Amount"
+msgstr "Total Amount"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__quotation_date
+msgid "Quotation Date"
+msgstr "Quotation Date"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__quotation_valid_until
+msgid "Quotation Valid Until"
+msgstr "Quotation Valid Until"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__is_quotation_sent
+msgid "Quotation Sent"
+msgstr "Quotation Sent"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__customer_approval
+msgid "Customer Approval"
+msgstr "Customer Approval"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__customer_approval__pending
+msgid "Pending Approval"
+msgstr "Pending Approval"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__customer_approval__approved
+msgid "Approved"
+msgstr "Approved"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__customer_approval__rejected
+msgid "Rejected"
+msgstr "Rejected"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__approval_date
+msgid "Approval Date"
+msgstr "Approval Date"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__team_id
+msgid "Repair Team"
+msgstr "Repair Team"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__assigned_member_ids
+msgid "Assigned Members"
+msgstr "Assigned Members"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__expected_duration
+msgid "Expected Duration (hours)"
+msgstr "Expected Duration (hours)"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__start_date
+msgid "Start Date"
+msgstr "Start Date"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__completion_date
+msgid "Completion Date"
+msgstr "Completion Date"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__picking_id
+msgid "Stock Picking"
+msgstr "Stock Picking"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__invoice_id
+msgid "Invoice"
+msgstr "Invoice"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__invoice_status
+msgid "Invoice Status"
+msgstr "Invoice Status"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__invoice_status__no
+msgid "Nothing to Invoice"
+msgstr "Nothing to Invoice"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__invoice_status__to_invoice
+msgid "To Invoice"
+msgstr "To Invoice"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__invoice_status__invoiced
+msgid "Fully Invoiced"
+msgstr "Fully Invoiced"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__payment_status
+msgid "Payment Status"
+msgstr "Payment Status"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__payment_status__not_paid
+msgid "Not Paid"
+msgstr "Not Paid"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__payment_status__partially_paid
+msgid "Partially Paid"
+msgstr "Partially Paid"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__payment_status__paid
+msgid "Paid"
+msgstr "Paid"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__task_id
+msgid "Repair Task"
+msgstr "Repair Task"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__timesheet_ids
+msgid "Timesheets"
+msgstr "Timesheets"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__create_date
+msgid "Creation Date"
+msgstr "Creation Date"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card__write_date
+msgid "Last Updated"
+msgstr "Last Updated"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card_service_line__service_id
+msgid "Service"
+msgstr "Service"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card_service_line__price
+msgid "Price"
+msgstr "Price"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card_service_line__quantity
+msgid "Quantity"
+msgstr "Quantity"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card_service_line__price_total
+msgid "Total"
+msgstr "Total"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card_part_line__product_id
+msgid "Product"
+msgstr "Product"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card_part_line__unit_price
+msgid "Unit Price"
+msgstr "Unit Price"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_job_card_part_line__stock_available
+msgid "Available Stock"
+msgstr "Available Stock"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_timesheet__user_id
+msgid "Technician"
+msgstr "Technician"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_timesheet__date
+msgid "Date"
+msgstr "Date"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_timesheet__duration
+msgid "Duration (hours)"
+msgstr "Duration (hours)"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_timesheet__description
+msgid "Work Done"
+msgstr "Work Done"
+
+#. module: mobile_repair_management
+#: model:ir.model.fields,field_description:mobile_repair_management.field_repair_timesheet__is_billable
+msgid "Billable"
+msgstr "Billable"
+
+#. module: mobile_repair_management
+#: model:ir.actions.act_window,name:mobile_repair_management.action_repair_dashboard
+msgid "Repair Dashboard"
+msgstr "Repair Dashboard"
+
+#. module: mobile_repair_management
+#: model:ir.actions.act_window,name:mobile_repair_management.action_job_card
+msgid "Job Cards"
+msgstr "Job Cards"
+
+#. module: mobile_repair_management
+#: model:ir.actions.act_window,name:mobile_repair_management.action_repair_brand
+msgid "Brands"
+msgstr "Brands"
+
+#. module: mobile_repair_management
+#: model:ir.actions.act_window,name:mobile_repair_management.action_repair_series
+msgid "Series"
+msgstr "Series"
+
+#. module: mobile_repair_management
+#: model:ir.actions.act_window,name:mobile_repair_management.action_repair_model
+msgid "Models"
+msgstr "Models"
+
+#. module: mobile_repair_management
+#: model:ir.actions.act_window,name:mobile_repair_management.action_repair_team
+msgid "Teams"
+msgstr "Teams"
+
+#. module: mobile_repair_management
+#: model:ir.actions.act_window,name:mobile_repair_management.action_repair_service
+msgid "Services"
+msgstr "Services"
+
+#. module: mobile_repair_management
+#: model:ir.actions.act_window,name:mobile_repair_management.action_excel_report_wizard
+msgid "Excel Report"
+msgstr "Excel Report"
+
+#. module: mobile_repair_management
+#: model:ir.ui.menu,name:mobile_repair_management.menu_mobile_repair_root
+msgid "Mobile Repair"
+msgstr "Mobile Repair"
+
+#. module: mobile_repair_management
+#: model:ir.ui.menu,name:mobile_repair_management.menu_repair_dashboard
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#. module: mobile_repair_management
+#: model:ir.ui.menu,name:mobile_repair_management.menu_repair_configuration
+msgid "Configuration"
+msgstr "Configuration"
+
+#. module: mobile_repair_management
+#: model:ir.ui.menu,name:mobile_repair_management.menu_repair_reports
+msgid "Reports"
+msgstr "Reports"
+
+#. module: mobile_repair_management
+#: model_terms:ir.ui.view,arch_db:mobile_repair_management.view_repair_brand_form
+msgid "Brand Information"
+msgstr "Brand Information"
+
+#. module: mobile_repair_management
+#: model_terms:ir.ui.view,arch_db:mobile_repair_management.view_repair_series_form
+msgid "Series Information"
+msgstr "Series Information"
+
+#. module: mobile_repair_management
+#: model_terms:ir.ui.view,arch_db:mobile_repair_management.view_repair_model_form
+msgid "Model Information"
+msgstr "Model Information"
+
+#. module: mobile_repair_management
+#: model_terms:ir.ui.view,arch_db:mobile_repair_management.view_repair_team_form
+msgid "Team Information"
+msgstr "Team Information"
+
+#. module: mobile_repair_management
+#: model_terms:ir.ui.view,arch_db:mobile_repair_management.view_repair_service_form
+msgid "Service Information"
+msgstr "Service Information"
+
+#. module: mobile_repair_management
+#: code:addons/mobile_repair_management/models/job_card.py:123
+#, python-format
+msgid "Cannot generate quotation for warranty repairs!"
+msgstr "Cannot generate quotation for warranty repairs!"
+
+#. module: mobile_repair_management
+#: code:addons/mobile_repair_management/models/job_card.py:158
+#, python-format
+msgid "Please validate the stock picking first!"
+msgstr "Please validate the stock picking first!"
+
+#. module: mobile_repair_management
+#: code:addons/mobile_repair_management/models/job_card.py:198
+#, python-format
+msgid "No invoice found!"
+msgstr "No invoice found!"
+
+#. module: mobile_repair_management
+#: code:addons/mobile_repair_management/models/job_card.py:174
+#, python-format
+msgid "Cannot create invoice for warranty repairs!"
+msgstr "Cannot create invoice for warranty repairs!"
+
+#. module: mobile_repair_management
+#: code:addons/mobile_repair_management/wizards/assign_team_wizard.py:28
+#, python-format
+msgid "Please assign at least one team member!"
+msgstr "Please assign at least one team member!"
+
+#. module: mobile_repair_management
+#: code:addons/mobile_repair_management/wizards/timesheet_wizard.py:21
+#, python-format
+msgid "Duration must be greater than 0!"
+msgstr "Duration must be greater than 0!"
+
+#. module: mobile_repair_management
+#: code:addons/mobile_repair_management/wizards/excel_report_wizard.py:68
+#, python-format
+msgid "No job cards found for the selected criteria."
+msgstr "No job cards found for the selected criteria."
+
+#. module: mobile_repair_management
+#: code:addons/mobile_repair_management/models/job_card.py:94
+#, python-format
+msgid "Warranty has expired!"
+msgstr "Warranty has expired!"

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mobile Repair Management</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            h1 {
+                color: #875A7B;
+                border-bottom: 2px solid #875A7B;
+                padding-bottom: 10px;
+            }
+            .feature-list {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 20px 0;
+            }
+            .feature-list li {
+                margin-bottom: 8px;
+            }
+            .screenshot {
+                text-align: center;
+                margin: 20px 0;
+            }
+            .screenshot img {
+                max-width: 100%;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>📱 Mobile Repair Management System</h1>
+        
+        <p>A comprehensive solution for managing mobile repair operations, from customer request to invoice generation.</p>
+        
+        <div class="feature-list">
+            <h3>🌟 Key Features:</h3>
+            <ul>
+                <li>📊 Interactive Dashboard with Charts & Statistics</li>
+                <li>🔧 Complete Job Card Management with 9-Stage Workflow</li>
+                <li>📋 Device Configuration (Brands, Series, Models)</li>
+                <li>👥 Team Management with Project Integration</li>
+                <li>💰 Quotation Generation & Approval System</li>
+                <li>📦 Spare Parts Management with Stock Integration</li>
+                <li>🛠️ Task Assignment & Timesheet Tracking</li>
+                <li>🧾 Automated Invoicing & Payment Processing</li>
+                <li>📄 PDF & Excel Reports</li>
+                <li>🔐 Warranty & Non-Warranty Repair Handling</li>
+                <li>📱 Mobile Responsive Interface</li>
+            </ul>
+        </div>
+        
+        <h2>📋 Workflow:</h2>
+        <ol>
+            <li>Draft → Requested → Quotation → Approved</li>
+            <li>Parts Requested → Parts Arrived → In Progress → Completed</li>
+        </ol>
+        
+        <h2>🔧 Integration:</h2>
+        <ul>
+            <li>Stock Module for Inventory Management</li>
+            <li>Accounting Module for Invoicing</li>
+            <li>Project Module for Task Management</li>
+            <li>Contacts Module for Customer Management</li>
+        </ul>
+        
+        <div class="screenshot">
+            <h3>Dashboard Preview:</h3>
+            <img src="dashboard_preview.png" alt="Dashboard Preview"/>
+        </div>
+        
+        <h2>🚀 Installation:</h2>
+        <ol>
+            <li>Install the module from Odoo Apps</li>
+            <li>Configure Brands, Series, and Models</li>
+            <li>Set up Repair Teams and Services</li>
+            <li>Start creating Job Cards!</li>
+        </ol>
+        
+        <p><strong>Version:</strong> 18.0.1.0.0<br>
+        <strong>License:</strong> LGPL-3<br>
+        <strong>Author:</strong> Your Company</p>
+    </body>
+</html>

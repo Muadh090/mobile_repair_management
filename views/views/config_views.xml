@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Settings View -->
+    <record id="view_repair_settings" model="ir.ui.view">
+        <field name="name">repair.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <h2>Repair Settings</h2>
+                <div class="row mt16">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="repair_default_warehouse"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="repair_default_warehouse"/>
+                            <div class="text-muted">
+                                Default warehouse for spare parts
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="repair_default_location"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="repair_default_location"/>
+                            <div class="text-muted">
+                                Default repair location
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt16">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="repair_auto_generate_quotation"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="repair_auto_generate_quotation"/>
+                            <div class="text-muted">
+                                Automatically generate quotation when job card is requested
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="repair_default_team"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="repair_default_team"/>
+                            <div class="text-muted">
+                                Default repair team for new job cards
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

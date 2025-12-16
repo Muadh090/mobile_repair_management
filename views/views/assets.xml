@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="repair_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/mobile_repair_management/static/src/css/repair_style.css"/>
+            <script type="text/javascript" src="/mobile_repair_management/static/src/js/repair_dashboard.js"></script>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Repair Manager Group -->
+    <record id="group_repair_manager" model="res.groups">
+        <field name="name">Repair / Manager</field>
+        <field name="category_id" ref="base.module_category_services_repair"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+    
+    <!-- Repair User Group -->
+    <record id="group_repair_user" model="res.groups">
+        <field name="name">Repair / User</field>
+        <field name="category_id" ref="base.module_category_services_repair"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+    <!-- Repair Technician Group -->
+    <record id="group_repair_technician" model="res.groups">
+        <field name="name">Repair / Technician</field>
+        <field name="category_id" ref="base.module_category_services_repair"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

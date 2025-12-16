@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Quotation Report -->
+    <template id="report_job_card_quotation">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="header" style="border-bottom: 2px solid #875A7B; padding-bottom: 10px; margin-bottom: 20px;">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <h1 style="color: #875A7B; margin: 0;">QUOTATION</h1>
+                            <h3 style="margin: 5px 0;">Job Card: <span t-field="doc.name"/></h3>
+                            <p>Date: <span t-field="doc.quotation_date" t-options='{"widget": "date"}'/></p>
+                            <p>Valid Until: <span t-field="doc.quotation_valid_until"/></p>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <h3><span t-field="doc.company_id.name"/></h3>
+                            <p><span t-field="doc.company_id.street"/></p>
+                            <p><span t-field="doc.company_id.city"/> <span t-field="doc.company_id.zip"/></p>
+                            <p>Phone: <span t-field="doc.company_id.phone"/></p>
+                            <p>Email: <span t-field="doc.company_id.email"/></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="customer-section" style="margin-bottom: 20px;">
+                    <h3 style="color: #875A7B;">Customer Details</h3>
+                    <p><strong>Name:</strong> <span t-field="doc.customer_id"/></p>
+                    <p><strong>Phone:</strong> <span t-field="doc.customer_phone"/></p>
+                    <p><strong>Email:</strong> <span t-field="doc.customer_email"/></p>
+                </div>
+                
+                <div class="device-section" style="margin-bottom: 20px;">
+                    <h3 style="color: #875A7B;">Device Details</h3>
+                    <p><strong>Brand:</strong> <span t-field="doc.brand_id"/></p>
+                    <p><strong>Series:</strong> <span t-field="doc.series_id"/></p>
+                    <p><strong>Model:</strong> <span t-field="doc.model_id"/></p>
+                    <p><strong>IMEI:</strong> <span t-field="doc.imei"/></p>
+                    <p><strong>Problem:</strong> <span t-field="doc.problem_description"/></p>
+                </div>
+                
+                <div class="services-section" style="margin-bottom: 20px;">
+                    <h3 style="color: #875A7B;">Services Required</h3>
+                    <table class="table table-bordered" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background-color: #f8f8f8;">
+                                <th style="padding: 8px; border: 1px solid #ddd;">Service</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Description</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="doc.service_ids" t-as="service">
+                                <td style="padding: 8px; border: 1px solid #ddd;">
+                                    <span t-field="service.service_id"/>
+                                </td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">
+                                    <span t-field="service.description"/>
+                                </td>
+                                <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">
+                                    <span t-field="service.quantity"/>
+                                </td>
+                                <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                    <span t-field="service.price" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                                </td>
+                                <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                    <span t-field="service.price_total" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="parts-section" style="margin-bottom: 20px;">
+                    <h3 style="color: #875A7B;">Spare Parts Required</h3>
+                    <table class="table table-bordered" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background-color: #f8f8f8;">
+                                <th style="padding: 8px; border: 1px solid #ddd;">Part</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Description</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Unit Price</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="doc.part_ids" t-as="part">
+                                <td style="padding: 8px; border: 1px solid #ddd;">
+                                    <span t-field="part.product_id"/>
+                                </td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">
+                                    <span t-field="part.description"/>
+                                </td>
+                                <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">
+                                    <span t-field="part.quantity"/>
+                                </td>
+                                <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                    <span t-field="part.unit_price" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                                </td>
+                                <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                    <span t-field="part.price_total" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="summary-section" style="margin-top: 30px;">
+                    <table style="width: 300px; float: right; border-collapse: collapse;">
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>Service Total:</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                <span t-field="doc.service_total" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>Parts Total:</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                <span t-field="doc.part_total" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>Subtotal:</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                <span t-field="doc.subtotal" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>Tax (15%):</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                <span t-field="doc.tax_amount" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                            </td>
+                        </tr>
+                        <tr style="background-color: #f8f8f8;">
+                            <td style="padding: 8px; border: 1px solid #ddd;"><strong>TOTAL AMOUNT:</strong></td>
+                            <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
+                                <strong>
+                                    <span t-field="doc.total_amount" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="terms-section" style="clear: both; margin-top: 100px; padding-top: 20px; border-top: 1px solid #ddd;">
+                    <h4>Terms &amp; Conditions:</h4>
+                    <ul>
+                        <li>Quotation valid until <span t-field="doc.quotation_valid_until"/></li>
+                        <li>Prices are subject to change without prior notice</li>
+                        <li>Payment required before repair work begins</li>
+                        <li>Warranty on replaced parts: 90 days</li>
+                        <li>Company is not responsible for data loss during repair</li>
+                    </ul>
+                </div>
+                
+                <div class="approval-section" style="margin-top: 50px;">
+                    <div style="float: left; width: 50%;">
+                        <p>_________________________</p>
+                        <p><strong>Customer Signature</strong></p>
+                        <p>Date: ___________________</p>
+                    </div>
+                    <div style="float: right; width: 50%; text-align: right;">
+                        <p>_________________________</p>
+                        <p><strong>Authorized Signature</strong></p>
+                        <p>Date: ___________________</p>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

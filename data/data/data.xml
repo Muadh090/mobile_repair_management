@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sequences -->
+    <record id="seq_job_card" model="ir.sequence">
+        <field name="name">Job Card Sequence</field>
+        <field name="code">job.card</field>
+        <field name="prefix">JC/%(year)s/%(month)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    
+    <!-- Default Data -->
+    <record id="data_repair_team_senior" model="repair.team">
+        <field name="name">Senior Technicians</field>
+        <field name="manager_id" ref="base.user_admin"/>
+    </record>
+    
+    <record id="data_repair_team_junior" model="repair.team">
+        <field name="name">Junior Technicians</field>
+    </record>
+    
+    <record id="data_service_basic" model="repair.service">
+        <field name="name">Basic Service</field>
+        <field name="service_type">basic</field>
+        <field name="price">500.0</field>
+        <field name="duration">1.0</field>
+    </record>
+    
+    <record id="data_service_premium" model="repair.service">
+        <field name="name">Premium Service</field>
+        <field name="service_type">premium</field>
+        <field name="price">1500.0</field>
+        <field name="duration">2.0</field>
+    </record>
+    
+    <record id="data_brand_apple" model="repair.brand">
+        <field name="name">Apple</field>
+    </record>
+    
+    <record id="data_brand_samsung" model="repair.brand">
+        <field name="name">Samsung</field>
+    </record>
+</odoo>

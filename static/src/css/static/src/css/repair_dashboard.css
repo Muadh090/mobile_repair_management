@@ -1,0 +1,75 @@
+.o_repair_dashboard {
+    padding: 16px;
+    background: #f8f9fa;
+}
+
+.o_dashboard_card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.o_dashboard_card_header {
+    padding: 16px;
+    border-bottom: 1px solid #e9ecef;
+    background: #f8f9fa;
+}
+
+.o_dashboard_card_title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+    margin: 0;
+}
+
+.o_stat_card {
+    padding: 20px;
+    text-align: center;
+    border-right: 1px solid #e9ecef;
+}
+
+.o_stat_card:last-child {
+    border-right: none;
+}
+
+.o_stat_number {
+    font-size: 24px;
+    font-weight: 700;
+    color: #875A7B;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.o_stat_label {
+    font-size: 13px;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.o_chart_container {
+    padding: 16px;
+    min-height: 300px;
+}
+
+/* Status colors */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.status-draft { background: #e9ecef; color: #495057; }
+.status-requested { background: #d1ecf1; color: #0c5460; }
+.status-quotation { background: #fff3cd; color: #856404; }
+.status-approved { background: #d4edda; color: #155724; }
+.status-parts_requested { background: #ffe5d0; color: #d35400; }
+.status-parts_arrived { background: #d1f2eb; color: #0d6256; }
+.status-in_progress { background: #cce5ff; color: #004085; }
+.status-completed { background: #d4edda; color: #155724; }
+.status-rejected { background: #f8d7da; color: #721c24; }
