@@ -11,6 +11,7 @@ spare parts, teams, pickings, invoicing and reports.
 """,
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',
+    'images': ['static/description/icon.png'],
     'depends': [
         'base',
         'sale',
