@@ -18,6 +18,7 @@ spare parts, teams, pickings, invoicing and reports.
         'stock',
         'account',
         'project',
+        'hr_timesheet',
         'mail',
         'web',
     ],
