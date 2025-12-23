@@ -28,7 +28,6 @@ spare parts, teams, pickings, invoicing and reports.
 
         'views/assign_team_wizard_views.xml',
         'views/excel_report_wizard_views.xml',
-        'views/views/assets.xml',
         'views/views/dashboard_views.xml',
         'views/views/device_views.xml',
         'views/views/service_views.xml',
@@ -39,6 +38,12 @@ spare parts, teams, pickings, invoicing and reports.
         'reports/reports/job_card_report.xml',
         'reports/reports/job_card_report_template.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'mobile_repair_management/static/src/css/repair_style.css',
+            'mobile_repair_management/static/src/js/repair_dashboard.js',
+        ],
+    },
     'demo': [],
     'assets': {},
     'installable': True,
