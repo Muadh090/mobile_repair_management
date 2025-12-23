@@ -3,12 +3,8 @@
     <!-- Main Menu -->
     <menuitem id="menu_mobile_repair_root" name="Mobile Repair" sequence="10"/>
     
-    <!-- Dashboard -->
-    <menuitem id="menu_repair_dashboard" name="Dashboard" parent="menu_mobile_repair_root"
-              action="action_repair_dashboard" sequence="10"/>
-    
     <!-- Job Cards -->
-    <menuitem id="menu_job_cards" name="Job Cards" parent="menu_mobile_repair_root" sequence="20"/>
+    <menuitem id="menu_job_cards" name="Job Cards" parent="menu_mobile_repair_root" sequence="10"/>
     <menuitem id="menu_job_cards_all" name="All Job Cards" parent="menu_job_cards"
               action="action_job_card" sequence="10"/>
     

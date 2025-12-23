@@ -28,7 +28,6 @@ spare parts, teams, pickings, invoicing and reports.
 
         'views/assign_team_wizard_views.xml',
         'views/excel_report_wizard_views.xml',
-        'views/views/dashboard_views.xml',
         'views/views/device_views.xml',
         'views/views/service_views.xml',
         'views/views/team_views.xml',
