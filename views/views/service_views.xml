@@ -30,17 +30,17 @@
         </field>
     </record>
 
-    <!-- Service Tree View -->
+    <!-- Service List View -->
     <record id="view_repair_service_tree" model="ir.ui.view">
-        <field name="name">repair.service.tree</field>
+        <field name="name">repair.service.list</field>
         <field name="model">repair.service</field>
         <field name="arch" type="xml">
-            <tree string="Services">
+            <list string="Services">
                 <field name="name"/>
                 <field name="service_type"/>
                 <field name="price" widget="monetary"/>
                 <field name="active"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -77,6 +77,6 @@
     <record id="action_repair_service" model="ir.actions.act_window">
         <field name="name">Services</field>
         <field name="res_model">repair.service</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,list,form</field>
     </record>
 </odoo>

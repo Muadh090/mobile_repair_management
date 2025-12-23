@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Team Tree View -->
+    <!-- Team List View -->
     <record id="view_repair_team_tree" model="ir.ui.view">
-        <field name="name">repair.team.tree</field>
+        <field name="name">repair.team.list</field>
         <field name="model">repair.team</field>
         <field name="arch" type="xml">
-            <tree string="Teams">
+            <list string="Teams">
                 <field name="name"/>
                 <field name="manager_id"/>
                 <field name="completed_jobs"/>
                 <field name="avg_repair_time"/>
                 <field name="active"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -50,6 +50,6 @@
     <record id="action_repair_team" model="ir.actions.act_window">
         <field name="name">Teams</field>
         <field name="res_model">repair.team</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>
