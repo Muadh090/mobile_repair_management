@@ -17,6 +17,7 @@
     
     <record id="data_repair_team_junior" model="repair.team">
         <field name="name">Junior Technicians</field>
+        <field name="manager_id" ref="base.user_admin"/>
     </record>
     
     <record id="data_service_basic" model="repair.service">
