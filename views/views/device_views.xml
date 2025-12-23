@@ -19,14 +19,6 @@
         <field name="arch" type="xml">
             <form string="Brand">
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="%(action_repair_brand)d" type="action" 
-                                class="oe_stat_button" icon="fa-list">
-                            <div class="o_stat_info">
-                                <span class="o_stat_text">Brands</span>
-                            </div>
-                        </button>
-                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
@@ -46,20 +38,20 @@
                         </page>
                         <page string="Series">
                             <field name="series_ids">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="name"/>
                                     <field name="description"/>
                                     <field name="active"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Models">
                             <field name="model_ids">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="name"/>
                                     <field name="image" widget="image" class="oe_avatar"/>
                                     <field name="active"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -107,12 +99,12 @@
                     </group>
                     <field name="description" widget="html"/>
                     <field name="model_ids">
-                        <tree editable="bottom">
+                        <list editable="bottom">
                             <field name="name"/>
                             <field name="image" widget="image" class="oe_avatar"/>
                             <field name="specifications"/>
                             <field name="active"/>
-                        </tree>
+                        </list>
                     </field>
                 </sheet>
             </form>
