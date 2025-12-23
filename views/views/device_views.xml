@@ -5,11 +5,11 @@
         <field name="name">repair.brand.tree</field>
         <field name="model">repair.brand</field>
         <field name="arch" type="xml">
-            <tree string="Brands">
+            <list string="Brands">
                 <field name="name"/>
                 <field name="logo" widget="image" class="oe_avatar"/>
                 <field name="active"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -72,7 +72,7 @@
     <record id="action_repair_brand" model="ir.actions.act_window">
         <field name="name">Brands</field>
         <field name="res_model">repair.brand</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Series Views -->
@@ -80,11 +80,11 @@
         <field name="name">repair.series.tree</field>
         <field name="model">repair.series</field>
         <field name="arch" type="xml">
-            <tree string="Series">
+            <list string="Series">
                 <field name="name"/>
                 <field name="brand_id"/>
                 <field name="active"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -123,7 +123,7 @@
     <record id="action_repair_series" model="ir.actions.act_window">
         <field name="name">Series</field>
         <field name="res_model">repair.series</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Model Views -->
@@ -131,13 +131,13 @@
         <field name="name">repair.model.tree</field>
         <field name="model">repair.model</field>
         <field name="arch" type="xml">
-            <tree string="Models">
+            <list string="Models">
                 <field name="name"/>
                 <field name="brand_id"/>
                 <field name="series_id"/>
                 <field name="image" widget="image" class="oe_avatar"/>
                 <field name="active"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -182,6 +182,6 @@
     <record id="action_repair_model" model="ir.actions.act_window">
         <field name="name">Models</field>
         <field name="res_model">repair.model</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>
