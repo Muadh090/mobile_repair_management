@@ -91,19 +91,19 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_picking" type="object" class="oe_stat_button"
-                                icon="fa-truck" attrs="{'invisible': [('picking_id', '=', False)]}">
+                                icon="fa-truck">
                             <div class="o_stat_info">
                                 <field name="picking_id" widget="statinfo" string="Picking"/>
                             </div>
                         </button>
                         <button name="action_view_invoice" type="object" class="oe_stat_button"
-                                icon="fa-money" attrs="{'invisible': [('invoice_id', '=', False)]}">
+                                icon="fa-money">
                             <div class="o_stat_info">
                                 <field name="invoice_id" widget="statinfo" string="Invoice"/>
                             </div>
                         </button>
                         <button name="action_view_task" type="object" class="oe_stat_button"
-                                icon="fa-tasks" attrs="{'invisible': [('task_id', '=', False)]}">
+                                icon="fa-tasks">
                             <div class="o_stat_info">
                                 <field name="task_id" widget="statinfo" string="Task"/>
                             </div>
@@ -129,8 +129,8 @@
                         
                         <group string="Warranty">
                             <field name="warranty"/>
-                            <field name="warranty_number" attrs="{'required': [('warranty', '=', True)]}"/>
-                            <field name="warranty_expiry_date" attrs="{'required': [('warranty', '=', True)]}"/>
+                            <field name="warranty_number"/>
+                            <field name="warranty_expiry_date"/>
                         </group>
                     </group>
                     
@@ -186,7 +186,7 @@
                             </group>
                         </page>
                         
-                        <page string="Quotation" attrs="{'invisible': [('warranty', '=', True)]}">
+                        <page string="Quotation">
                             <group>
                                 <group string="Quotation Details">
                                     <field name="quotation_date" readonly="1"/>
