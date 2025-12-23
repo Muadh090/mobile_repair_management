@@ -2,7 +2,7 @@
 <odoo>
     <record id="view_assign_team_wizard_form" model="ir.ui.view">
         <field name="name">assign.team.wizard.form</field>
-        <field name="model">job.card.assign.team.wizard</field>
+        <field name="model">assign.team.wizard</field>
         <field name="arch" type="xml">
             <form string="Assign Repair Team">
                 <sheet>
@@ -12,7 +12,6 @@
                             <field name="team_id" required="1"/>
                             <field name="assigned_member_ids" widget="many2many_tags" required="1"/>
                             <field name="expected_duration" required="1"/>
-                            <field name="start_date" required="1"/>
                         </group>
                     </group>
                 </sheet>
@@ -26,7 +25,7 @@
 
     <record id="action_assign_team_wizard" model="ir.actions.act_window">
         <field name="name">Assign Repair Team</field>
-        <field name="res_model">job.card.assign.team.wizard</field>
+        <field name="res_model">assign.team.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="binding_model_id" ref="model_job_card"/>

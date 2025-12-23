@@ -17,6 +17,7 @@ spare parts, teams, pickings, invoicing and reports.
         'stock',
         'account',
         'project',
+        'mail',
         'web',
     ],
     'data': [
