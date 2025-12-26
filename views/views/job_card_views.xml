@@ -147,22 +147,24 @@
 
                     <notebook>
                         <page string="Device Details">
-                            <group>
-                                <group string="Device Information">
+                            <group col="2">
+                                <group string="Identification">
                                     <field name="brand_id"/>
                                     <field name="series_id" domain="[('brand_id', '=', brand_id)]"/>
                                     <field name="model_id" domain="[('series_id', '=', series_id)]"/>
                                     <field name="imei"/>
                                     <field name="serial_number"/>
-                                    <field name="device_condition"/>
-                                    <field name="device_accessories" colspan="4"/>
                                 </group>
-                                
-                                <group string="Inspection">
-                                    <field name="inspection_date"/>
+
+                                <group string="Condition &amp; Intake">
+                                    <field name="device_condition"/>
                                     <field name="inspection_type"/>
                                     <field name="delivery_type"/>
+                                    <field name="inspection_date"/>
                                 </group>
+                            </group>
+                            <group>
+                                <field name="device_accessories" colspan="4"/>
                             </group>
                         </page>
                         
@@ -197,60 +199,7 @@
                             </group>
                         </page>
                         
-                        <page string="Quotation">
-                            <group>
-                                <group string="Quotation Details">
-                                    <field name="quotation_date" readonly="1"/>
-                                    <field name="quotation_valid_until" readonly="1"/>
-                                    <field name="is_quotation_sent"/>
-                                </group>
-                                
-                                <group string="Customer Approval">
-                                    <field name="customer_approval"/>
-                                    <field name="approval_date" readonly="1"/>
-                                </group>
-                            </group>
-                            
-                            <div class="oe_subtotal_footer oe_right">
-                                <table class="oe_subtotal_table">
-                                    <tr>
-                                        <td>Service Total:</td>
-                                        <td><field name="service_total" widget="monetary"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Parts Total:</td>
-                                        <td><field name="part_total" widget="monetary"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Subtotal:</td>
-                                        <td><field name="subtotal" widget="monetary"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tax (15%):</td>
-                                        <td><field name="tax_amount" widget="monetary"/></td>
-                                    </tr>
-                                    <tr class="oe_subtotal_footer_separator">
-                                        <td><strong>Total Amount:</strong></td>
-                                        <td><field name="total_amount" widget="monetary"/></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </page>
                         
-                        <page string="Team Assignment">
-                            <group>
-                                <group string="Team Details">
-                                    <field name="team_id"/>
-                                    <field name="assigned_member_ids" widget="many2many_tags"/>
-                                    <field name="expected_duration"/>
-                                </group>
-                                
-                                <group string="Timeline">
-                                    <field name="start_date"/>
-                                    <field name="completion_date"/>
-                                </group>
-                            </group>
-                        </page>
                         
                         <page string="Task &amp; Work Log">
                             <field name="task_id">
