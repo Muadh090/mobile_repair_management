@@ -116,7 +116,7 @@
                     </div>
                     
                     <group>
-                        <group string="Customer & Issue">
+                        <group string="Customer &amp; Issue">
                             <field name="customer_id" domain="[]"/>
                             <field name="customer_phone"/>
                             <field name="customer_email"/>
