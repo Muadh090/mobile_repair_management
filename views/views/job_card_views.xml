@@ -114,22 +114,37 @@
                             <field name="customer_id" widget="many2one_avatar"/>
                         </h2>
                     </div>
-                    
-                    <group>
-                        <group string="Customer &amp; Issue">
+                    <group string="Overview" col="2">
+                        <group string="Customer">
                             <field name="customer_id" domain="[]"/>
                             <field name="customer_phone"/>
                             <field name="customer_email"/>
-                            <field name="problem_description" colspan="4"/>
                         </group>
-                        
-                        <group string="Warranty">
+                        <group string="Device Snapshot">
+                            <field name="brand_id"/>
+                            <field name="model_id" domain="[('brand_id', '=', brand_id)]"/>
+                            <field name="imei"/>
+                            <field name="serial_number"/>
+                        </group>
+                    </group>
+
+                    <group col="2">
+                        <group string="Issue &amp; Dates">
+                            <field name="problem_description" colspan="2"/>
+                            <field name="inspection_date"/>
+                            <field name="delivery_type"/>
+                            <field name="expected_duration"/>
+                        </group>
+                        <group string="Warranty &amp; Totals">
                             <field name="warranty"/>
                             <field name="warranty_number"/>
                             <field name="warranty_expiry_date"/>
+                            <field name="service_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                         </group>
                     </group>
-                    
+
                     <notebook>
                         <page string="Device Details">
                             <group>

@@ -190,7 +190,7 @@ class JobCard(models.Model):
             'quotation_valid_until': fields.Date.today() + timedelta(days=7),
             'is_quotation_sent': True,
         })
-        return self.env.ref('mobile_repair_management.action_report_job_card_quotation').report_action(self)
+        return self.env.ref('mobile_repair_management.action_job_card_report_template').report_action(self)
     
     def action_customer_approve(self):
         self.write({
@@ -274,7 +274,7 @@ class JobCard(models.Model):
             'project_id': self.team_id.project_id.id if self.team_id else False,
             'user_ids': [(6, 0, self.assigned_member_ids.ids)],
             'description': self.problem_description,
-            'planned_hours': self.expected_duration,
+            'planned_duration': self.expected_duration,
             'repair_team_id': self.team_id.id,
             'job_card_id': self.id,
         }

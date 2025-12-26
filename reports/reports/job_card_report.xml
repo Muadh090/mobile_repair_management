@@ -6,8 +6,8 @@
         string="Job Card / Quotation"
         model="job.card"
         report_type="qweb-pdf"
-        name="mobile_repair_management.job_card_report_template"
-        file="mobile_repair_management.job_card_report_template"
+        name="mobile_repair_management.report_job_card_quotation"
+        file="mobile_repair_management.report_job_card_quotation"
         print_report_name="'Job Card - %s' % (object.name)"
     />
 </odoo>

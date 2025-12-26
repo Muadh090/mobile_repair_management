@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
 class JobCardReport(models.AbstractModel):
-    _name = 'report.mobile_repair_management.job_card_report_template'
+    _name = 'report.mobile_repair_management.report_job_card_quotation'
     _description = 'Job Card Report'
     
     @api.model
