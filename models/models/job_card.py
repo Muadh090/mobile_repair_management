@@ -274,7 +274,6 @@ class JobCard(models.Model):
             'project_id': self.team_id.project_id.id if self.team_id else False,
             'user_ids': [(6, 0, self.assigned_member_ids.ids)],
             'description': self.problem_description,
-            'repair_team_id': self.team_id.id,
             'job_card_id': self.id,
         }
         
