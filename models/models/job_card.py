@@ -250,6 +250,9 @@ class JobCard(models.Model):
             raise UserError(_('Please validate the stock picking first!'))
     
     def action_assign_team(self):
+        for record in self:
+            if not record.warranty and not record.invoice_id:
+                raise UserError(_('Create the invoice before assigning a team for non-warranty repairs.'))
         return {
             'name': _('Assign Repair Team'),
             'type': 'ir.actions.act_window',
@@ -260,6 +263,12 @@ class JobCard(models.Model):
         }
     
     def action_start_repair(self):
+        for record in self:
+            if not record.warranty:
+                if not record.invoice_id:
+                    raise UserError(_('Create the invoice before starting a non-warranty repair.'))
+                if record.invoice_id.payment_state != 'paid':
+                    raise UserError(_('Register payment before starting a non-warranty repair.'))
         task_vals = {
             'name': f'Repair - {self.name}',
             'project_id': self.team_id.project_id.id if self.team_id else False,
@@ -279,10 +288,15 @@ class JobCard(models.Model):
         })
     
     def action_complete_repair(self):
+        if any(rec.state != 'in_progress' for rec in self):
+            raise UserError(_('You can only complete repairs that are In Progress.'))
         self.write({
             'state': 'completed',
             'completion_date': fields.Datetime.now(),
         })
+
+    def action_cancel_repair(self):
+        self.write({'state': 'rejected'})
     
     def action_create_invoice(self):
         if self.warranty:
