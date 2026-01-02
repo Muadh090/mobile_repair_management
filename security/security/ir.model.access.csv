@@ -17,6 +17,6 @@ access_job_card_part_line_user,job.card.part.line.user,model_job_card_part_line,
 access_job_card_part_line_manager,job.card.part.line.manager,model_job_card_part_line,base.group_erp_manager,1,1,1,1
 access_repair_timesheet_user,repair.timesheet.user,model_repair_timesheet,base.group_user,1,1,1,0
 access_repair_timesheet_manager,repair.timesheet.manager,model_repair_timesheet,base.group_erp_manager,1,1,1,1
-access_excel_report_wizard_user,excel.report.wizard.user,model_excel_report_wizard,base.group_user,1,0,1,0
+access_excel_report_wizard_user,excel.report.wizard.user,model_excel_report_wizard,base.group_user,1,1,1,0
 access_assign_team_wizard_user,assign.team.wizard.user,model_assign_team_wizard,base.group_user,1,0,1,0
 access_timesheet_wizard_user,timesheet.wizard.user,model_timesheet_wizard,base.group_user,1,0,1,0
