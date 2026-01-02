@@ -190,7 +190,13 @@ class JobCard(models.Model):
             'quotation_valid_until': fields.Date.today() + timedelta(days=7),
             'is_quotation_sent': True,
         })
-        return self.env.ref('mobile_repair_management.action_job_card_report_template').report_action(self)
+        try:
+            report_action = self.env.ref('mobile_repair_management.action_job_card_report_template')
+        except ValueError:
+            report_action = self.env['ir.actions.report']._get_report_from_name('mobile_repair_management.report_job_card_quotation')
+            if not report_action:
+                raise UserError(_('Quotation report definition is missing. Please upgrade the module.'))
+        return report_action.report_action(self)
     
     def action_customer_approve(self):
         self.write({
@@ -274,7 +280,6 @@ class JobCard(models.Model):
             'project_id': self.team_id.project_id.id if self.team_id else False,
             'user_ids': [(6, 0, self.assigned_member_ids.ids)],
             'description': self.problem_description,
-            'job_card_id': self.id,
         }
         
         task = self.env['project.task'].create(task_vals)
