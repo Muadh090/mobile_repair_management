@@ -18,7 +18,6 @@ class JobCard(models.Model):
         ('quotation', 'Quotation'),
         ('approved', 'Approved'),
         ('parts_requested', 'Parts Requested'),
-        ('parts_arrived', 'Parts Arrived'),
         ('in_progress', 'In Progress'),
         ('completed', 'Completed'),
         ('rejected', 'Rejected'),
@@ -248,12 +247,6 @@ class JobCard(models.Model):
             'state': 'parts_requested',
             'picking_id': picking.id,
         })
-    
-    def action_parts_arrived(self):
-        if self.picking_id and self.picking_id.state == 'done':
-            self.write({'state': 'parts_arrived'})
-        else:
-            raise UserError(_('Please validate the stock picking first!'))
     
     def action_assign_team(self):
         for record in self:

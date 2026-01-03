@@ -304,7 +304,7 @@ mobile_repair_management/
 
 ### `job.card`
 - `name` - Auto-generated job card number (sequence)
-- `state` - Selection (draft, requested, quotation, approved, parts_requested, parts_arrived, in_progress, completed, rejected)
+- `state` - Selection (draft, requested, quotation, approved, parts_requested, in_progress, completed, rejected)
 - `customer_id` - Many2one(res.partner)
 - `brand_id`, `series_id`, `model_id` - Device hierarchy
 - `service_ids` - One2many(job.card.service.line)

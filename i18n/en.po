@@ -202,11 +202,6 @@ msgid "Parts Requested"
 msgstr "Parts Requested"
 
 #. module: mobile_repair_management
-#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__parts_arrived
-msgid "Parts Arrived"
-msgstr "Parts Arrived"
-
-#. module: mobile_repair_management
 #: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__in_progress
 msgid "In Progress"
 msgstr "In Progress"

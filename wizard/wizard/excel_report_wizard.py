@@ -18,7 +18,6 @@ class ExcelReportWizard(models.TransientModel):
         ('quotation', 'Quotation'),
         ('approved', 'Approved'),
         ('parts_requested', 'Parts Requested'),
-        ('parts_arrived', 'Parts Arrived'),
         ('in_progress', 'In Progress'),
         ('completed', 'Completed'),
         ('rejected', 'Rejected'),

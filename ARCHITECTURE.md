@@ -91,10 +91,6 @@ User Creates Job Card
    ┌──────────────────────┐
    │ PARTS_REQUESTED      │  (Stock picking created)
    └───┬──────────────────┘
-       ↓ (Stock validated)
-   ┌──────────────────────┐
-   │ PARTS_ARRIVED        │  (Parts ready for repair)
-   └───┬──────────────────┘
        ↓ (Assign Team)
    ┌──────────────────────┐
    │ IN_PROGRESS          │  (Technicians working)
@@ -119,8 +115,7 @@ STATE_TRANSITIONS = {
     'requested': ['quotation'],
     'quotation': ['approved', 'rejected'],
     'approved': ['parts_requested'],
-    'parts_requested': ['parts_arrived'],
-    'parts_arrived': ['in_progress'],
+    'parts_requested': ['in_progress'],
     'in_progress': ['completed'],
     'completed': [],  # End state
     'rejected': [],   # End state

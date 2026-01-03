@@ -17,7 +17,7 @@
 - ✓ **25+ XML Views** (forms, kanban, tree, dashboard, reports)
 - ✓ **2 PDF Reports** (job card quotation, job card summary)
 - ✓ **1 Excel Export** (with date, status, warranty, team, brand filters)
-- ✓ **9-Stage Workflow** (draft → requested → quotation → approved → parts_requested → parts_arrived → in_progress → completed/rejected)
+- ✓ **8-Stage Workflow** (draft → requested → quotation → approved → parts_requested → in_progress → completed/rejected)
 - ✓ **Security System** (3 groups: manager, user, technician with CRUD permissions)
 - ✓ **Static Assets** (CSS styles, JavaScript dashboard)
 
