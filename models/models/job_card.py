@@ -213,6 +213,9 @@ class JobCard(models.Model):
         })
 
     def action_cancel_repair(self):
+        for record in self:
+            if record.state == 'completed':
+                raise UserError(_('Cannot cancel a completed repair.'))
         self.write({'state': 'rejected'})
     
     def action_create_invoice(self):

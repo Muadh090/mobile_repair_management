@@ -91,8 +91,9 @@
                             }"/>
                     <button name="action_complete_repair" string="Complete Repair" type="object"
                             class="btn-primary"/>
-                    <button name="action_cancel_repair" string="Cancel" type="object"
-                            class="btn-secondary"/>
+                        <button name="action_cancel_repair" string="Cancel" type="object"
+                            class="btn-secondary"
+                            attrs="{'invisible': [('state', '=', 'completed')]}"/>
                     
                     <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,in_progress,completed,rejected"/>
                 </header>
