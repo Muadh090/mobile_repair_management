@@ -81,7 +81,7 @@
                     <button name="action_cancel_repair" string="Cancel" type="object"
                             class="btn-secondary"/>
                     
-                    <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,parts_requested,in_progress,completed,rejected"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,in_progress,completed,rejected"/>
                 </header>
                 
                 <sheet>

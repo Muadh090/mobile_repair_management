@@ -17,7 +17,6 @@ class JobCard(models.Model):
         ('requested', 'Requested'),
         ('quotation', 'Quotation'),
         ('approved', 'Approved'),
-        ('parts_requested', 'Parts Requested'),
         ('in_progress', 'In Progress'),
         ('completed', 'Completed'),
         ('rejected', 'Rejected'),
@@ -123,50 +122,6 @@ class JobCard(models.Model):
     
     # Computed Fields
     @api.depends('service_ids.price_total', 'part_ids.price_total')
-    def _compute_totals(self):
-        for record in self:
-            service_total = sum(record.service_ids.mapped('price_total'))
-            part_total = sum(record.part_ids.mapped('price_total'))
-            subtotal = service_total + part_total
-            tax_amount = subtotal * 0.15  # 15% tax
-            total_amount = subtotal + tax_amount
-            
-            record.service_total = service_total
-            record.part_total = part_total
-            record.subtotal = subtotal
-            record.tax_amount = tax_amount
-            record.total_amount = total_amount
-    
-    @api.depends('invoice_id')
-    def _compute_invoice_status(self):
-        for record in self:
-            if record.invoice_id:
-                record.invoice_status = 'invoiced'
-            elif record.state == 'completed' and not record.warranty:
-                record.invoice_status = 'to_invoice'
-            else:
-                record.invoice_status = 'no'
-    
-    @api.depends('invoice_id.payment_state')
-    def _compute_payment_status(self):
-        for record in self:
-            if record.invoice_id:
-                if record.invoice_id.payment_state == 'paid':
-                    record.payment_status = 'paid'
-                elif record.invoice_id.payment_state == 'partial':
-                    record.payment_status = 'partially_paid'
-                else:
-                    record.payment_status = 'not_paid'
-            else:
-                record.payment_status = 'not_paid'
-    
-    # Constraints
-    @api.constrains('warranty', 'warranty_expiry_date')
-    def _check_warranty_expiry(self):
-        for record in self:
-            if record.warranty and record.warranty_expiry_date:
-                if record.warranty_expiry_date < fields.Date.today():
-                    raise ValidationError(_('Warranty has expired!'))
     
     # CRUD
     @api.model
@@ -208,44 +163,6 @@ class JobCard(models.Model):
         self.write({
             'state': 'rejected',
             'customer_approval': 'rejected',
-        })
-    
-    def action_request_parts(self):
-        StockPicking = self.env['stock.picking']
-        StockMove = self.env['stock.move']
-        
-        picking_type = self.env['stock.picking.type'].search([
-            ('code', '=', 'internal'),
-            ('company_id', '=', self.env.company.id)
-        ], limit=1)
-        
-        picking_vals = {
-            'picking_type_id': picking_type.id,
-            'location_id': picking_type.default_location_src_id.id,
-            'location_dest_id': self.team_id.project_id.location_id.id if self.team_id and self.team_id.project_id else picking_type.default_location_dest_id.id,
-            'partner_id': self.customer_id.id,
-            'scheduled_date': fields.Datetime.now(),
-            'origin': self.name,
-            'company_id': self.env.company.id,
-        }
-        
-        picking = StockPicking.create(picking_vals)
-        
-        for part in self.part_ids:
-            StockMove.create({
-                'name': part.product_id.name,
-                'product_id': part.product_id.id,
-                'product_uom': part.product_id.uom_id.id,
-                'product_uom_qty': part.quantity,
-                'location_id': picking.location_id.id,
-                'location_dest_id': picking.location_dest_id.id,
-                'picking_id': picking.id,
-                'company_id': self.env.company.id,
-            })
-        
-        self.write({
-            'state': 'parts_requested',
-            'picking_id': picking.id,
         })
     
     def action_assign_team(self):

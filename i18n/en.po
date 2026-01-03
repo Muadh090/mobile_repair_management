@@ -197,11 +197,6 @@ msgid "Approved"
 msgstr "Approved"
 
 #. module: mobile_repair_management
-#: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__parts_requested
-msgid "Parts Requested"
-msgstr "Parts Requested"
-
-#. module: mobile_repair_management
 #: model:ir.model.fields.selection,name:mobile_repair_management.selection__job_card__state__in_progress
 msgid "In Progress"
 msgstr "In Progress"

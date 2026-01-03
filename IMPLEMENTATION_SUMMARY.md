@@ -82,7 +82,7 @@
 - [x] Products/Services menu with kanban/form views
 - [x] Service type, price fields
 - [x] Job Cards with kanban/tree/form views
-- [x] Job card stages (8: draft, requested, quotation, approved, parts_requested, in_progress, completed, rejected)
+- [x] Job card stages (7: draft, requested, quotation, approved, in_progress, completed, rejected)
 - [x] Customer & device details
 - [x] Brand → Series → Model dependent dropdowns
 - [x] IMEI, device condition, accessories

@@ -64,7 +64,6 @@
 .o_repair_status_requested { background: #d1ecf1; color: #0c5460; }
 .o_repair_status_quotation { background: #fff3cd; color: #856404; }
 .o_repair_status_approved { background: #d4edda; color: #155724; }
-.o_repair_status_parts_requested { background: #ffe5d0; color: #d35400; }
 .o_repair_status_in_progress { background: #cce5ff; color: #004085; }
 .o_repair_status_completed { background: #d4edda; color: #155724; }
 .o_repair_status_rejected { background: #f8d7da; color: #721c24; }
