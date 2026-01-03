@@ -80,15 +80,7 @@
                             attrs="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                     <button name="action_start_repair" string="Start Repair" type="object"
                             class="btn-primary"
-                            attrs="{
-                                'invisible': [
-                                    '|', ('state', 'in', ['in_progress', 'completed', 'rejected']),
-                                    '|', '&', ('warranty', '=', True), ('team_id', '=', False),
-                                         '|', '&', ('warranty', '=', False), ('team_id', '=', False),
-                                              '|', '&', ('warranty', '=', False), ('invoice_id', '=', False),
-                                                   '&', ('warranty', '=', False), ('payment_status', '!=', 'paid')
-                                ]
-                            }"/>
+                            attrs="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
                     <button name="action_complete_repair" string="Complete Repair" type="object"
                             class="btn-primary"/>
                         <button name="action_cancel_repair" string="Cancel" type="object"
