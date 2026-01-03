@@ -72,27 +72,53 @@ class ExcelReportWizard(models.TransientModel):
         num_format = workbook.add_format({'border': 1, 'align': 'right', 'num_format': '#,##0.00'})
         
         # Headers
-        headers = ['Job Card', 'Customer', 'Brand', 'Model', 'Total Amount', 'Status', 'Warranty', 'Created Date']
+        headers = [
+            'Job Card', 'Customer', 'Brand', 'Series', 'Model', 'IMEI', 'Problem Description',
+            'Assigned Technicians', 'Responsible',
+            'Service(s)', 'Service Charge(s)',
+            'Part(s)', 'Unit Price', 'Part Qty', 'Available Stock',
+            'Total Amount', 'Status', 'Warranty', 'Created Date'
+        ]
         for col, header in enumerate(headers):
             worksheet.write(0, col, header, header_format)
         
         # Data
         for row, card in enumerate(job_cards, 1):
+            services = ', '.join([s.service_id.name for s in card.service_ids])
+            service_charges = ', '.join([f"{s.price}" for s in card.service_ids])
+            parts = ', '.join([p.product_id.display_name for p in card.part_ids])
+            part_unit_prices = ', '.join([f"{p.unit_price}" for p in card.part_ids])
+            part_quantities = ', '.join([f"{p.quantity}" for p in card.part_ids])
+            part_stock = ', '.join([f"{p.stock_available}" for p in card.part_ids])
+            technicians = ', '.join([u.name for u in card.assigned_member_ids])
+            responsible = card.team_id.manager_id.name if card.team_id and card.team_id.manager_id else ''
+
             worksheet.write(row, 0, card.name, cell_format)
             worksheet.write(row, 1, card.customer_id.name if card.customer_id else '', cell_format)
             worksheet.write(row, 2, card.brand_id.name if card.brand_id else '', cell_format)
-            worksheet.write(row, 3, card.model_id.name if card.model_id else '', cell_format)
-            worksheet.write(row, 4, card.total_amount, num_format)
-            worksheet.write(row, 5, dict(card._fields['state'].selection).get(card.state), cell_format)
-            worksheet.write(row, 6, 'Yes' if card.warranty else 'No', cell_format)
-            worksheet.write(row, 7, card.create_date.strftime('%Y-%m-%d') if card.create_date else '', cell_format)
+            worksheet.write(row, 3, card.series_id.name if card.series_id else '', cell_format)
+            worksheet.write(row, 4, card.model_id.name if card.model_id else '', cell_format)
+            worksheet.write(row, 5, card.imei or '', cell_format)
+            worksheet.write(row, 6, card.problem_description or '', cell_format)
+            worksheet.write(row, 7, technicians, cell_format)
+            worksheet.write(row, 8, responsible, cell_format)
+            worksheet.write(row, 9, services, cell_format)
+            worksheet.write(row, 10, service_charges, cell_format)
+            worksheet.write(row, 11, parts, cell_format)
+            worksheet.write(row, 12, part_unit_prices, cell_format)
+            worksheet.write(row, 13, part_quantities, cell_format)
+            worksheet.write(row, 14, part_stock, cell_format)
+            worksheet.write(row, 15, card.total_amount, num_format)
+            worksheet.write(row, 16, dict(card._fields['state'].selection).get(card.state), cell_format)
+            worksheet.write(row, 17, 'Yes' if card.warranty else 'No', cell_format)
+            worksheet.write(row, 18, card.create_date.strftime('%Y-%m-%d') if card.create_date else '', cell_format)
         
         # Adjust columns
         worksheet.set_column('A:A', 15)
         worksheet.set_column('B:B', 25)
-        worksheet.set_column('C:D', 20)
-        worksheet.set_column('E:E', 15)
-        worksheet.set_column('F:H', 15)
+        worksheet.set_column('C:H', 18)
+        worksheet.set_column('I:O', 18)
+        worksheet.set_column('P:R', 15)
         
         workbook.close()
         output.seek(0)
