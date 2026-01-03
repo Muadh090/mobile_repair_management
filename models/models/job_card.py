@@ -180,6 +180,10 @@ class JobCard(models.Model):
     
     def action_start_repair(self):
         for record in self:
+            if record.state in ['in_progress', 'completed', 'rejected']:
+                raise UserError(_('Repair is already started or closed.'))
+            if not record.team_id:
+                raise UserError(_('Assign a repair team before starting.'))
             if not record.warranty:
                 if not record.invoice_id:
                     raise UserError(_('Create the invoice before starting a non-warranty repair.'))
