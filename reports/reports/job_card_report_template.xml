@@ -30,12 +30,25 @@
                 </div>
                 
                 <div class="device-section" style="margin-bottom: 20px;">
-                    <h3 style="color: #875A7B;">Device Details</h3>
+                    <h3 style="color: #875A7B;">Device &amp; Issue</h3>
                     <p><strong>Brand:</strong> <span t-field="doc.brand_id"/></p>
                     <p><strong>Series:</strong> <span t-field="doc.series_id"/></p>
                     <p><strong>Model:</strong> <span t-field="doc.model_id"/></p>
                     <p><strong>IMEI:</strong> <span t-field="doc.imei"/></p>
-                    <p><strong>Problem:</strong> <span t-field="doc.problem_description"/></p>
+                    <p><strong>Problem Description:</strong> <span t-field="doc.problem_description"/></p>
+                </div>
+
+                <div class="team-section" style="margin-bottom: 20px;">
+                    <h3 style="color: #875A7B;">Team</h3>
+                    <p><strong>Team:</strong> <span t-field="doc.team_id"/></p>
+                    <p><strong>Responsible:</strong> <span t-field="doc.team_id.manager_id"/></p>
+                    <p><strong>Assigned Technicians:</strong>
+                        <t t-if="doc.assigned_member_ids">
+                            <t t-foreach="doc.assigned_member_ids" t-as="tech" t-esc="tech.name"/>
+                            <t t-if="not loop.last">, </t>
+                        </t>
+                        <t t-if="not doc.assigned_member_ids">-</t>
+                    </p>
                 </div>
                 
                 <div class="services-section" style="margin-bottom: 20px;">
@@ -46,7 +59,7 @@
                                 <th style="padding: 8px; border: 1px solid #ddd;">Service</th>
                                 <th style="padding: 8px; border: 1px solid #ddd;">Description</th>
                                 <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
-                                <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Service Charge</th>
                                 <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
                             </tr>
                         </thead>
@@ -81,6 +94,7 @@
                                 <th style="padding: 8px; border: 1px solid #ddd;">Description</th>
                                 <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
                                 <th style="padding: 8px; border: 1px solid #ddd;">Unit Price</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Available Stock</th>
                                 <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
                             </tr>
                         </thead>
@@ -97,6 +111,9 @@
                                 </td>
                                 <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
                                     <span t-field="part.unit_price" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
+                                </td>
+                                <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">
+                                    <span t-field="part.stock_available"/>
                                 </td>
                                 <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">
                                     <span t-field="part.price_total" t-options='{"widget": "monetary", "display_currency": "doc.company_id.currency_id"}'/>
