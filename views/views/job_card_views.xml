@@ -66,26 +66,26 @@
         <field name="arch" type="xml">
             <form string="Job Card">
                 <header>
-                        <button name="action_generate_quotation" string="Generate Quotation" type="object"
-                            class="btn-secondary"
-                            attrs="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                        <button name="action_create_invoice" string="Create Invoice" type="object"
-                            class="btn-primary"
-                            attrs="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                        <button name="action_assign_team" string="Assign Team" type="object"
-                            class="btn-primary"
-                            attrs="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                        <button name="action_register_payment" string="Register Payment" type="object"
-                            class="btn-secondary"
-                            attrs="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                            <button name="action_generate_quotation" string="Generate Quotation" type="object"
+                                class="btn-secondary"
+                                modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                            <button name="action_create_invoice" string="Create Invoice" type="object"
+                                class="btn-primary"
+                                modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                            <button name="action_assign_team" string="Assign Team" type="object"
+                                class="btn-primary"
+                                modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                            <button name="action_register_payment" string="Register Payment" type="object"
+                                class="btn-secondary"
+                                modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                     <button name="action_start_repair" string="Start Repair" type="object"
                             class="btn-primary"
-                            attrs="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
+                                modifiers="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
                     <button name="action_complete_repair" string="Complete Repair" type="object"
                             class="btn-primary"/>
                         <button name="action_cancel_repair" string="Cancel" type="object"
                             class="btn-secondary"
-                            attrs="{'invisible': [('state', '=', 'completed')]}"/>
+                                modifiers="{'invisible': [('state', '=', 'completed')]}"/>
                     
                     <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,in_progress,completed,rejected"/>
                 </header>
