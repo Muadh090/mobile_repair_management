@@ -71,7 +71,6 @@
                                 modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                             <button name="action_create_invoice" string="Create Invoice" type="object"
                                 class="btn-primary"
-                                    <field name="condemned_scope"/>
                                 modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                             <button name="action_assign_team" string="Assign Team" type="object"
                                 class="btn-primary"
