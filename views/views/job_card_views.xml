@@ -71,6 +71,7 @@
                                 modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                             <button name="action_create_invoice" string="Create Invoice" type="object"
                                 class="btn-primary"
+                                    <field name="condemned_scope"/>
                                 modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                             <button name="action_assign_team" string="Assign Team" type="object"
                                 class="btn-primary"
@@ -82,22 +83,7 @@
                             class="btn-primary"
                                 modifiers="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
                     <button name="action_complete_repair" string="Complete Repair" type="object"
-                            class="btn-primary"/>
-                        <button name="action_cancel_repair" string="Cancel" type="object"
-                            class="btn-secondary"
-                                modifiers="{'invisible': [('state', '=', 'completed')]}"/>
-                    
-                    <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,in_progress,completed,rejected"/>
-                </header>
-                
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_picking" type="object" class="oe_stat_button"
-                                icon="fa-truck">
-                            <div class="o_stat_info">
-                                <field name="picking_id" widget="statinfo" string="Picking"/>
-                            </div>
-                        </button>
+
                         <button name="action_view_invoice" type="object" class="oe_stat_button"
                                 icon="fa-money">
                             <div class="o_stat_info">
@@ -172,6 +158,23 @@
                             <group>
                                 <field name="device_accessories" colspan="4"/>
                             </group>
+
+                            <group string="Customer Condemned Parts">
+                                <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'customer')]">
+                                    <list editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="description"/>
+                                        <field name="quantity"/>
+                                        <field name="condition_status"/>
+                                        <field name="condemned_scope"/>
+                                        <field name="condition_date"/>
+                                        <field name="condition_reason"/>
+                                        <field name="unit_price"/>
+                                        <field name="stock_available"/>
+                                        <field name="price_total" sum="Total"/>
+                                    </list>
+                                </field>
+                            </group>
                         </page>
                         
                         <page string="Services">
@@ -196,6 +199,7 @@
                                     <field name="description"/>
                                     <field name="quantity"/>
                                     <field name="condition_status"/>
+                                    <field name="condemned_scope"/>
                                     <field name="condition_date"/>
                                     <field name="condition_reason"/>
                                     <field name="unit_price"/>
@@ -206,22 +210,6 @@
                             <group class="oe_subtotal_footer">
                                 <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
-                        </page>
-
-                        <page string="Condemned Parts">
-                            <field name="part_ids" domain="[('condition_status', '=', 'condemned')]">
-                                <list editable="bottom">
-                                    <field name="product_id"/>
-                                    <field name="description"/>
-                                    <field name="quantity"/>
-                                    <field name="condition_status"/>
-                                    <field name="condition_date"/>
-                                    <field name="condition_reason"/>
-                                    <field name="unit_price"/>
-                                    <field name="stock_available"/>
-                                    <field name="price_total" sum="Total"/>
-                                </list>
-                            </field>
                         </page>
                         
                         
@@ -257,6 +245,22 @@
                                                 </field>
                                             </page>
                                         </notebook>
+                                        <group string="Warehouse Condemned Parts">
+                                            <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]">
+                                                <list editable="bottom">
+                                                    <field name="product_id"/>
+                                                    <field name="description"/>
+                                                    <field name="quantity"/>
+                                                    <field name="condition_status"/>
+                                                    <field name="condemned_scope"/>
+                                                    <field name="condition_date"/>
+                                                    <field name="condition_reason"/>
+                                                    <field name="unit_price"/>
+                                                    <field name="stock_available"/>
+                                                    <field name="price_total" sum="Total"/>
+                                                </list>
+                                            </field>
+                                        </group>
                                     </sheet>
                                 </form>
                             </field>
@@ -329,6 +333,7 @@
                 <field name="product_id"/>
                 <field name="quantity"/>
                 <field name="condition_status"/>
+                <field name="condemned_scope"/>
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
                 <field name="condemned_move_id"/>
@@ -345,10 +350,12 @@
                 <field name="job_card_id"/>
                 <field name="product_id"/>
                 <field name="condition_status"/>
-                <filter string="Damaged / Condemned" name="condemned" domain="[('condition_status','in',('damaged','condemned'))]"/>
+                <field name="condemned_scope"/>
+                <filter string="Condemned" name="condemned" domain="[('condition_status','=', 'condemned')]"/>
                 <group expand="0" string="Group By">
                     <filter string="Job Card" name="group_job" context="{'group_by': 'job_card_id'}"/>
                     <filter string="Condition" name="group_condition" context="{'group_by': 'condition_status'}"/>
+                    <filter string="Scope" name="group_scope" context="{'group_by': 'condemned_scope'}"/>
                     <filter string="Date" name="group_date" context="{'group_by': 'condition_date'}"/>
                 </group>
             </search>

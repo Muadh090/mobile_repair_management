@@ -30,9 +30,12 @@ class JobCardPartLine(models.Model):
     stock_available = fields.Float(string='Available Stock', related='product_id.qty_available')
     condition_status = fields.Selection([
         ('good', 'Good'),
-        ('damaged', 'Damaged'),
         ('condemned', 'Condemned'),
     ], string='Condition', default='good', required=True)
+    condemned_scope = fields.Selection([
+        ('customer', 'Customer'),
+        ('warehouse', 'Warehouse'),
+    ], string='Condemned For')
     condition_reason = fields.Text(string='Condition Reason')
     condition_date = fields.Date(string='Condition Date')
     condemned_move_id = fields.Many2one('stock.move', string='Non-usable Move', readonly=True, copy=False)
@@ -42,11 +45,13 @@ class JobCardPartLine(models.Model):
         for line in self:
             line.price_total = line.unit_price * line.quantity
 
-    @api.constrains('condition_status', 'condition_reason')
+    @api.constrains('condition_status', 'condition_reason', 'condemned_scope')
     def _check_condition_reason(self):
         for line in self:
-            if line.condition_status in ('damaged', 'condemned') and not line.condition_reason:
-                raise ValidationError(_('Please provide a reason for damaged or condemned parts.'))
+            if line.condition_status == 'condemned' and not line.condition_reason:
+                raise ValidationError(_('Please provide a reason for condemned parts.'))
+            if line.condition_status == 'condemned' and not line.condemned_scope:
+                raise ValidationError(_('Specify whether the condemned part is for the customer or warehouse.'))
 
     def _get_source_location(self):
         self.ensure_one()
@@ -73,7 +78,7 @@ class JobCardPartLine(models.Model):
 
     def _create_condemned_move(self):
         for line in self:
-            if line.condition_status not in ('damaged', 'condemned'):
+            if line.condition_status != 'condemned':
                 continue
             if line.condemned_move_id or line.quantity <= 0:
                 continue
@@ -101,7 +106,7 @@ class JobCardPartLine(models.Model):
     @api.model
     def create(self, vals):
         vals = dict(vals)
-        if vals.get('condition_status') in ('damaged', 'condemned') and not vals.get('condition_date'):
+        if vals.get('condition_status') == 'condemned' and not vals.get('condition_date'):
             vals['condition_date'] = fields.Date.context_today(self)
         record = super().create(vals)
         record._create_condemned_move()
@@ -110,12 +115,12 @@ class JobCardPartLine(models.Model):
     def write(self, vals):
         vals = dict(vals)
         status_in_vals = vals.get('condition_status')
-        if status_in_vals in ('damaged', 'condemned') and not vals.get('condition_date'):
+        if status_in_vals == 'condemned' and not vals.get('condition_date'):
             vals['condition_date'] = fields.Date.context_today(self)
 
         res = super().write(vals)
 
-        condemned_lines = self.filtered(lambda l: l.condition_status in ('damaged', 'condemned') and not l.condemned_move_id)
+        condemned_lines = self.filtered(lambda l: l.condition_status == 'condemned' and not l.condemned_move_id)
         if condemned_lines:
             condemned_lines._create_condemned_move()
         return res
