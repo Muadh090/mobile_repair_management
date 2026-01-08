@@ -66,31 +66,23 @@
         <field name="arch" type="xml">
             <form string="Job Card">
                 <header>
-                    <button name="action_generate_quotation" string="Generate Quotation" type="object"
-                        class="btn-secondary"
-                        modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_create_invoice" string="Create Invoice" type="object"
-                        class="btn-primary"
-                        modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_assign_team" string="Assign Team" type="object"
-                        class="btn-primary"
-                        modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_register_payment" string="Register Payment" type="object"
-                        class="btn-secondary"
-                        modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_start_repair" string="Start Repair" type="object"
-                        class="btn-primary"
-                        modifiers="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
-                    <button name="action_complete_repair" string="Complete Repair" type="object"
-                        class="btn-primary"/>
-                    <button name="action_cancel_repair" string="Cancel" type="object"
-                        class="btn-secondary"
-                        modifiers="{'invisible': [('state', '=', 'completed')]}"/>
+                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_assign_team" string="Assign Team" type="object" class="btn-primary" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_start_repair" string="Start Repair" type="object" class="btn-primary" modifiers="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
+                    <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary"/>
+                    <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" modifiers="{'invisible': [('state', '=', 'completed')]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,in_progress,completed,rejected"/>
                 </header>
 
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck">
+                            <div class="o_stat_info">
+                                <field name="picking_id" widget="statinfo" string="Picking"/>
+                            </div>
+                        </button>
                         <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money">
                             <div class="o_stat_info">
                                 <field name="invoice_id" widget="statinfo" string="Invoice"/>
@@ -111,6 +103,7 @@
                             <field name="customer_id" widget="many2one_avatar"/>
                         </h2>
                     </div>
+
                     <group string="Overview" col="2">
                         <group string="Customer">
                             <field name="customer_id" domain="[]"/>
@@ -126,44 +119,44 @@
                     </group>
 
                     <group col="2">
-                        <page string="Task &amp; Work Log">
-                            <field name="task_id">
-                                <form>
-                                    <sheet>
-                                        <group>
-                                            <group>
-                                                <field name="name"/>
-                                                <field name="project_id"/>
-                                                <field name="user_ids" widget="many2many_tags"/>
-                                            </group>
-                                            <group>
-                                                <field name="stage_id"/>
-                                                <field name="priority"/>
-                                                <field name="date_deadline"/>
-                                            </group>
-                                        </group>
-                                        <notebook>
-                                            <page string="Description">
-                                                <field name="description"/>
-                                            </page>
-                                            <page string="Timesheets">
-                                                <field name="timesheet_ids">
-                                                    <list>
-                                                        <field name="date"/>
-                                                        <field name="name"/>
-                                                        <field name="user_id"/>
-                                                        <field name="unit_amount"/>
-                                                    </list>
-                                                </field>
-                                            </page>
-                                        </notebook>
-                                    </sheet>
-                                </form>
-                            </field>
+                        <group string="Issue &amp; Dates">
+                            <field name="problem_description" colspan="2"/>
+                            <field name="inspection_date"/>
+                            <field name="delivery_type"/>
+                            <field name="expected_duration"/>
+                        </group>
+                        <group string="Warranty &amp; Totals">
+                            <field name="warranty"/>
+                            <field name="warranty_number"/>
+                            <field name="warranty_expiry_date"/>
+                            <field name="service_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
 
-                            <group string="Warehouse Condemned Parts">
-                                <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"><
-                                    <list editable="bottom">
+                    <notebook>
+                        <page string="Device Details">
+                            <group col="2">
+                                <group string="Identification">
+                                    <field name="brand_id"/>
+                                    <field name="series_id" domain="[('brand_id', '=', brand_id)]"/>
+                                    <field name="model_id" domain="[('series_id', '=', series_id)]"/>
+                                    <field name="imei"/>
+                                    <field name="serial_number"/>
+                                </group>
+                                <group string="Condition &amp; Intake">
+                                    <field name="device_condition"/>
+                                    <field name="inspection_type"/>
+                                    <field name="delivery_type"/>
+                                    <field name="inspection_date"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="device_accessories" colspan="4"/>
+                            </group>
+                            <group string="Customer Condemned Parts">
+                                <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'customer')]"><tree editable="bottom">
                                         <field name="product_id"/>
                                         <field name="description"/>
                                         <field name="quantity"/>
@@ -174,15 +167,10 @@
                                         <field name="unit_price"/>
                                         <field name="stock_available"/>
                                         <field name="price_total" sum="Total"/>
-                                    </list>
-                                </field>
+                                    </tree></field>
                             </group>
                         </page>
-                                    </list>
-                                </field>
-                            </group>
-                        </page>
-                        
+
                         <page string="Services">
                             <field name="service_ids">
                                 <list editable="bottom">
@@ -197,7 +185,7 @@
                                 <field name="service_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </page>
-                        
+
                         <page string="Parts">
                             <field name="part_ids">
                                 <list editable="bottom">
@@ -217,9 +205,7 @@
                                 <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </page>
-                        
-                        
-                        
+
                         <page string="Task &amp; Work Log">
                             <field name="task_id">
                                 <form>
@@ -254,27 +240,25 @@
                                     </sheet>
                                 </form>
                             </field>
+                        </page>
 
-                              <group string="Warehouse Condemned Parts">
-                                  <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]">
-                                      <list editable="bottom">
-                                          <field name="product_id"/>
-                                          <field name="description"/>
-                                          <field name="quantity"/>
-                                          <field name="condition_status"/>
-                                          <field name="condemned_scope"/>
-                                          <field name="condition_date"/>
-                                          <field name="condition_reason"/>
-                                          <field name="unit_price"/>
-                                          <field name="stock_available"/>
-                                          <field name="price_total" sum="Total"/>
-                                      </list>
-                                  </field>
-                              </group>
+                        <page string="Warehouse Condemned Parts">
+                            <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"><tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="condition_status"/>
+                                    <field name="condemned_scope"/>
+                                    <field name="condition_date"/>
+                                    <field name="condition_reason"/>
+                                    <field name="unit_price"/>
+                                    <field name="stock_available"/>
+                                    <field name="price_total" sum="Total"/>
+                                </tree></field>
                         </page>
                     </notebook>
                 </sheet>
-                
+
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="message_ids" widget="mail_thread"/>
@@ -330,7 +314,7 @@
         </field>
     </record>
 
-    <!-- Condemned / Damaged Parts Report (list + search) -->
+    <!-- Condemned Parts Report (list + search) -->
     <record id="view_job_card_part_line_tree" model="ir.ui.view">
         <field name="name">job.card.part.line.list</field>
         <field name="model">job.card.part.line</field>
@@ -358,7 +342,7 @@
                 <field name="product_id"/>
                 <field name="condition_status"/>
                 <field name="condemned_scope"/>
-                <filter string="Condemned" name="condemned" domain="[('condition_status','=', 'condemned')]"/>
+                <filter string="Condemned" name="condemned" domain="[('condition_status', '=', 'condemned')]"/>
                 <group expand="0" string="Group By">
                     <filter string="Job Card" name="group_job" context="{'group_by': 'job_card_id'}"/>
                     <filter string="Condition" name="group_condition" context="{'group_by': 'condition_status'}"/>
@@ -373,7 +357,7 @@
         <field name="name">Damaged / Condemned Parts</field>
         <field name="res_model">job.card.part.line</field>
         <field name="view_mode">list,pivot,graph</field>
-        <field name="domain">[('condition_status','in',('damaged','condemned'))]</field>
+        <field name="domain">[('condition_status', '=', 'condemned')]</field>
         <field name="search_view_id" ref="view_job_card_part_line_search"/>
     </record>
 </odoo>
