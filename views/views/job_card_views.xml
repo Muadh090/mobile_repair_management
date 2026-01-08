@@ -156,18 +156,9 @@
                                 <field name="device_accessories" colspan="4"/>
                             </group>
                             <group string="Customer Condemned Parts">
-                                <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'customer')]"><tree editable="bottom">
-                                        <field name="product_id"/>
-                                        <field name="description"/>
-                                        <field name="quantity"/>
-                                        <field name="condition_status"/>
-                                        <field name="condemned_scope"/>
-                                        <field name="condition_date"/>
-                                        <field name="condition_reason"/>
-                                        <field name="unit_price"/>
-                                        <field name="stock_available"/>
-                                        <field name="price_total" sum="Total"/>
-                                    </tree></field>
+                                <field name="part_ids"
+                                       domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'customer')]"
+                                       views="{'tree': 'mobile_repair_management.view_job_card_part_line_condemned_inline_tree'}"/>
                             </group>
                         </page>
 
@@ -243,18 +234,9 @@
                         </page>
 
                         <page string="Warehouse Condemned Parts">
-                            <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"><tree editable="bottom">
-                                    <field name="product_id"/>
-                                    <field name="description"/>
-                                    <field name="quantity"/>
-                                    <field name="condition_status"/>
-                                    <field name="condemned_scope"/>
-                                    <field name="condition_date"/>
-                                    <field name="condition_reason"/>
-                                    <field name="unit_price"/>
-                                    <field name="stock_available"/>
-                                    <field name="price_total" sum="Total"/>
-                                </tree></field>
+                            <field name="part_ids"
+                                   domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"
+                                   views="{'tree': 'mobile_repair_management.view_job_card_part_line_condemned_inline_tree'}"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -265,6 +247,26 @@
                     <field name="activity_ids" widget="mail_activity"/>
                 </div>
             </form>
+        </field>
+    </record>
+
+    <!-- Inline condemned parts tree for job card form filtering -->
+    <record id="view_job_card_part_line_condemned_inline_tree" model="ir.ui.view">
+        <field name="name">job.card.part.line.condemned.inline</field>
+        <field name="model">job.card.part.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="product_id"/>
+                <field name="description"/>
+                <field name="quantity"/>
+                <field name="condition_status"/>
+                <field name="condemned_scope"/>
+                <field name="condition_date"/>
+                <field name="condition_reason"/>
+                <field name="unit_price"/>
+                <field name="stock_available"/>
+                <field name="price_total" sum="Total"/>
+            </tree>
         </field>
     </record>
 
