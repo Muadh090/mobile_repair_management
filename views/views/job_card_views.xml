@@ -126,46 +126,43 @@
                     </group>
 
                     <group col="2">
-                        <group string="Issue &amp; Dates">
-                            <field name="problem_description" colspan="2"/>
-                            <field name="inspection_date"/>
-                            <field name="delivery_type"/>
-                            <field name="expected_duration"/>
-                        </group>
-                        <group string="Warranty &amp; Totals">
-                            <field name="warranty"/>
-                            <field name="warranty_number"/>
-                            <field name="warranty_expiry_date"/>
-                            <field name="service_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                        </group>
-                    </group>
+                        <page string="Task &amp; Work Log">
+                            <field name="task_id">
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="name"/>
+                                                <field name="project_id"/>
+                                                <field name="user_ids" widget="many2many_tags"/>
+                                            </group>
+                                            <group>
+                                                <field name="stage_id"/>
+                                                <field name="priority"/>
+                                                <field name="date_deadline"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Description">
+                                                <field name="description"/>
+                                            </page>
+                                            <page string="Timesheets">
+                                                <field name="timesheet_ids">
+                                                    <list>
+                                                        <field name="date"/>
+                                                        <field name="name"/>
+                                                        <field name="user_id"/>
+                                                        <field name="unit_amount"/>
+                                                    </list>
+                                                </field>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
 
-                    <notebook>
-                        <page string="Device Details">
-                            <group col="2">
-                                <group string="Identification">
-                                    <field name="brand_id"/>
-                                    <field name="series_id" domain="[('brand_id', '=', brand_id)]"/>
-                                    <field name="model_id" domain="[('series_id', '=', series_id)]"/>
-                                    <field name="imei"/>
-                                    <field name="serial_number"/>
-                                </group>
-
-                                <group string="Condition &amp; Intake">
-                                    <field name="device_condition"/>
-                                    <field name="inspection_type"/>
-                                    <field name="delivery_type"/>
-                                    <field name="inspection_date"/>
-                                </group>
-                            </group>
-                            <group>
-                                <field name="device_accessories" colspan="4"/>
-                            </group>
-
-                            <group string="Customer Condemned Parts">
-                                <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'customer')]">
+                            <group string="Warehouse Condemned Parts">
+                                <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"><
                                     <list editable="bottom">
                                         <field name="product_id"/>
                                         <field name="description"/>
@@ -177,6 +174,10 @@
                                         <field name="unit_price"/>
                                         <field name="stock_available"/>
                                         <field name="price_total" sum="Total"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
                                     </list>
                                 </field>
                             </group>
@@ -250,25 +251,26 @@
                                                 </field>
                                             </page>
                                         </notebook>
-                                        <group string="Warehouse Condemned Parts">
-                                            <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]">
-                                                <list editable="bottom">
-                                                    <field name="product_id"/>
-                                                    <field name="description"/>
-                                                    <field name="quantity"/>
-                                                    <field name="condition_status"/>
-                                                    <field name="condemned_scope"/>
-                                                    <field name="condition_date"/>
-                                                    <field name="condition_reason"/>
-                                                    <field name="unit_price"/>
-                                                    <field name="stock_available"/>
-                                                    <field name="price_total" sum="Total"/>
-                                                </list>
-                                            </field>
-                                        </group>
                                     </sheet>
                                 </form>
                             </field>
+
+                              <group string="Warehouse Condemned Parts">
+                                  <field name="part_ids" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]">
+                                      <list editable="bottom">
+                                          <field name="product_id"/>
+                                          <field name="description"/>
+                                          <field name="quantity"/>
+                                          <field name="condition_status"/>
+                                          <field name="condemned_scope"/>
+                                          <field name="condition_date"/>
+                                          <field name="condition_reason"/>
+                                          <field name="unit_price"/>
+                                          <field name="stock_available"/>
+                                          <field name="price_total" sum="Total"/>
+                                      </list>
+                                  </field>
+                              </group>
                         </page>
                     </notebook>
                 </sheet>
