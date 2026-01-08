@@ -121,7 +121,17 @@ class JobCard(models.Model):
     write_date = fields.Datetime(string='Last Updated', readonly=True)
     
     # Computed Fields
-    @api.depends('service_ids.price_total', 'part_ids.price_total')
+    @api.depends('service_ids.price_total', 'part_ids.price_total', 'part_ids.condition_status')
+    def _compute_totals(self):
+        for record in self:
+            service_total = sum(record.service_ids.mapped('price_total'))
+            part_total = sum(record.part_ids.filtered(lambda l: l.condition_status != 'condemned').mapped('price_total'))
+            record.service_total = service_total
+            record.part_total = part_total
+            record.subtotal = service_total + part_total
+            # Tax computation not specified; keep zero placeholder for now.
+            record.tax_amount = 0.0
+            record.total_amount = record.subtotal + record.tax_amount
     
     # CRUD
     @api.model
@@ -242,7 +252,7 @@ class JobCard(models.Model):
             }))
         
         # Add part lines
-        for part in self.part_ids:
+        for part in self.part_ids.filtered(lambda p: p.condition_status != 'condemned'):
             invoice_vals['invoice_line_ids'].append((0, 0, {
                 'product_id': part.product_id.id,
                 'name': part.product_id.name,

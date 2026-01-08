@@ -178,7 +178,7 @@
                         </page>
 
                         <page string="Parts">
-                            <field name="part_ids">
+                            <field name="part_ids" domain="[('condition_status', '!=', 'condemned')]">
                                 <list editable="bottom">
                                     <field name="product_id"/>
                                     <field name="description"/>
