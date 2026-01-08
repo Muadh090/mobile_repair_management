@@ -207,6 +207,22 @@
                                 <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </group>
                         </page>
+
+                        <page string="Condemned Parts">
+                            <field name="part_ids" domain="[('condition_status', '=', 'condemned')]">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="condition_status"/>
+                                    <field name="condition_date"/>
+                                    <field name="condition_reason"/>
+                                    <field name="unit_price"/>
+                                    <field name="stock_available"/>
+                                    <field name="price_total" sum="Total"/>
+                                </list>
+                            </field>
+                        </page>
                         
                         
                         
