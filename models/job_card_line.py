@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError, ValidationError
 
 class JobCardServiceLine(models.Model):
     _name = 'job.card.service.line'
@@ -27,8 +28,101 @@ class JobCardPartLine(models.Model):
     unit_price = fields.Float(string='Unit Price', required=True)
     price_total = fields.Float(string='Total', compute='_compute_total', store=True)
     stock_available = fields.Float(string='Available Stock', related='product_id.qty_available')
+    condition_status = fields.Selection([
+        ('good', 'Good'),
+        ('damaged', 'Damaged'),
+        ('condemned', 'Condemned'),
+    ], string='Condition', default='good', required=True)
+    condition_reason = fields.Text(string='Condition Reason')
+    condition_date = fields.Date(string='Condition Date')
+    condemned_move_id = fields.Many2one('stock.move', string='Non-usable Move', readonly=True, copy=False)
     
     @api.depends('unit_price', 'quantity')
     def _compute_total(self):
         for line in self:
             line.price_total = line.unit_price * line.quantity
+
+    @api.constrains('condition_status', 'condition_reason')
+    def _check_condition_reason(self):
+        for line in self:
+            if line.condition_status in ('damaged', 'condemned') and not line.condition_reason:
+                raise ValidationError(_('Please provide a reason for damaged or condemned parts.'))
+
+    def _get_source_location(self):
+        self.ensure_one()
+        company = self.job_card_id.company_id or self.env.company
+        warehouse = self.env['stock.warehouse'].search([('company_id', '=', company.id)], limit=1)
+        if not warehouse or not warehouse.lot_stock_id:
+            raise UserError(_('No warehouse with a stock location is configured for company %s.') % company.name)
+        return warehouse.lot_stock_id
+
+    def _get_condemned_location(self):
+        self.ensure_one()
+        company = self.job_card_id.company_id or self.env.company
+        location = self.env['stock.location'].search([
+            ('scrap_location', '=', True),
+            ('company_id', 'in', [False, company.id]),
+        ], limit=1)
+        if not location:
+            location = self.env.ref('stock.stock_location_scrapped', raise_if_not_found=False)
+            if location and location.company_id and location.company_id != company:
+                location = False
+        if not location:
+            raise UserError(_('Configure a non-usable (scrap/condemned) location for company %s.') % company.name)
+        return location
+
+    def _create_condemned_move(self):
+        for line in self:
+            if line.condition_status not in ('damaged', 'condemned'):
+                continue
+            if line.condemned_move_id or line.quantity <= 0:
+                continue
+
+            source_location = line._get_source_location()
+            condemned_location = line._get_condemned_location()
+
+            move = self.env['stock.move'].create({
+                'name': _('Condemned part for %s') % (line.job_card_id.name or ''),
+                'product_id': line.product_id.id,
+                'product_uom_qty': line.quantity,
+                'product_uom': line.product_id.uom_id.id,
+                'location_id': source_location.id,
+                'location_dest_id': condemned_location.id,
+                'company_id': (line.job_card_id.company_id or self.env.company).id,
+                'origin': line.job_card_id.name,
+                'job_card_id': line.job_card_id.id,
+                'job_card_part_line_id': line.id,
+            })
+            move._action_confirm()
+            move.quantity_done = line.quantity
+            move._action_done()
+            line.condemned_move_id = move.id
+
+    @api.model
+    def create(self, vals):
+        vals = dict(vals)
+        if vals.get('condition_status') in ('damaged', 'condemned') and not vals.get('condition_date'):
+            vals['condition_date'] = fields.Date.context_today(self)
+        record = super().create(vals)
+        record._create_condemned_move()
+        return record
+
+    def write(self, vals):
+        vals = dict(vals)
+        status_in_vals = vals.get('condition_status')
+        if status_in_vals in ('damaged', 'condemned') and not vals.get('condition_date'):
+            vals['condition_date'] = fields.Date.context_today(self)
+
+        res = super().write(vals)
+
+        condemned_lines = self.filtered(lambda l: l.condition_status in ('damaged', 'condemned') and not l.condemned_move_id)
+        if condemned_lines:
+            condemned_lines._create_condemned_move()
+        return res
+
+
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    job_card_id = fields.Many2one('job.card', string='Job Card', readonly=True)
+    job_card_part_line_id = fields.Many2one('job.card.part.line', string='Job Card Part Line', readonly=True)

@@ -195,6 +195,9 @@
                                     <field name="product_id"/>
                                     <field name="description"/>
                                     <field name="quantity"/>
+                                    <field name="condition_status"/>
+                                    <field name="condition_date"/>
+                                    <field name="condition_reason"/>
                                     <field name="unit_price"/>
                                     <field name="stock_available"/>
                                     <field name="price_total" sum="Total"/>
@@ -298,5 +301,49 @@
                 Create your first job card!
             </p>
         </field>
+    </record>
+
+    <!-- Condemned / Damaged Parts Report (list + search) -->
+    <record id="view_job_card_part_line_tree" model="ir.ui.view">
+        <field name="name">job.card.part.line.list</field>
+        <field name="model">job.card.part.line</field>
+        <field name="arch" type="xml">
+            <list string="Repair Parts" create="false" edit="false">
+                <field name="job_card_id"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="condition_status"/>
+                <field name="condition_date"/>
+                <field name="condition_reason"/>
+                <field name="condemned_move_id"/>
+                <field name="price_total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_job_card_part_line_search" model="ir.ui.view">
+        <field name="name">job.card.part.line.search</field>
+        <field name="model">job.card.part.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Repair Parts">
+                <field name="job_card_id"/>
+                <field name="product_id"/>
+                <field name="condition_status"/>
+                <filter string="Damaged / Condemned" name="condemned" domain="[('condition_status','in',('damaged','condemned'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Job Card" name="group_job" context="{'group_by': 'job_card_id'}"/>
+                    <filter string="Condition" name="group_condition" context="{'group_by': 'condition_status'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'condition_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_condemned_parts" model="ir.actions.act_window">
+        <field name="name">Damaged / Condemned Parts</field>
+        <field name="res_model">job.card.part.line</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="domain">[('condition_status','in',('damaged','condemned'))]</field>
+        <field name="search_view_id" ref="view_job_card_part_line_search"/>
     </record>
 </odoo>

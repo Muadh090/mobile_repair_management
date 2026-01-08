@@ -29,4 +29,6 @@
     <menuitem id="menu_repair_reports" name="Reports" parent="menu_mobile_repair_root" sequence="60"/>
     <menuitem id="menu_repair_excel_report" name="Excel Report" parent="menu_repair_reports"
               action="action_excel_report_wizard" sequence="10"/>
+    <menuitem id="menu_repair_condemned_parts" name="Damaged / Condemned Parts" parent="menu_repair_reports"
+              action="action_condemned_parts" sequence="20"/>
 </odoo>
