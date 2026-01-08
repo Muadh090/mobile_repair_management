@@ -89,20 +89,20 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,in_progress,completed,rejected"/>
                 </header>
 
-                    <button name="action_view_invoice" type="object" class="oe_stat_button"
-                                icon="fa-money">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money">
                             <div class="o_stat_info">
                                 <field name="invoice_id" widget="statinfo" string="Invoice"/>
                             </div>
                         </button>
-                        <button name="action_view_task" type="object" class="oe_stat_button"
-                                icon="fa-tasks">
+                        <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks">
                             <div class="o_stat_info">
                                 <field name="task_id" widget="statinfo" string="Task"/>
                             </div>
                         </button>
                     </div>
-                    
+
                     <div class="oe_title">
                         <h1>
                             <field name="name" class="oe_inline"/>
