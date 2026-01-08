@@ -99,7 +99,8 @@ class JobCardPartLine(models.Model):
                 'job_card_part_line_id': line.id,
             })
             move._action_confirm()
-            move.quantity_done = line.quantity
+            move_line_vals = move._prepare_move_line_vals(quantity=line.quantity)
+            self.env['stock.move.line'].create(move_line_vals)
             move._action_done()
             line.condemned_move_id = move.id
 
