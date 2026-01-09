@@ -4,7 +4,3 @@ from . import repair_model
 from . import repair_team
 from . import repair_service
 from . import job_card
-from . import technician_performance
-from . import customer_device_history
-from . import issue_template
-from . import condition_log

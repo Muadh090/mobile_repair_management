@@ -42,9 +42,6 @@ class JobCard(models.Model):
     ], string='Device Condition', default='good')
     device_accessories = fields.Text(string='Device Accessories')
     problem_description = fields.Text(string='Problem Description', required=True)
-    issue_template_id = fields.Many2one('repair.issue.template', string='Predefined Issue')
-    device_photo = fields.Image(string='Device Photo')
-    damage_photo = fields.Image(string='Damage Photo')
     
     # Warranty
     warranty = fields.Boolean(string='Under Warranty', default=False)
@@ -74,7 +71,6 @@ class JobCard(models.Model):
     subtotal = fields.Float(string='Subtotal', compute='_compute_totals', store=True)
     tax_amount = fields.Float(string='Tax Amount', compute='_compute_totals', store=True)
     total_amount = fields.Float(string='Total Amount', compute='_compute_totals', store=True)
-    condemned_total_cost = fields.Monetary(string='Condemned Cost', compute='_compute_condemned_cost', currency_field='currency_id', store=True)
     
     # Quotation
     quotation_date = fields.Datetime(string='Quotation Date')
@@ -100,19 +96,9 @@ class JobCard(models.Model):
         ('late', 'Late'),
     ], string='SLA Status', compute='_compute_sla', store=True)
     sla_delay_hours = fields.Float(string='SLA Delay (hours)', compute='_compute_sla', store=True)
-    is_rework = fields.Boolean(string='Rework Job', default=False)
     
     # Stock
     picking_id = fields.Many2one('stock.picking', string='Stock Picking')
-    parts_needed_date = fields.Date(string='Parts Needed By')
-    parts_request_status = fields.Selection([
-        ('none', 'Not Requested'),
-        ('requested', 'Requested'),
-        ('partially_reserved', 'Partially Reserved'),
-        ('reserved', 'Reserved'),
-        ('done', 'Completed'),
-        ('cancelled', 'Cancelled'),
-    ], string='Parts Reservation', compute='_compute_parts_request_status', store=False)
     
     # Invoice
     invoice_id = fields.Many2one('account.move', string='Invoice')
@@ -132,14 +118,6 @@ class JobCard(models.Model):
     
     # Timesheets
     timesheet_ids = fields.One2many('repair.timesheet', 'job_card_id', string='Timesheets')
-
-    # Completion Checklist
-    completion_checklist_done = fields.Boolean(string='Checklist Completed', default=False, tracking=True)
-    completion_tests_passed = fields.Boolean(string='Completion Tests Passed', readonly=True)
-    completion_customer_acknowledged = fields.Boolean(string='Customer Acknowledged', readonly=True)
-    completion_checklist_notes = fields.Text(string='Completion Notes', readonly=True)
-    completion_checklist_user_id = fields.Many2one('res.users', string='Checklist Completed By', readonly=True)
-    completion_checklist_date = fields.Datetime(string='Checklist Completed On', readonly=True)
     
     # Company
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
@@ -162,11 +140,6 @@ class JobCard(models.Model):
             record.tax_amount = 0.0
             record.total_amount = record.subtotal + record.tax_amount
 
-    @api.depends('part_ids.condemned_total_cost')
-    def _compute_condemned_cost(self):
-        for record in self:
-            record.condemned_total_cost = sum(record.part_ids.mapped('condemned_total_cost'))
-
     @api.depends('promised_date', 'completion_date', 'state')
     def _compute_sla(self):
         for record in self:
@@ -182,30 +155,6 @@ class JobCard(models.Model):
                     delay = (reference_date - record.promised_date).total_seconds() / 3600.0
             record.sla_status = status
             record.sla_delay_hours = delay
-
-    @api.depends('picking_id.state', 'picking_id.move_ids_without_package.reserved_availability', 'picking_id.move_ids_without_package.product_uom_qty')
-    def _compute_parts_request_status(self):
-        for record in self:
-            picking = record.picking_id
-            status = 'none'
-            if picking:
-                if picking.state == 'done':
-                    status = 'done'
-                elif picking.state == 'cancel':
-                    status = 'cancelled'
-                else:
-                    required_qty = sum(picking.move_ids_without_package.mapped('product_uom_qty'))
-                    reserved_qty = sum(picking.move_ids_without_package.mapped('reserved_availability'))
-                    if required_qty:
-                        if reserved_qty >= required_qty:
-                            status = 'reserved'
-                        elif reserved_qty > 0:
-                            status = 'partially_reserved'
-                        else:
-                            status = 'requested'
-                    else:
-                        status = 'requested'
-            record.parts_request_status = status
     
     # CRUD
     @api.model
@@ -235,32 +184,6 @@ class JobCard(models.Model):
             if not report_action:
                 raise UserError(_('Quotation report definition is missing. Please upgrade the module.'))
         return report_action.report_action(self)
-
-    @api.onchange('issue_template_id')
-    def _onchange_issue_template(self):
-        for record in self:
-            template = record.issue_template_id
-            if not template:
-                continue
-            service_commands = []
-            part_commands = []
-            for line in template.service_line_ids:
-                service_commands.append((0, 0, {
-                    'service_id': line.service_id.id,
-                    'description': line.description or line.service_id.name,
-                    'price': line.price,
-                    'quantity': line.quantity,
-                }))
-            for line in template.part_line_ids:
-                part_commands.append((0, 0, {
-                    'product_id': line.product_id.id,
-                    'description': line.description or line.product_id.display_name,
-                    'unit_price': line.unit_price,
-                    'quantity': line.quantity,
-                    'condition_status': 'good',
-                }))
-            record.service_ids = [(5, 0, 0)] + service_commands if service_commands else [(5, 0, 0)]
-            record.part_ids = [(5, 0, 0)] + part_commands if part_commands else [(5, 0, 0)]
     
     def action_customer_approve(self):
         self.write({
@@ -268,9 +191,6 @@ class JobCard(models.Model):
             'customer_approval': 'approved',
             'approval_date': fields.Datetime.now(),
         })
-        for record in self:
-            # Auto-request parts upon approval to reserve stock
-            record._ensure_parts_picking()
     
     def action_customer_reject(self):
         self.write({
@@ -318,11 +238,8 @@ class JobCard(models.Model):
         })
     
     def action_complete_repair(self):
-        for rec in self:
-            if rec.state != 'in_progress':
-                raise UserError(_('You can only complete repairs that are In Progress.'))
-            if not rec.completion_checklist_done:
-                raise UserError(_('Finish the completion checklist before marking this repair complete.'))
+        if any(rec.state != 'in_progress' for rec in self):
+            raise UserError(_('You can only complete repairs that are In Progress.'))
         self.write({
             'state': 'completed',
             'completion_date': fields.Datetime.now(),
@@ -333,26 +250,6 @@ class JobCard(models.Model):
             if record.state == 'completed':
                 raise UserError(_('Cannot cancel a completed repair.'))
         self.write({'state': 'rejected'})
-
-    def action_open_completion_checklist(self):
-        self.ensure_one()
-        if self.state != 'in_progress':
-            raise UserError(_('You can only complete repairs that are In Progress.'))
-        view = self.env.ref('mobile_repair_management.view_completion_checklist_wizard')
-        return {
-            'name': _('Completion Checklist'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'completion.checklist.wizard',
-            'view_mode': 'form',
-            'view_id': view.id,
-            'views': [(view.id, 'form')],
-            'target': 'new',
-            'context': {
-                'default_job_card_id': self.id,
-                'active_id': self.id,
-                'active_model': 'job.card',
-            },
-        }
     
     def action_create_invoice(self):
         if self.warranty:
@@ -397,99 +294,6 @@ class JobCard(models.Model):
             'res_id': invoice.id,
             'view_mode': 'form',
         }
-
-    def _get_parts_needed_date(self):
-        self.ensure_one()
-        if self.parts_needed_date:
-            return self.parts_needed_date
-        if self.promised_date:
-            return fields.Date.to_date(self.promised_date)
-        return fields.Date.context_today(self)
-
-    def _get_internal_picking_type(self):
-        company = self.company_id or self.env.company
-        picking_type = self.env['stock.picking.type'].search([
-            ('code', '=', 'internal'),
-            '|', ('warehouse_id.company_id', '=', company.id), ('warehouse_id', '=', False),
-        ], limit=1)
-        if not picking_type:
-            raise UserError(_('No internal transfer picking type configured for company %s.') % company.name)
-        return picking_type
-
-    def action_request_parts(self):
-        self.ensure_one()
-        self._ensure_parts_picking()
-        if not self.picking_id:
-            raise UserError(_('No parts to request for this job card.'))
-        return self.action_view_picking()
-
-    def _ensure_parts_picking(self):
-        self.ensure_one()
-        part_lines = self.part_ids.filtered(lambda p: p.condition_status != 'condemned' and p.quantity > 0 and p.product_id and p.product_id.type in ['product', 'consu'])
-        if not part_lines:
-            return False
-
-        picking_type = self._get_internal_picking_type()
-        warehouse = picking_type.warehouse_id or self.env['stock.warehouse'].search([
-            ('company_id', '=', (self.company_id or self.env.company).id)
-        ], limit=1)
-        source_location = picking_type.default_location_src_id or (warehouse.lot_stock_id if warehouse else False)
-        dest_location = picking_type.default_location_dest_id or (warehouse.lot_stock_id if warehouse else False)
-
-        if not source_location or not dest_location:
-            raise UserError(_('Configure source/destination locations on the internal picking type for %s.') % ((self.company_id or self.env.company).name))
-
-        needed_date = self._get_parts_needed_date()
-        picking_dates = []
-
-        picking = self.picking_id if self.picking_id and self.picking_id.state not in ['done', 'cancel'] else False
-
-        if not picking:
-            picking_vals = {
-                'picking_type_id': picking_type.id,
-                'origin': self.name,
-                'partner_id': self.customer_id.id,
-                'location_id': source_location.id,
-                'location_dest_id': dest_location.id,
-                'scheduled_date': needed_date,
-                'company_id': (self.company_id or self.env.company).id,
-            }
-            picking = self.env['stock.picking'].create(picking_vals)
-        else:
-            # Refresh moves to match current parts list
-            self.part_ids.write({'picking_move_id': False})
-            picking.move_ids_without_package.filtered(lambda m: m.state not in ['done', 'cancel']).unlink()
-
-        for part in part_lines:
-            line_needed_date = part.needed_by_date or needed_date
-            picking_dates.append(line_needed_date)
-            move_vals = {
-                'name': _('Job %s - %s') % (self.name, part.product_id.display_name),
-                'product_id': part.product_id.id,
-                'product_uom_qty': part.quantity,
-                'product_uom': part.product_id.uom_id.id,
-                'location_id': source_location.id,
-                'location_dest_id': dest_location.id,
-                'company_id': (self.company_id or self.env.company).id,
-                'picking_id': picking.id,
-                'origin': self.name,
-                'job_card_id': self.id,
-                'job_card_part_line_id': part.id,
-                'date': line_needed_date,
-                'scheduled_date': line_needed_date,
-            }
-            move = self.env['stock.move'].create(move_vals)
-            part.picking_move_id = move.id
-            part.needed_by_date = line_needed_date
-
-        picking.action_confirm()
-        picking.action_assign()
-
-        if picking_dates:
-            picking.scheduled_date = min(picking_dates)
-
-        self.picking_id = picking.id
-        return picking
     
     def action_register_payment(self):
         if not self.invoice_id:
@@ -508,9 +312,6 @@ class JobCard(models.Model):
         }
     
     def action_view_picking(self):
-        self.ensure_one()
-        if not self.picking_id:
-            raise UserError(_('No picking created for this job card yet.'))
         return {
             'name': _('Stock Picking'),
             'type': 'ir.actions.act_window',
