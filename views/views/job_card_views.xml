@@ -48,8 +48,12 @@
                             </div>
                             <div class="o_kanban_record_bottom" style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:8px;">
                                 <div class="text-muted" style="font-size:12px;">Team: <field name="team_id"/></div>
-                                <div style="font-weight:600;color:#111;">
-                                    <field name="total_amount" widget="monetary"/>
+                                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                                    <span t-if="record.sla_status.raw_value == 'late'" style="color:#b91c1c;font-size:12px;font-weight:600;">SLA Late</span>
+                                    <span t-if="record.sla_status.raw_value == 'on_time'" style="color:#15803d;font-size:12px;font-weight:600;">SLA On Time</span>
+                                    <div style="font-weight:600;color:#111;">
+                                        <field name="total_amount" widget="monetary"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -71,6 +75,8 @@
                 <field name="brand_id"/>
                 <field name="model_id"/>
                 <field name="team_id"/>
+                <field name="promised_date"/>
+                <field name="sla_status" widget="badge"/>
                 <field name="total_amount" sum="Total Amount"/>
                 <field name="invoice_status"/>
                 <field name="create_date"/>
@@ -141,8 +147,10 @@
                         <group string="Issue &amp; Dates">
                             <field name="problem_description" colspan="2"/>
                             <field name="inspection_date"/>
+                            <field name="promised_date"/>
                             <field name="delivery_type"/>
                             <field name="expected_duration"/>
+                            <field name="sla_status" widget="badge"/>
                         </group>
                         <group string="Warranty &amp; Totals">
                             <field name="warranty"/>
@@ -318,6 +326,7 @@
                 <field name="state" filter_domain="[('state', '=', self)]"/>
                 <field name="team_id"/>
                 <field name="warranty"/>
+                <filter string="SLA Late" name="sla_late" domain="[('sla_status', '=', 'late')]"/>
                 <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
                 <filter string="Requested" name="requested" domain="[('state', '=', 'requested')]"/>
                 <filter string="Quotation" name="quotation" domain="[('state', '=', 'quotation')]"/>
@@ -331,6 +340,7 @@
                     <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
                     <filter string="Brand" name="group_brand" context="{'group_by': 'brand_id'}"/>
                     <filter string="Team" name="group_team" context="{'group_by': 'team_id'}"/>
+                    <filter string="SLA Status" name="group_sla" context="{'group_by': 'sla_status'}"/>
                     <filter string="Month" name="group_month" context="{'group_by': 'create_date:month'}"/>
                 </group>
             </search>
