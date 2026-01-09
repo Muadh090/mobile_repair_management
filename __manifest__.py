@@ -29,10 +29,15 @@ spare parts, teams, pickings, invoicing and reports.
 
         'views/assign_team_wizard_views.xml',
         'views/excel_report_wizard_views.xml',
+        'views/completion_checklist_wizard_views.xml',
         'views/views/device_views.xml',
         'views/views/service_views.xml',
         'views/views/team_views.xml',
         'views/views/job_card_views.xml',
+        'views/views/condition_log_views.xml',
+        'views/views/technician_performance_views.xml',
+        'views/views/customer_device_history_views.xml',
+        'views/views/issue_template_views.xml',
         'views/views/menus.xml',
 
         'reports/reports/job_card_report.xml',
@@ -45,7 +50,6 @@ spare parts, teams, pickings, invoicing and reports.
         ],
     },
     'demo': [],
-    'assets': {},
     'installable': True,
     'application': True,
     'auto_install': False,

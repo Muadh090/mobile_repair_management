@@ -36,6 +36,16 @@
                     <p><strong>Model:</strong> <span t-field="doc.model_id"/></p>
                     <p><strong>IMEI:</strong> <span t-field="doc.imei"/></p>
                     <p><strong>Problem Description:</strong> <span t-field="doc.problem_description"/></p>
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-xs-6" t-if="doc.device_photo">
+                            <p><strong>Device Photo:</strong></p>
+                            <img t-att-src="image_data_uri(doc.device_photo)" style="max-width:100%;border:1px solid #ddd;padding:4px;"/>
+                        </div>
+                        <div class="col-xs-6" t-if="doc.damage_photo">
+                            <p><strong>Damage Photo:</strong></p>
+                            <img t-att-src="image_data_uri(doc.damage_photo)" style="max-width:100%;border:1px solid #ddd;padding:4px;"/>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="team-section" style="margin-bottom: 20px;">

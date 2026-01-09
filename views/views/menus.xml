@@ -16,6 +16,8 @@
               action="action_repair_series" sequence="20"/>
     <menuitem id="menu_repair_models" name="Models" parent="menu_repair_configuration"
               action="action_repair_model" sequence="30"/>
+    <menuitem id="menu_repair_issue_templates" name="Predefined Issues" parent="menu_repair_configuration"
+              action="action_issue_template" sequence="40"/>
     
     <!-- Teams -->
     <menuitem id="menu_repair_teams" name="Teams" parent="menu_mobile_repair_root"
@@ -31,4 +33,12 @@
               action="action_excel_report_wizard" sequence="10"/>
     <menuitem id="menu_repair_condemned_parts" name="Damaged / Condemned Parts" parent="menu_repair_reports"
               action="action_condemned_parts" sequence="20"/>
+    <menuitem id="menu_repair_condemned_analytics" name="Condemned Analytics" parent="menu_repair_reports"
+              action="action_condemned_analytics" sequence="25"/>
+    <menuitem id="menu_repair_technician_performance" name="Technician Performance" parent="menu_repair_reports"
+              action="action_technician_performance" sequence="30"/>
+    <menuitem id="menu_repair_customer_device_history" name="Customer &amp; Device History" parent="menu_repair_reports"
+              action="action_customer_device_history" sequence="35"/>
+    <menuitem id="menu_repair_condition_logs" name="Condition Change Logs" parent="menu_repair_reports"
+              action="action_condition_log" sequence="40"/>
 </odoo>

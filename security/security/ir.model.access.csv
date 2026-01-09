@@ -20,3 +20,15 @@ access_repair_timesheet_manager,repair.timesheet.manager,model_repair_timesheet,
 access_excel_report_wizard_user,excel.report.wizard.user,model_excel_report_wizard,base.group_user,1,1,1,0
 access_assign_team_wizard_user,assign.team.wizard.user,model_assign_team_wizard,base.group_user,1,0,1,0
 access_timesheet_wizard_user,timesheet.wizard.user,model_timesheet_wizard,base.group_user,1,0,1,0
+access_technician_performance_user,technician.performance.user,model_technician_performance,base.group_user,1,0,0,0
+access_technician_performance_manager,technician.performance.manager,model_technician_performance,base.group_erp_manager,1,0,0,0
+access_customer_device_history_user,customer.device.history.user,model_customer_device_history,base.group_user,1,0,0,0
+access_customer_device_history_manager,customer.device.history.manager,model_customer_device_history,base.group_erp_manager,1,0,0,0
+access_repair_issue_template_user,repair.issue.template.user,model_repair_issue_template,base.group_user,1,1,1,0
+access_repair_issue_template_manager,repair.issue.template.manager,model_repair_issue_template,base.group_erp_manager,1,1,1,1
+access_repair_issue_template_service_user,repair.issue.template.service.user,model_repair_issue_template_service,base.group_user,1,1,1,0
+access_repair_issue_template_service_manager,repair.issue.template.service.manager,model_repair_issue_template_service,base.group_erp_manager,1,1,1,1
+access_repair_issue_template_part_user,repair.issue.template.part.user,model_repair_issue_template_part,base.group_user,1,1,1,0
+access_repair_issue_template_part_manager,repair.issue.template.part.manager,model_repair_issue_template_part,base.group_erp_manager,1,1,1,1
+access_completion_checklist_wizard_user,completion.checklist.wizard.user,model_completion_checklist_wizard,base.group_user,1,0,1,0
+access_repair_condition_log_user,repair.condition.log.user,model_repair_condition_log,base.group_user,1,0,1,0

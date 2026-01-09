@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_condition_log_tree" model="ir.ui.view">
+        <field name="name">repair.condition.log.tree</field>
+        <field name="model">repair.condition.log</field>
+        <field name="arch" type="xml">
+            <list string="Condition Changes" create="false" edit="false">
+                <field name="create_date"/>
+                <field name="user_id"/>
+                <field name="job_card_id"/>
+                <field name="part_line_id"/>
+                <field name="before_status"/>
+                <field name="after_status"/>
+                <field name="before_scope"/>
+                <field name="after_scope"/>
+                <field name="before_reason"/>
+                <field name="after_reason"/>
+                <field name="before_qty"/>
+                <field name="after_qty"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_condition_log_search" model="ir.ui.view">
+        <field name="name">repair.condition.log.search</field>
+        <field name="model">repair.condition.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Condition Logs">
+                <field name="job_card_id"/>
+                <field name="part_line_id"/>
+                <field name="user_id"/>
+                <filter string="Condemned Changes" name="condemned" domain="['|',('before_status','=','condemned'),('after_status','=','condemned')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Job Card" name="group_job" context="{'group_by': 'job_card_id'}"/>
+                    <filter string="User" name="group_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_condition_log" model="ir.actions.act_window">
+        <field name="name">Condition Change Logs</field>
+        <field name="res_model">repair.condition.log</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_condition_log_tree"/>
+        <field name="search_view_id" ref="view_condition_log_search"/>
+    </record>
+</odoo>
