@@ -158,7 +158,7 @@
                             <group string="Customer Condemned Parts">
                                 <field name="part_ids"
                                        domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'customer')]"
-                                       views="{'list': 'mobile_repair_management.view_job_card_part_line_condemned_inline_tree'}"/>
+                                       views="{'list': 'mobile_repair_management.view_job_card_part_line_condemned_customer_inline_tree'}"/>
                             </group>
                         </page>
 
@@ -263,8 +263,23 @@
                 <field name="condemned_scope"/>
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
-                <field name="unit_price"/>
-                <field name="stock_available"/>
+                <field name="price_total" sum="Total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_job_card_part_line_condemned_customer_inline_tree" model="ir.ui.view">
+        <field name="name">job.card.part.line.condemned.customer.inline</field>
+        <field name="model">job.card.part.line</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="product_id"/>
+                <field name="description"/>
+                <field name="quantity"/>
+                <field name="condition_status"/>
+                <field name="condemned_scope"/>
+                <field name="condition_date"/>
+                <field name="condition_reason"/>
                 <field name="price_total" sum="Total"/>
             </list>
         </field>
