@@ -89,13 +89,6 @@ class JobCard(models.Model):
     expected_duration = fields.Float(string='Expected Duration (hours)')
     start_date = fields.Datetime(string='Start Date')
     completion_date = fields.Datetime(string='Completion Date')
-    promised_date = fields.Datetime(string='Promised Date')
-    sla_status = fields.Selection([
-        ('pending', 'Pending'),
-        ('on_time', 'On Time'),
-        ('late', 'Late'),
-    ], string='SLA Status', compute='_compute_sla', store=True)
-    sla_delay_hours = fields.Float(string='SLA Delay (hours)', compute='_compute_sla', store=True)
     
     # Stock
     picking_id = fields.Many2one('stock.picking', string='Stock Picking')
@@ -139,22 +132,6 @@ class JobCard(models.Model):
             # Tax computation not specified; keep zero placeholder for now.
             record.tax_amount = 0.0
             record.total_amount = record.subtotal + record.tax_amount
-
-    @api.depends('promised_date', 'completion_date', 'state')
-    def _compute_sla(self):
-        for record in self:
-            status = 'pending'
-            delay = 0.0
-            if record.promised_date:
-                reference_date = record.completion_date or fields.Datetime.now()
-                if record.state == 'completed' and record.completion_date:
-                    status = 'on_time' if record.completion_date <= record.promised_date else 'late'
-                else:
-                    status = 'pending' if reference_date <= record.promised_date else 'late'
-                if reference_date and reference_date > record.promised_date:
-                    delay = (reference_date - record.promised_date).total_seconds() / 3600.0
-            record.sla_status = status
-            record.sla_delay_hours = delay
     
     # CRUD
     @api.model
