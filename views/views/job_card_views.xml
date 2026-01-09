@@ -15,24 +15,24 @@
                 <templates>
                     <t t-name="kanban-box">
                         <t t-set="card_color" t-value="{
-                            'draft': '#f5f5f7',
-                            'requested': '#e6f1ff',
-                            'quotation': '#fff6e6',
-                            'approved': '#e6fff6',
-                            'in_progress': '#eaf5ff',
-                            'completed': '#eaf9f0',
-                            'rejected': '#ffecec',
-                        }.get(record.state.raw_value, '#f5f5f7')"/>
+                            'draft': 'linear-gradient(135deg, #f6f7fb 0%, #e7ebf6 100%)',
+                            'requested': 'linear-gradient(135deg, #e3f2ff 0%, #c8e3ff 100%)',
+                            'quotation': 'linear-gradient(135deg, #fff0d8 0%, #ffd69f 100%)',
+                            'approved': 'linear-gradient(135deg, #e8fff2 0%, #c9f4da 100%)',
+                            'in_progress': 'linear-gradient(135deg, #e5edff 0%, #c7d6ff 100%)',
+                            'completed': 'linear-gradient(135deg, #e5f8ef 0%, #c8eedc 100%)',
+                            'rejected': 'linear-gradient(135deg, #ffe6e6 0%, #ffb8b8 100%)',
+                        }.get(record.state.raw_value, 'linear-gradient(135deg, #f6f7fb 0%, #e7ebf6 100%)')"/>
                         <t t-set="accent" t-value="{
-                            'draft': '#6c6c7a',
-                            'requested': '#2f6bcc',
-                            'quotation': '#c27b1c',
+                            'draft': '#4b5563',
+                            'requested': '#1d4ed8',
+                            'quotation': '#c2410c',
                             'approved': '#15803d',
-                            'in_progress': '#2563eb',
-                            'completed': '#15803d',
+                            'in_progress': '#1e3a8a',
+                            'completed': '#0f766e',
                             'rejected': '#b91c1c',
-                        }.get(record.state.raw_value, '#2563eb')"/>
-                        <div class="oe_kanban_global_click" t-att-style="'background:' + card_color + ';border-left:6px solid ' + accent + ';box-shadow:0 4px 10px rgba(0,0,0,0.08);padding:12px;border-radius:10px;'">
+                        }.get(record.state.raw_value, '#1d4ed8')"/>
+                        <div class="oe_kanban_global_click" t-att-style="'background:' + card_color + ';border-left:6px solid ' + accent + ';box-shadow:0 8px 18px rgba(0,0,0,0.12);padding:14px;border-radius:12px;'">
                             <div class="o_kanban_record_top" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
                                 <div class="o_kanban_record_headings">
                                     <strong class="o_kanban_record_title" t-att-style="'color:' + accent + ';'">
