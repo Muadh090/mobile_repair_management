@@ -278,6 +278,7 @@
                 <field name="description"/>
                 <field name="quantity"/>
                 <field name="condition_status" modifiers="{'readonly': True}"/>
+                <field name="condemned_scope" modifiers="{'readonly': True}"/>
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
                 <field name="unit_price"/>
