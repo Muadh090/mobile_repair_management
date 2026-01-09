@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Repair Manager Group -->
-    <record id="group_repair_manager" model="res.groups">
-        <field name="name">Repair / Manager</field>
-        <field name="category_id" ref="base.module_category_services_repair"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
-    </record>
-    
-    <!-- Repair User Group -->
-    <record id="group_repair_user" model="res.groups">
-        <field name="name">Repair / User</field>
-        <field name="category_id" ref="base.module_category_services_repair"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-    </record>
-    
-    <!-- Repair Technician Group -->
+    <!-- Repair roles hierarchy -->
     <record id="group_repair_technician" model="res.groups">
         <field name="name">Repair / Technician</field>
         <field name="category_id" ref="base.module_category_services_repair"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_repair_csr" model="res.groups">
+        <field name="name">Repair / CSR</field>
+        <field name="category_id" ref="base.module_category_services_repair"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_repair_procurement" model="res.groups">
+        <field name="name">Repair / Procurement</field>
+        <field name="category_id" ref="base.module_category_services_repair"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_repair_accounting" model="res.groups">
+        <field name="name">Repair / Accounting</field>
+        <field name="category_id" ref="base.module_category_services_repair"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_repair_lead" model="res.groups">
+        <field name="name">Repair / Lead</field>
+        <field name="category_id" ref="base.module_category_services_repair"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_repair_technician')), (4, ref('group_repair_csr'))]"/>
+    </record>
+
+    <record id="group_repair_manager" model="res.groups">
+        <field name="name">Repair / Manager</field>
+        <field name="category_id" ref="base.module_category_services_repair"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('group_repair_lead')), (4, ref('group_repair_procurement')), (4, ref('group_repair_accounting'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
     </record>
 </odoo>

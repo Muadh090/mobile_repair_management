@@ -9,26 +9,35 @@
               action="action_job_card" sequence="10"/>
     
     <!-- Configuration -->
-    <menuitem id="menu_repair_configuration" name="Configuration" parent="menu_mobile_repair_root" sequence="30"/>
+    <menuitem id="menu_repair_configuration" name="Configuration" parent="menu_mobile_repair_root" sequence="30"
+              groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
     <menuitem id="menu_repair_brands" name="Brands" parent="menu_repair_configuration"
-              action="action_repair_brand" sequence="10"/>
+              action="action_repair_brand" sequence="10"
+              groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
     <menuitem id="menu_repair_series" name="Series" parent="menu_repair_configuration"
-              action="action_repair_series" sequence="20"/>
+              action="action_repair_series" sequence="20"
+              groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
     <menuitem id="menu_repair_models" name="Models" parent="menu_repair_configuration"
-              action="action_repair_model" sequence="30"/>
+              action="action_repair_model" sequence="30"
+              groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
     
     <!-- Teams -->
     <menuitem id="menu_repair_teams" name="Teams" parent="menu_mobile_repair_root"
-              action="action_repair_team" sequence="40"/>
+              action="action_repair_team" sequence="40"
+              groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
     
     <!-- Services -->
     <menuitem id="menu_repair_services" name="Services" parent="menu_mobile_repair_root"
-              action="action_repair_service" sequence="50"/>
+              action="action_repair_service" sequence="50"
+              groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
     
     <!-- Reports -->
-    <menuitem id="menu_repair_reports" name="Reports" parent="menu_mobile_repair_root" sequence="60"/>
+    <menuitem id="menu_repair_reports" name="Reports" parent="menu_mobile_repair_root" sequence="60"
+              groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement,mobile_repair_management.group_repair_csr"/>
     <menuitem id="menu_repair_excel_report" name="Excel Report" parent="menu_repair_reports"
-              action="action_excel_report_wizard" sequence="10"/>
+              action="action_excel_report_wizard" sequence="10"
+              groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
     <menuitem id="menu_repair_condemned_parts" name="Damaged / Condemned Parts" parent="menu_repair_reports"
-              action="action_condemned_parts" sequence="20"/>
+              action="action_condemned_parts" sequence="20"
+              groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement"/>
 </odoo>

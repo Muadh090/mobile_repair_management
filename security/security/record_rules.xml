@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Job Card rules -->
+    <record id="rule_job_card_manager" model="ir.rule">
+        <field name="name">Job Card Manager All</field>
+        <field name="model_id" ref="model_job_card"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_job_card_lead" model="ir.rule">
+        <field name="name">Job Card Lead All</field>
+        <field name="model_id" ref="model_job_card"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_lead'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_job_card_technician" model="ir.rule">
+        <field name="name">Job Card Technician Assigned</field>
+        <field name="model_id" ref="model_job_card"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_technician'))]"/>
+        <field name="domain_force">['|', ('assigned_member_ids', 'in', user.id), ('team_id.member_ids', 'in', user.id)]</field>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_create" eval="False"/>
+    </record>
+
+    <record id="rule_job_card_csr" model="ir.rule">
+        <field name="name">Job Card CSR Drafts</field>
+        <field name="model_id" ref="model_job_card"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_csr'))]"/>
+        <field name="domain_force">[('state', 'in', ['draft', 'requested', 'quotation'])]</field>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_job_card_procurement" model="ir.rule">
+        <field name="name">Job Card Procurement</field>
+        <field name="model_id" ref="model_job_card"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_procurement'))]"/>
+        <field name="domain_force">[('state', 'in', ['approved', 'in_progress'])]</field>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_create" eval="False"/>
+    </record>
+
+    <record id="rule_job_card_accounting" model="ir.rule">
+        <field name="name">Job Card Accounting Read</field>
+        <field name="model_id" ref="model_job_card"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_accounting'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_create" eval="False"/>
+    </record>
+
+    <!-- Part lines rules -->
+    <record id="rule_job_card_part_line_manager" model="ir.rule">
+        <field name="name">Part Line Manager All</field>
+        <field name="model_id" ref="model_job_card_part_line"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_job_card_part_line_lead" model="ir.rule">
+        <field name="name">Part Line Lead All</field>
+        <field name="model_id" ref="model_job_card_part_line"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_lead'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_job_card_part_line_technician" model="ir.rule">
+        <field name="name">Part Line Technician Assigned</field>
+        <field name="model_id" ref="model_job_card_part_line"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_technician'))]"/>
+        <field name="domain_force">['|', ('job_card_id.assigned_member_ids', 'in', user.id), ('job_card_id.team_id.member_ids', 'in', user.id)]</field>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_job_card_part_line_csr" model="ir.rule">
+        <field name="name">Part Line CSR Drafts</field>
+        <field name="model_id" ref="model_job_card_part_line"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_csr'))]"/>
+        <field name="domain_force">[('job_card_id.state', 'in', ['draft', 'requested', 'quotation'])]</field>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_job_card_part_line_procurement" model="ir.rule">
+        <field name="name">Part Line Procurement</field>
+        <field name="model_id" ref="model_job_card_part_line"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_procurement'))]"/>
+        <field name="domain_force">[('job_card_id.state', 'in', ['approved', 'in_progress'])]</field>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_create" eval="False"/>
+    </record>
+
+    <!-- Service lines rules -->
+    <record id="rule_job_card_service_line_manager" model="ir.rule">
+        <field name="name">Service Line Manager All</field>
+        <field name="model_id" ref="model_job_card_service_line"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_job_card_service_line_lead" model="ir.rule">
+        <field name="name">Service Line Lead All</field>
+        <field name="model_id" ref="model_job_card_service_line"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_lead'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_job_card_service_line_technician" model="ir.rule">
+        <field name="name">Service Line Technician Assigned</field>
+        <field name="model_id" ref="model_job_card_service_line"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_technician'))]"/>
+        <field name="domain_force">['|', ('job_card_id.assigned_member_ids', 'in', user.id), ('job_card_id.team_id.member_ids', 'in', user.id)]</field>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_job_card_service_line_csr" model="ir.rule">
+        <field name="name">Service Line CSR Drafts</field>
+        <field name="model_id" ref="model_job_card_service_line"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_csr'))]"/>
+        <field name="domain_force">[('job_card_id.state', 'in', ['draft', 'requested', 'quotation'])]</field>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Timesheet rules -->
+    <record id="rule_timesheet_manager" model="ir.rule">
+        <field name="name">Timesheet Manager All</field>
+        <field name="model_id" ref="model_repair_timesheet"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_timesheet_lead" model="ir.rule">
+        <field name="name">Timesheet Lead All</field>
+        <field name="model_id" ref="model_repair_timesheet"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_lead'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_timesheet_technician" model="ir.rule">
+        <field name="name">Timesheet Technician Own</field>
+        <field name="model_id" ref="model_repair_timesheet"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_technician'))]"/>
+        <field name="domain_force">['|', ('user_id', '=', user.id), ('job_card_id.assigned_member_ids', 'in', user.id)]</field>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_timesheet_accounting" model="ir.rule">
+        <field name="name">Timesheet Accounting Read</field>
+        <field name="model_id" ref="model_repair_timesheet"/>
+        <field name="groups" eval="[(4, ref('mobile_repair_management.group_repair_accounting'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

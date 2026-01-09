@@ -25,6 +25,7 @@ spare parts, teams, pickings, invoicing and reports.
     'data': [
         'security/security/groups.xml',
         'security/security/ir.model.access.csv',
+        'security/security/record_rules.xml',
         'data/data/data.xml',
 
         'views/assign_team_wizard_views.xml',
