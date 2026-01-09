@@ -345,6 +345,8 @@
                 <field name="condition_status"/>
                 <field name="condemned_scope"/>
                 <filter string="Condemned" name="condemned" domain="[('condition_status', '=', 'condemned')]"/>
+                <filter string="Customer Condemned" name="condemned_customer" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'customer')]"/>
+                <filter string="Warehouse Condemned" name="condemned_warehouse" domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"/>
                 <group expand="0" string="Group By">
                     <filter string="Job Card" name="group_job" context="{'group_by': 'job_card_id'}"/>
                     <filter string="Condition" name="group_condition" context="{'group_by': 'condition_status'}"/>
