@@ -237,7 +237,7 @@
                             <field name="part_ids"
                                    domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"
                                    context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'warehouse'}"
-                                   views="{'list': 'mobile_repair_management.view_job_card_part_line_condemned_warehouse_inline_tree'}"/>
+                                   views="{'list': 'mobile_repair_management.view_job_card_part_line_condemned_inline_tree'}"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -264,25 +264,6 @@
                 <field name="condemned_scope"/>
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
-                <field name="price_total" sum="Total"/>
-            </list>
-        </field>
-    </record>
-
-    <record id="view_job_card_part_line_condemned_warehouse_inline_tree" model="ir.ui.view">
-        <field name="name">job.card.part.line.condemned.warehouse.inline</field>
-        <field name="model">job.card.part.line</field>
-        <field name="arch" type="xml">
-            <list editable="bottom">
-                <field name="product_id"/>
-                <field name="description"/>
-                <field name="quantity"/>
-                <field name="condition_status" modifiers="{'readonly': True}"/>
-                <field name="condemned_scope" modifiers="{'readonly': True}"/>
-                <field name="condition_date"/>
-                <field name="condition_reason"/>
-                <field name="unit_price"/>
-                <field name="stock_available"/>
                 <field name="price_total" sum="Total"/>
             </list>
         </field>
