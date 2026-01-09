@@ -77,6 +77,7 @@ class ExcelReportWizard(models.TransientModel):
             'Assigned Technicians', 'Responsible',
             'Service(s)', 'Service Charge(s)',
             'Part(s)', 'Unit Price', 'Part Qty', 'Available Stock',
+            'Customer Condemned Part(s)', 'Warehouse Condemned Part(s)',
             'Total Amount', 'Status', 'Warranty', 'Created Date'
         ]
         for col, header in enumerate(headers):
@@ -90,6 +91,8 @@ class ExcelReportWizard(models.TransientModel):
             part_unit_prices = ', '.join([f"{p.unit_price}" for p in card.part_ids])
             part_quantities = ', '.join([f"{p.quantity}" for p in card.part_ids])
             part_stock = ', '.join([f"{p.stock_available}" for p in card.part_ids])
+            cust_condemned = ', '.join([p.product_id.display_name for p in card.part_ids.filtered(lambda l: l.condition_status == 'condemned' and l.condemned_scope == 'customer')])
+            wh_condemned = ', '.join([p.product_id.display_name for p in card.part_ids.filtered(lambda l: l.condition_status == 'condemned' and l.condemned_scope == 'warehouse')])
             technicians = ', '.join([u.name for u in card.assigned_member_ids])
             responsible = card.team_id.manager_id.name if card.team_id and card.team_id.manager_id else ''
 
@@ -108,17 +111,19 @@ class ExcelReportWizard(models.TransientModel):
             worksheet.write(row, 12, part_unit_prices, cell_format)
             worksheet.write(row, 13, part_quantities, cell_format)
             worksheet.write(row, 14, part_stock, cell_format)
-            worksheet.write(row, 15, card.total_amount, num_format)
-            worksheet.write(row, 16, dict(card._fields['state'].selection).get(card.state), cell_format)
-            worksheet.write(row, 17, 'Yes' if card.warranty else 'No', cell_format)
-            worksheet.write(row, 18, card.create_date.strftime('%Y-%m-%d') if card.create_date else '', cell_format)
+            worksheet.write(row, 15, cust_condemned, cell_format)
+            worksheet.write(row, 16, wh_condemned, cell_format)
+            worksheet.write(row, 17, card.total_amount, num_format)
+            worksheet.write(row, 18, dict(card._fields['state'].selection).get(card.state), cell_format)
+            worksheet.write(row, 19, 'Yes' if card.warranty else 'No', cell_format)
+            worksheet.write(row, 20, card.create_date.strftime('%Y-%m-%d') if card.create_date else '', cell_format)
         
         # Adjust columns
         worksheet.set_column('A:A', 15)
         worksheet.set_column('B:B', 25)
         worksheet.set_column('C:H', 18)
-        worksheet.set_column('I:O', 18)
-        worksheet.set_column('P:R', 15)
+        worksheet.set_column('I:Q', 18)
+        worksheet.set_column('R:U', 15)
         
         workbook.close()
         output.seek(0)
