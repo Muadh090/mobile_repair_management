@@ -80,6 +80,8 @@ class JobCardPartLine(models.Model):
         for line in self:
             if line.condition_status != 'condemned':
                 continue
+            if line.condemned_scope != 'warehouse':
+                continue
             if line.condemned_move_id or line.quantity <= 0:
                 continue
 
