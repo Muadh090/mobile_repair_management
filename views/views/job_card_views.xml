@@ -180,6 +180,7 @@
                             <group string="Customer Condemned Parts">
                                 <field name="part_ids"
                                        domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'customer')]"
+                                       context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'customer'}"
                                        views="{'list': 'mobile_repair_management.view_job_card_part_line_condemned_customer_inline_tree'}"/>
                             </group>
                         </page>
