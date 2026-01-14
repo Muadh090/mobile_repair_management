@@ -133,8 +133,16 @@ class JobCardPartLine(models.Model):
     @api.model
     def create(self, vals):
         vals = dict(vals)
+        default_status = self.env.context.get('default_condition_status')
         default_scope = self.env.context.get('default_condemned_scope')
-        if default_scope and vals.get('condition_status') == 'condemned':
+
+        # Editable one2many lists often don't send readonly fields (like condemned_scope)
+        # even if a default exists in the context. Enforce defaults server-side.
+        if default_status and not vals.get('condition_status'):
+            vals['condition_status'] = default_status
+
+        is_condemned = (vals.get('condition_status') == 'condemned') or (default_status == 'condemned')
+        if is_condemned and default_scope and not vals.get('condemned_scope'):
             vals['condemned_scope'] = default_scope
 
         if vals.get('job_card_id') and not vals.get('unit_price') and vals.get('product_id'):
@@ -153,10 +161,16 @@ class JobCardPartLine(models.Model):
         if status_in_vals == 'condemned' and not vals.get('condition_date'):
             vals['condition_date'] = fields.Date.context_today(self)
 
+        default_status = self.env.context.get('default_condition_status')
         default_scope = self.env.context.get('default_condemned_scope')
-        if default_scope and (vals.get('condition_status') == 'condemned' or self.condition_status == 'condemned'):
+        if default_status and 'condition_status' not in vals:
+            vals['condition_status'] = default_status
+
+        if default_scope:
             # Lock scope based on the tab context (customer/warehouse)
-            vals['condemned_scope'] = default_scope
+            # Apply when the line is (or becomes) condemned.
+            if vals.get('condition_status') == 'condemned' or any(r.condition_status == 'condemned' for r in self):
+                vals['condemned_scope'] = default_scope
 
         if vals.get('product_id') and not vals.get('unit_price'):
             job = self.job_card_id

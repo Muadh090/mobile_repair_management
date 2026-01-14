@@ -132,6 +132,11 @@ class JobCard(models.Model):
             # Tax computation not specified; keep zero placeholder for now.
             record.tax_amount = 0.0
             record.total_amount = record.subtotal + record.tax_amount
+
+    @api.onchange('service_ids', 'part_ids')
+    def _onchange_recompute_totals(self):
+        # Makes totals reflect line edits immediately (before saving).
+        self._compute_totals()
     
     # CRUD
     @api.model
