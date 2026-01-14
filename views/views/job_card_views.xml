@@ -275,7 +275,7 @@
         <field name="name">job.card.part.line.condemned.inline</field>
         <field name="model">job.card.part.line</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
+            <list editable="bottom" context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'warehouse'}">
                 <field name="product_id"/>
                 <field name="description"/>
                 <field name="quantity"/>
@@ -292,7 +292,7 @@
         <field name="name">job.card.part.line.condemned.customer.inline</field>
         <field name="model">job.card.part.line</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
+            <list editable="bottom" context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'customer'}">
                 <field name="product_id"/>
                 <field name="description"/>
                 <field name="quantity"/>
