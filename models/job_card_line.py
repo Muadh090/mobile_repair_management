@@ -51,6 +51,24 @@ class JobCardPartLine(models.Model):
     condition_reason = fields.Text(string='Condition Reason')
     condition_date = fields.Date(string='Condition Date')
     condemned_move_id = fields.Many2one('stock.move', string='Non-usable Move', readonly=True, copy=False)
+
+    def _infer_condemned_scope(self, vals=None):
+        """Best-effort inference when editable one2many doesn't pass readonly fields/defaults."""
+        ctx = self.env.context
+        for key in ('default_condemned_scope', 'condemned_scope'):
+            if ctx.get(key):
+                return ctx.get(key)
+
+        params = ctx.get('params') or {}
+        view_id = ctx.get('view_id') or params.get('view_id')
+        if view_id:
+            view = self.env['ir.ui.view'].browse(view_id)
+            xml_id = getattr(view, 'xml_id', False)
+            if xml_id == 'mobile_repair_management.view_job_card_part_line_condemned_customer_inline_tree':
+                return 'customer'
+            if xml_id == 'mobile_repair_management.view_job_card_part_line_condemned_inline_tree':
+                return 'warehouse'
+        return False
     
     @api.depends('unit_price', 'quantity')
     def _compute_total(self):
@@ -130,30 +148,30 @@ class JobCardPartLine(models.Model):
             move._action_done()
             line.condemned_move_id = move.id
 
-    @api.model
-    def create(self, vals):
-        vals = dict(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        vals_list = [dict(v) for v in vals_list]
+
         default_status = self.env.context.get('default_condition_status')
-        default_scope = self.env.context.get('default_condemned_scope')
+        for vals in vals_list:
+            if default_status and not vals.get('condition_status'):
+                vals['condition_status'] = default_status
 
-        # Editable one2many lists often don't send readonly fields (like condemned_scope)
-        # even if a default exists in the context. Enforce defaults server-side.
-        if default_status and not vals.get('condition_status'):
-            vals['condition_status'] = default_status
+            if vals.get('condition_status') == 'condemned' and not vals.get('condemned_scope'):
+                inferred = self._infer_condemned_scope(vals)
+                if inferred:
+                    vals['condemned_scope'] = inferred
 
-        is_condemned = (vals.get('condition_status') == 'condemned') or (default_status == 'condemned')
-        if is_condemned and default_scope and not vals.get('condemned_scope'):
-            vals['condemned_scope'] = default_scope
+            if vals.get('job_card_id') and not vals.get('unit_price') and vals.get('product_id'):
+                job = self.env['job.card'].browse(vals['job_card_id'])
+                vals['unit_price'] = 0.0 if job.warranty else self.env['product.product'].browse(vals['product_id']).list_price
 
-        if vals.get('job_card_id') and not vals.get('unit_price') and vals.get('product_id'):
-            job = self.env['job.card'].browse(vals['job_card_id'])
-            vals['unit_price'] = 0.0 if job.warranty else self.env['product.product'].browse(vals['product_id']).list_price
+            if vals.get('condition_status') == 'condemned' and not vals.get('condition_date'):
+                vals['condition_date'] = fields.Date.context_today(self)
 
-        if vals.get('condition_status') == 'condemned' and not vals.get('condition_date'):
-            vals['condition_date'] = fields.Date.context_today(self)
-        record = super().create(vals)
-        record._create_condemned_move()
-        return record
+        records = super().create(vals_list)
+        records._create_condemned_move()
+        return records
 
     def write(self, vals):
         vals = dict(vals)
@@ -162,15 +180,15 @@ class JobCardPartLine(models.Model):
             vals['condition_date'] = fields.Date.context_today(self)
 
         default_status = self.env.context.get('default_condition_status')
-        default_scope = self.env.context.get('default_condemned_scope')
         if default_status and 'condition_status' not in vals:
             vals['condition_status'] = default_status
 
-        if default_scope:
-            # Lock scope based on the tab context (customer/warehouse)
-            # Apply when the line is (or becomes) condemned.
-            if vals.get('condition_status') == 'condemned' or any(r.condition_status == 'condemned' for r in self):
-                vals['condemned_scope'] = default_scope
+        # Lock scope based on tab context (customer/warehouse) when condemned.
+        if vals.get('condition_status') == 'condemned' or any(r.condition_status == 'condemned' for r in self):
+            if 'condemned_scope' not in vals:
+                inferred = self._infer_condemned_scope(vals)
+                if inferred:
+                    vals['condemned_scope'] = inferred
 
         if vals.get('product_id') and not vals.get('unit_price'):
             job = self.job_card_id
