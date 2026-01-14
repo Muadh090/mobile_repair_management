@@ -17,6 +17,18 @@ class JobCardServiceLine(models.Model):
         for line in self:
             line.price_total = line.price * line.quantity
 
+    @api.onchange('service_id', 'job_card_id')
+    def _onchange_service_id_set_price(self):
+        for line in self:
+            if not line.service_id:
+                continue
+            if not line.description:
+                line.description = line.service_id.description or line.service_id.name
+            if line.job_card_id and line.job_card_id.warranty:
+                line.price = 0.0
+            else:
+                line.price = line.service_id.price
+
 class JobCardPartLine(models.Model):
     _name = 'job.card.part.line'
     _description = 'Job Card Part Line'
@@ -44,6 +56,18 @@ class JobCardPartLine(models.Model):
     def _compute_total(self):
         for line in self:
             line.price_total = line.unit_price * line.quantity
+
+    @api.onchange('product_id', 'job_card_id')
+    def _onchange_product_id_set_price(self):
+        for line in self:
+            if not line.product_id:
+                continue
+            if not line.description:
+                line.description = line.product_id.display_name
+            if line.job_card_id and line.job_card_id.warranty:
+                line.unit_price = 0.0
+            else:
+                line.unit_price = line.product_id.list_price
 
     @api.constrains('condition_status', 'condition_reason', 'condemned_scope')
     def _check_condition_reason(self):
@@ -109,6 +133,14 @@ class JobCardPartLine(models.Model):
     @api.model
     def create(self, vals):
         vals = dict(vals)
+        default_scope = self.env.context.get('default_condemned_scope')
+        if default_scope and vals.get('condition_status') == 'condemned':
+            vals['condemned_scope'] = default_scope
+
+        if vals.get('job_card_id') and not vals.get('unit_price') and vals.get('product_id'):
+            job = self.env['job.card'].browse(vals['job_card_id'])
+            vals['unit_price'] = 0.0 if job.warranty else self.env['product.product'].browse(vals['product_id']).list_price
+
         if vals.get('condition_status') == 'condemned' and not vals.get('condition_date'):
             vals['condition_date'] = fields.Date.context_today(self)
         record = super().create(vals)
@@ -120,6 +152,15 @@ class JobCardPartLine(models.Model):
         status_in_vals = vals.get('condition_status')
         if status_in_vals == 'condemned' and not vals.get('condition_date'):
             vals['condition_date'] = fields.Date.context_today(self)
+
+        default_scope = self.env.context.get('default_condemned_scope')
+        if default_scope and (vals.get('condition_status') == 'condemned' or self.condition_status == 'condemned'):
+            # Lock scope based on the tab context (customer/warehouse)
+            vals['condemned_scope'] = default_scope
+
+        if vals.get('product_id') and not vals.get('unit_price'):
+            job = self.job_card_id
+            vals.setdefault('unit_price', 0.0 if (job and job.warranty) else self.env['product.product'].browse(vals['product_id']).list_price)
 
         res = super().write(vals)
 

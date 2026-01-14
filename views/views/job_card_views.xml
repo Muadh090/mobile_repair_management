@@ -280,7 +280,7 @@
                 <field name="description"/>
                 <field name="quantity"/>
                 <field name="condition_status"/>
-                <field name="condemned_scope"/>
+                <field name="condemned_scope" readonly="1"/>
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
                 <field name="price_total" sum="Total"/>
@@ -297,7 +297,7 @@
                 <field name="description"/>
                 <field name="quantity"/>
                 <field name="condition_status"/>
-                <field name="condemned_scope"/>
+                <field name="condemned_scope" readonly="1"/>
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
                 <field name="price_total" sum="Total"/>
