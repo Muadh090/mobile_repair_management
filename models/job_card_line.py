@@ -29,6 +29,39 @@ class JobCardServiceLine(models.Model):
             else:
                 line.price = line.service_id.price
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        vals_list = [dict(v) for v in vals_list]
+        JobCard = self.env['job.card']
+        Service = self.env['repair.service']
+
+        for vals in vals_list:
+            if vals.get('job_card_id') and vals.get('service_id'):
+                job = JobCard.browse(vals['job_card_id'])
+                service = Service.browse(vals['service_id'])
+
+                if not vals.get('description'):
+                    vals['description'] = service.description or service.name
+                if 'price' not in vals:
+                    vals['price'] = 0.0 if job.warranty else (service.price or 0.0)
+
+        return super().create(vals_list)
+
+    def write(self, vals):
+        vals = dict(vals)
+        if 'service_id' in vals and 'price' not in vals and vals.get('service_id'):
+            service = self.env['repair.service'].browse(vals['service_id'])
+            warranty_recs = self.filtered(lambda r: r.job_card_id and r.job_card_id.warranty)
+            non_warranty_recs = self - warranty_recs
+
+            if warranty_recs:
+                super(JobCardServiceLine, warranty_recs).write({**vals, 'price': 0.0})
+            if non_warranty_recs:
+                super(JobCardServiceLine, non_warranty_recs).write({**vals, 'price': service.price or 0.0})
+            return True
+
+        return super().write(vals)
+
 class JobCardPartLine(models.Model):
     _name = 'job.card.part.line'
     _description = 'Job Card Part Line'
@@ -172,7 +205,7 @@ class JobCardPartLine(models.Model):
                 inferred = self._infer_condemned_scope(vals)
                 vals['condemned_scope'] = inferred or 'customer'
 
-            if vals.get('job_card_id') and not vals.get('unit_price') and vals.get('product_id'):
+            if vals.get('job_card_id') and vals.get('product_id') and 'unit_price' not in vals:
                 job = self.env['job.card'].browse(vals['job_card_id'])
                 vals['unit_price'] = 0.0 if job.warranty else self.env['product.product'].browse(vals['product_id']).list_price
 
@@ -199,9 +232,16 @@ class JobCardPartLine(models.Model):
                 inferred = self._infer_condemned_scope(vals)
                 vals['condemned_scope'] = inferred or 'customer'
 
-        if vals.get('product_id') and not vals.get('unit_price'):
-            job = self.job_card_id
-            vals.setdefault('unit_price', 0.0 if (job and job.warranty) else self.env['product.product'].browse(vals['product_id']).list_price)
+        if 'product_id' in vals and vals.get('product_id') and 'unit_price' not in vals:
+            product = self.env['product.product'].browse(vals['product_id'])
+            warranty_recs = self.filtered(lambda r: r.job_card_id and r.job_card_id.warranty)
+            non_warranty_recs = self - warranty_recs
+
+            if warranty_recs:
+                super(JobCardPartLine, warranty_recs).write({**vals, 'unit_price': 0.0})
+            if non_warranty_recs:
+                super(JobCardPartLine, non_warranty_recs).write({**vals, 'unit_price': product.list_price})
+            return True
 
         res = super().write(vals)
 
