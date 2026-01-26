@@ -28,12 +28,14 @@ class JobCardServiceLine(models.Model):
                 line.price = 0.0
             else:
                 line.price = line.service_id.price
+            line.price_total = (line.price or 0.0) * (line.quantity or 0.0)
             if line.job_card_id:
                 line.job_card_id._compute_totals()
 
     @api.onchange('price', 'quantity')
     def _onchange_amount_recompute_job_totals(self):
         for line in self:
+            line.price_total = (line.price or 0.0) * (line.quantity or 0.0)
             if line.job_card_id:
                 line.job_card_id._compute_totals()
 
@@ -131,12 +133,14 @@ class JobCardPartLine(models.Model):
                 line.unit_price = 0.0
             else:
                 line.unit_price = line.product_id.list_price
+            line.price_total = (line.unit_price or 0.0) * (line.quantity or 0.0)
             if line.job_card_id:
                 line.job_card_id._compute_totals()
 
     @api.onchange('unit_price', 'quantity', 'condition_status')
     def _onchange_amount_recompute_job_totals(self):
         for line in self:
+            line.price_total = (line.unit_price or 0.0) * (line.quantity or 0.0)
             if line.job_card_id:
                 line.job_card_id._compute_totals()
 
