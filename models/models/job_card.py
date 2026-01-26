@@ -232,6 +232,20 @@ class JobCard(models.Model):
             if record.state == 'completed':
                 raise UserError(_('Cannot cancel a completed repair.'))
         self.write({'state': 'rejected'})
+
+    def action_fix_missing_condemned_scope(self):
+        """Backfill Condemned For on older/broken condemned lines.
+
+        Heuristic:
+        - If a condemned stock move exists -> warehouse
+        - Otherwise -> customer
+        """
+        for job in self:
+            lines = job.part_ids.filtered(lambda l: l.condition_status == 'condemned' and not l.condemned_scope)
+            for line in lines:
+                scope = 'warehouse' if line.condemned_move_id else 'customer'
+                line.write({'condemned_scope': scope})
+        return {'type': 'ir.actions.client', 'tag': 'reload'}
     
     def action_create_invoice(self):
         if self.warranty:
