@@ -280,6 +280,7 @@
                 <field name="product_id"/>
                 <field name="description"/>
                 <field name="quantity"/>
+                <field name="unit_price"/>
                 <field name="condition_status"/>
                 <field name="condemned_scope"/>
                 <field name="condition_date"/>
@@ -297,6 +298,7 @@
                 <field name="product_id"/>
                 <field name="description"/>
                 <field name="quantity"/>
+                <field name="unit_price"/>
                 <field name="condition_status"/>
                 <field name="condemned_scope"/>
                 <field name="condition_date"/>
