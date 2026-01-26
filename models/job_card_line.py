@@ -47,7 +47,7 @@ class JobCardPartLine(models.Model):
     condemned_scope = fields.Selection([
         ('customer', 'Customer'),
         ('warehouse', 'Warehouse'),
-    ], string='Condemned For')
+    ], string='Condemned For', default=lambda self: self.env.context.get('default_condemned_scope'))
     condition_reason = fields.Text(string='Condition Reason')
     condition_date = fields.Date(string='Condition Date')
     condemned_move_id = fields.Many2one('stock.move', string='Non-usable Move', readonly=True, copy=False)
@@ -86,6 +86,17 @@ class JobCardPartLine(models.Model):
                 line.unit_price = 0.0
             else:
                 line.unit_price = line.product_id.list_price
+
+    @api.onchange('condition_status')
+    def _onchange_condition_status_set_scope(self):
+        for line in self:
+            if line.condition_status != 'condemned':
+                # Keep it clean for normal parts
+                line.condemned_scope = False
+                return
+            if not line.condemned_scope:
+                inferred = line._infer_condemned_scope()
+                line.condemned_scope = inferred or 'customer'
 
     @api.constrains('condition_status', 'condition_reason', 'condemned_scope')
     def _check_condition_reason(self):
@@ -159,8 +170,7 @@ class JobCardPartLine(models.Model):
 
             if vals.get('condition_status') == 'condemned' and not vals.get('condemned_scope'):
                 inferred = self._infer_condemned_scope(vals)
-                if inferred:
-                    vals['condemned_scope'] = inferred
+                vals['condemned_scope'] = inferred or 'customer'
 
             if vals.get('job_card_id') and not vals.get('unit_price') and vals.get('product_id'):
                 job = self.env['job.card'].browse(vals['job_card_id'])
@@ -187,8 +197,7 @@ class JobCardPartLine(models.Model):
         if vals.get('condition_status') == 'condemned' or any(r.condition_status == 'condemned' for r in self):
             if 'condemned_scope' not in vals:
                 inferred = self._infer_condemned_scope(vals)
-                if inferred:
-                    vals['condemned_scope'] = inferred
+                vals['condemned_scope'] = inferred or 'customer'
 
         if vals.get('product_id') and not vals.get('unit_price'):
             job = self.job_card_id
