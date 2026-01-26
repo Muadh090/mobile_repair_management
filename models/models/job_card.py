@@ -123,14 +123,12 @@ class JobCard(models.Model):
     # Computed Fields
     @api.depends(
         'service_ids.price', 'service_ids.quantity',
-        'part_ids.unit_price', 'part_ids.quantity', 'part_ids.condition_status', 'part_ids.condemned_scope',
+        'part_ids.unit_price', 'part_ids.quantity', 'part_ids.condition_status',
     )
     def _compute_totals(self):
         for record in self:
             service_total = sum((l.price or 0.0) * (l.quantity or 0.0) for l in record.service_ids)
-            # Count all parts except warehouse condemned (scrapped/internal).
-            # This keeps totals meaningful when users enter customer condemned parts.
-            billable_parts = record.part_ids.filtered(lambda l: l.condemned_scope != 'warehouse')
+            billable_parts = record.part_ids.filtered(lambda l: l.condition_status != 'condemned')
             part_total = sum((l.unit_price or 0.0) * (l.quantity or 0.0) for l in billable_parts)
             record.service_total = service_total
             record.part_total = part_total
@@ -141,7 +139,7 @@ class JobCard(models.Model):
 
     @api.onchange(
         'service_ids', 'service_ids.price', 'service_ids.quantity',
-        'part_ids', 'part_ids.unit_price', 'part_ids.quantity', 'part_ids.condition_status', 'part_ids.condemned_scope',
+        'part_ids', 'part_ids.unit_price', 'part_ids.quantity', 'part_ids.condition_status',
     )
     def _onchange_recompute_totals(self):
         # Makes totals reflect line edits immediately (before saving).
