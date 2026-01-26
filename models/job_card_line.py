@@ -42,18 +42,14 @@ class JobCardServiceLine(models.Model):
 
                 if not vals.get('description'):
                     vals['description'] = service.description or service.name
-                # In editable lists, required Float fields often arrive as 0.0 even if user didn't set them.
-                # Treat 0.0 as "unset" for non-warranty lines so price auto-fills.
-                if job.warranty:
-                    vals['price'] = 0.0
-                elif ('price' not in vals) or not vals.get('price'):
-                    vals['price'] = service.price or 0.0
+                if 'price' not in vals:
+                    vals['price'] = 0.0 if job.warranty else (service.price or 0.0)
 
         return super().create(vals_list)
 
     def write(self, vals):
         vals = dict(vals)
-        if 'service_id' in vals and vals.get('service_id') and (('price' not in vals) or not vals.get('price')):
+        if 'service_id' in vals and 'price' not in vals and vals.get('service_id'):
             service = self.env['repair.service'].browse(vals['service_id'])
             warranty_recs = self.filtered(lambda r: r.job_card_id and r.job_card_id.warranty)
             non_warranty_recs = self - warranty_recs
@@ -209,7 +205,7 @@ class JobCardPartLine(models.Model):
                 inferred = self._infer_condemned_scope(vals)
                 vals['condemned_scope'] = inferred or 'customer'
 
-            if vals.get('job_card_id') and vals.get('product_id') and (('unit_price' not in vals) or not vals.get('unit_price')):
+            if vals.get('job_card_id') and vals.get('product_id') and 'unit_price' not in vals:
                 job = self.env['job.card'].browse(vals['job_card_id'])
                 vals['unit_price'] = 0.0 if job.warranty else self.env['product.product'].browse(vals['product_id']).list_price
 
@@ -236,7 +232,7 @@ class JobCardPartLine(models.Model):
                 inferred = self._infer_condemned_scope(vals)
                 vals['condemned_scope'] = inferred or 'customer'
 
-        if 'product_id' in vals and vals.get('product_id') and (('unit_price' not in vals) or not vals.get('unit_price')):
+        if 'product_id' in vals and vals.get('product_id') and 'unit_price' not in vals:
             product = self.env['product.product'].browse(vals['product_id'])
             warranty_recs = self.filtered(lambda r: r.job_card_id and r.job_card_id.warranty)
             non_warranty_recs = self - warranty_recs
