@@ -121,11 +121,15 @@ class JobCard(models.Model):
     write_date = fields.Datetime(string='Last Updated', readonly=True)
     
     # Computed Fields
-    @api.depends('service_ids.price_total', 'part_ids.price_total', 'part_ids.condition_status')
+    @api.depends(
+        'service_ids.price', 'service_ids.quantity',
+        'part_ids.unit_price', 'part_ids.quantity', 'part_ids.condition_status',
+    )
     def _compute_totals(self):
         for record in self:
-            service_total = sum(record.service_ids.mapped('price_total'))
-            part_total = sum(record.part_ids.filtered(lambda l: l.condition_status != 'condemned').mapped('price_total'))
+            service_total = sum((l.price or 0.0) * (l.quantity or 0.0) for l in record.service_ids)
+            billable_parts = record.part_ids.filtered(lambda l: l.condition_status != 'condemned')
+            part_total = sum((l.unit_price or 0.0) * (l.quantity or 0.0) for l in billable_parts)
             record.service_total = service_total
             record.part_total = part_total
             record.subtotal = service_total + part_total
@@ -133,7 +137,10 @@ class JobCard(models.Model):
             record.tax_amount = 0.0
             record.total_amount = record.subtotal + record.tax_amount
 
-    @api.onchange('service_ids', 'part_ids')
+    @api.onchange(
+        'service_ids', 'service_ids.price', 'service_ids.quantity',
+        'part_ids', 'part_ids.unit_price', 'part_ids.quantity', 'part_ids.condition_status',
+    )
     def _onchange_recompute_totals(self):
         # Makes totals reflect line edits immediately (before saving).
         self._compute_totals()
