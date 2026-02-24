@@ -88,30 +88,30 @@
         <field name="arch" type="xml">
             <form string="Job Card">
                 <header>
-                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_assign_team" string="Assign Team" type="object" class="btn-primary" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_assign_team" string="Assign Team" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                     <button name="action_fix_missing_condemned_scope" string="Fix Condemned For" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager"/>
-                    <button name="action_start_repair" string="Start Repair" type="object" class="btn-primary" modifiers="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
-                    <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary"/>
-                    <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" modifiers="{'invisible': [('state', '=', 'completed')]}"/>
+                    <button name="action_start_repair" string="Start Repair" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician" modifiers="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
+                    <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician"/>
+                    <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr" modifiers="{'invisible': [('state', '=', 'completed')]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,in_progress,completed,rejected"/>
                 </header>
 
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck">
+                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement">
                             <div class="o_stat_info">
                                 <field name="picking_id" widget="statinfo" string="Picking"/>
                             </div>
                         </button>
-                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money">
+                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr,mobile_repair_management.group_repair_accounting">
                             <div class="o_stat_info">
                                 <field name="invoice_id" widget="statinfo" string="Invoice"/>
                             </div>
                         </button>
-                        <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks">
+                        <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
                             <div class="o_stat_info">
                                 <field name="task_id" widget="statinfo" string="Task"/>
                             </div>
