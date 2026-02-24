@@ -137,6 +137,37 @@ class JobCard(models.Model):
             record.tax_amount = 0.0
             record.total_amount = record.subtotal + record.tax_amount
 
+    @api.depends('warranty', 'state', 'invoice_id', 'invoice_id.state')
+    def _compute_invoice_status(self):
+        for record in self:
+            if record.warranty:
+                record.invoice_status = 'no'
+                continue
+
+            if record.invoice_id and record.invoice_id.state != 'cancel':
+                record.invoice_status = 'invoiced'
+                continue
+
+            if record.state in ('approved', 'in_progress', 'completed'):
+                record.invoice_status = 'to_invoice'
+            else:
+                record.invoice_status = 'no'
+
+    @api.depends('warranty', 'invoice_id', 'invoice_id.payment_state', 'invoice_id.state')
+    def _compute_payment_status(self):
+        for record in self:
+            if record.warranty or not record.invoice_id:
+                record.payment_status = 'not_paid'
+                continue
+
+            payment_state = record.invoice_id.payment_state
+            if payment_state == 'paid':
+                record.payment_status = 'paid'
+            elif payment_state in ('partial', 'in_payment'):
+                record.payment_status = 'partially_paid'
+            else:
+                record.payment_status = 'not_paid'
+
     @api.onchange(
         'service_ids', 'service_ids.price', 'service_ids.quantity',
         'part_ids', 'part_ids.unit_price', 'part_ids.quantity', 'part_ids.condition_status',
