@@ -71,9 +71,11 @@ A complete, production-ready **Odoo 18 module** for managing mobile device repai
 - **Excel Export Wizard**: Date range filters, status filters, warranty filters, warranty/non-warranty columns
 
 ### 12. **Security & Access**
-- Role-based access (Manager, User, Technician)
+- Role-based access (Manager, Lead, CSR, Technician, Procurement, Accounting)
 - Model-level CRUD permissions
 - Security groups defined in `security/security/groups.xml`
+
+For a step-by-step role verification matrix, see **SECURITY_VERIFICATION_CHECKLIST.md**.
 
 ---
 

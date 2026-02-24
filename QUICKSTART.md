@@ -137,15 +137,21 @@ python odoo-bin -c odoo.conf
 ## 🔐 User Access Control
 
 Default groups:
-- **Repair / Manager** — Full access to all modules
-- **Repair / User** — Read/write job cards, services, teams
-- **Repair / Technician** — Time tracking and status updates
+- **Repair / Manager** — Full access
+- **Repair / Lead** — Configuration + supervisory actions
+- **Repair / CSR** — Draft/request/quotation handling
+- **Repair / Technician** — Assigned-job work execution
+- **Repair / Procurement** — Approved/in-progress visibility (warehouse condemned control)
+- **Repair / Accounting** — Read-only job cards + billing actions
 
 To assign users to groups:
 1. **Settings** → **Users & Companies** → **Users**
 2. Select user
 3. **Access Rights** tab
-4. Add group: "Repair / Manager", "Repair / User", or "Repair / Technician"
+4. Add the appropriate group under the *Repair* category
+
+Security verification checklist:
+- See **SECURITY_VERIFICATION_CHECKLIST.md**
 
 ---
 

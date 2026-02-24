@@ -62,9 +62,14 @@ A complete, production-ready mobile repair management system for Odoo 18.
 5. Set up default projects for teams
 
 ### User Groups:
-- Repair Manager: Full access
-- Repair User: Standard access
-- Repair Technician: Limited access
+- Repair / Manager: Full access
+- Repair / Lead: Supervisory access (config + approvals)
+- Repair / CSR: Front-desk access (draft/request/quotation)
+- Repair / Technician: Assigned-job access (work execution)
+- Repair / Procurement: Limited access (approved/in progress)
+- Repair / Accounting: Read-only job cards + billing actions
+
+For a role-by-role verification matrix, see **SECURITY_VERIFICATION_CHECKLIST.md**.
 
 ## Usage
 
