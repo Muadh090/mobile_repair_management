@@ -182,19 +182,9 @@
 
                     <notebook>
                         <page string="Device Details">
-                            <group col="2">
-                                <group string="Identification">
-                                    <field name="brand_id"/>
-                                    <field name="series_id" domain="[('brand_id', '=', brand_id)]"/>
-                                    <field name="model_id" domain="[('series_id', '=', series_id)]"/>
-                                    <field name="imei"/>
-                                    <field name="serial_number"/>
-                                </group>
-                                <group string="Condition &amp; Intake">
+                            <group>
+                                <group string="Condition">
                                     <field name="device_condition"/>
-                                    <field name="inspection_type"/>
-                                    <field name="delivery_type"/>
-                                    <field name="inspection_date"/>
                                 </group>
                             </group>
                             <group>
