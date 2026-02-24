@@ -1,11 +1,24 @@
 from odoo import http
 from odoo.http import request
+from odoo.exceptions import AccessError
 
 class MobileRepairController(http.Controller):
     
     @http.route('/mobile_repair/dashboard_data', type='json', auth='user')
     def get_dashboard_data(self):
         """Return dashboard data for charts"""
+        user = request.env.user
+        allowed = any([
+            user.has_group('mobile_repair_management.group_repair_manager'),
+            user.has_group('mobile_repair_management.group_repair_lead'),
+            user.has_group('mobile_repair_management.group_repair_technician'),
+            user.has_group('mobile_repair_management.group_repair_csr'),
+            user.has_group('mobile_repair_management.group_repair_procurement'),
+            user.has_group('mobile_repair_management.group_repair_accounting'),
+        ])
+        if not allowed:
+            raise AccessError('Not allowed')
+
         JobCard = request.env['job.card']
         
         # Total counts by state

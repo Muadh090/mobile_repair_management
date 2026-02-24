@@ -163,6 +163,15 @@ class JobCardPartLine(models.Model):
             if line.condition_status == 'condemned' and not line.condemned_scope:
                 raise ValidationError(_('Specify whether the condemned part is for the customer or warehouse.'))
 
+            if line.condition_status == 'condemned' and line.condemned_scope == 'warehouse':
+                user = line.env.user
+                if not (
+                    user.has_group('mobile_repair_management.group_repair_manager')
+                    or user.has_group('mobile_repair_management.group_repair_lead')
+                    or user.has_group('mobile_repair_management.group_repair_procurement')
+                ):
+                    raise ValidationError(_('Only Procurement/Lead/Manager can set Warehouse condemned parts.'))
+
     def _get_source_location(self):
         self.ensure_one()
         company = self.job_card_id.company_id or self.env.company
