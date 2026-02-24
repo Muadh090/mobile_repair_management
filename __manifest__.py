@@ -46,7 +46,6 @@ spare parts, teams, pickings, invoicing and reports.
         ],
     },
     'demo': [],
-    'assets': {},
     'installable': True,
     'application': True,
     'auto_install': False,
