@@ -107,16 +107,6 @@ class JobCardPartLine(models.Model):
         for key in ('default_condemned_scope', 'condemned_scope'):
             if ctx.get(key):
                 return ctx.get(key)
-
-        params = ctx.get('params') or {}
-        view_id = ctx.get('view_id') or params.get('view_id')
-        if view_id:
-            view = self.env['ir.ui.view'].browse(view_id)
-            xml_id = getattr(view, 'xml_id', False)
-            if xml_id == 'mobile_repair_management.view_job_card_part_line_condemned_customer_inline_tree':
-                return 'customer'
-            if xml_id == 'mobile_repair_management.view_job_card_part_line_condemned_inline_tree':
-                return 'warehouse'
         return False
     
     @api.depends('unit_price', 'quantity')
