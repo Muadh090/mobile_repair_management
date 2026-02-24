@@ -88,6 +88,7 @@
         <field name="model">job.card</field>
         <field name="arch" type="xml">
             <form string="Job Card">
+                <field name="currency_id" invisible="1"/>
                 <header>
                     <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr" modifiers="{'invisible': ['|', ('warranty', '=', True), ('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                     <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': ['|','|', ('warranty', '=', True), ('invoice_id', '!=', False), ('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
@@ -213,6 +214,7 @@
                                     <field name="service_id"/>
                                     <field name="description" optional="hide"/>
                                     <field name="quantity"/>
+                                    <field name="currency_id" invisible="1"/>
                                     <field name="price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                     <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
                                 </list>
@@ -228,6 +230,7 @@
                                     <field name="product_id"/>
                                     <field name="description" optional="hide"/>
                                     <field name="quantity"/>
+                                    <field name="currency_id" invisible="1"/>
                                     <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                     <field name="stock_available" optional="hide"/>
                                     <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
@@ -301,6 +304,7 @@
                 <field name="product_id"/>
                 <field name="description" optional="hide"/>
                 <field name="quantity"/>
+                <field name="currency_id" invisible="1"/>
                 <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="condemned_scope" optional="hide"/>
                 <field name="condition_date"/>
@@ -318,6 +322,7 @@
                 <field name="product_id"/>
                 <field name="description" optional="hide"/>
                 <field name="quantity"/>
+                <field name="currency_id" invisible="1"/>
                 <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="condemned_scope" optional="hide"/>
                 <field name="condition_date"/>
@@ -395,6 +400,7 @@
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
                 <field name="condemned_move_id"/>
+                <field name="currency_id" invisible="1"/>
                 <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
             </list>
