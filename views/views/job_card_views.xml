@@ -203,8 +203,19 @@
                             <group string="Customer Condemned Parts">
                                 <field name="part_ids"
                                        domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'customer')]"
-                                       context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'customer'}"
-                                       views="{'list': 'mobile_repair_management.view_job_card_part_line_condemned_customer_inline_tree'}"/>
+                                       context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'customer'}">
+                                    <list editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="description" optional="hide"/>
+                                        <field name="quantity"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="condemned_scope" optional="hide"/>
+                                        <field name="condition_date"/>
+                                        <field name="condition_reason"/>
+                                        <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
+                                    </list>
+                                </field>
                             </group>
                         </page>
 
@@ -280,8 +291,19 @@
                         <page string="Warehouse Condemned Parts" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement">
                             <field name="part_ids"
                                    domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"
-                                   context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'warehouse'}"
-                                   views="{'list': 'mobile_repair_management.view_job_card_part_line_condemned_inline_tree'}"/>
+                                   context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'warehouse'}">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="description" optional="hide"/>
+                                    <field name="quantity"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="condemned_scope" optional="hide"/>
+                                    <field name="condition_date"/>
+                                    <field name="condition_reason"/>
+                                    <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
@@ -292,43 +314,6 @@
                     <field name="activity_ids" widget="mail_activity"/>
                 </div>
             </form>
-        </field>
-    </record>
-
-    <!-- Inline condemned parts tree for job card form filtering -->
-    <record id="view_job_card_part_line_condemned_inline_tree" model="ir.ui.view">
-        <field name="name">job.card.part.line.condemned.inline</field>
-        <field name="model">job.card.part.line</field>
-        <field name="arch" type="xml">
-            <list editable="bottom">
-                <field name="product_id"/>
-                <field name="description" optional="hide"/>
-                <field name="quantity"/>
-                <field name="currency_id" invisible="1"/>
-                <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                <field name="condemned_scope" optional="hide"/>
-                <field name="condition_date"/>
-                <field name="condition_reason"/>
-                <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
-            </list>
-        </field>
-    </record>
-
-    <record id="view_job_card_part_line_condemned_customer_inline_tree" model="ir.ui.view">
-        <field name="name">job.card.part.line.condemned.customer.inline</field>
-        <field name="model">job.card.part.line</field>
-        <field name="arch" type="xml">
-            <list editable="bottom">
-                <field name="product_id"/>
-                <field name="description" optional="hide"/>
-                <field name="quantity"/>
-                <field name="currency_id" invisible="1"/>
-                <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                <field name="condemned_scope" optional="hide"/>
-                <field name="condition_date"/>
-                <field name="condition_reason"/>
-                <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
-            </list>
         </field>
     </record>
 
