@@ -3,6 +3,9 @@ from odoo import models, fields, api
 class RepairService(models.Model):
     _name = 'repair.service'
     _description = 'Repair Service'
+
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    currency_id = fields.Many2one('res.currency', string='Currency', related='company_id.currency_id', readonly=True)
     
     name = fields.Char(string='Service Name', required=True)
     service_type = fields.Selection([
@@ -14,7 +17,7 @@ class RepairService(models.Model):
         ('battery', 'Battery Replacement'),
         ('software', 'Software/OS'),
     ], string='Service Type', required=True)
-    price = fields.Float(string='Price', required=True)
+    price = fields.Monetary(string='Price', required=True, currency_field='currency_id')
     description = fields.Text(string='Description')
     duration = fields.Float(string='Duration (hours)')
     active = fields.Boolean(string='Active', default=True)

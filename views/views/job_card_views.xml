@@ -11,6 +11,7 @@
                 <field name="customer_id"/>
                 <field name="team_id"/>
                 <field name="total_amount"/>
+                <field name="currency_id"/>
                 <field name="create_date"/>
                 <templates>
                     <t t-name="kanban-box">
@@ -52,7 +53,7 @@
                             <div class="o_kanban_record_bottom" style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:8px;">
                                 <div class="text-muted" style="font-size:12px;">Team: <field name="team_id"/></div>
                                 <div style="font-weight:600;color:#111;">
-                                    <field name="total_amount" widget="monetary"/>
+                                    <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                 </div>
                             </div>
                         </div>
@@ -88,30 +89,30 @@
         <field name="arch" type="xml">
             <form string="Job Card">
                 <header>
-                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr" modifiers="{'invisible': ['|', ('warranty', '=', True), ('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': ['|','|', ('warranty', '=', True), ('invoice_id', '!=', False), ('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                     <button name="action_assign_team" string="Assign Team" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': ['|','|','|', ('warranty', '=', True), ('invoice_id', '=', False), ('payment_status', '=', 'paid'), ('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
                     <button name="action_fix_missing_condemned_scope" string="Fix Condemned For" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager"/>
                     <button name="action_start_repair" string="Start Repair" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician" modifiers="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
-                    <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician"/>
+                    <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician" modifiers="{'invisible': [('state', '!=', 'in_progress')]}"/>
                     <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr" modifiers="{'invisible': [('state', '=', 'completed')]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,in_progress,completed,rejected"/>
                 </header>
 
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement">
+                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement" modifiers="{'invisible': [('picking_id', '=', False)]}">
                             <div class="o_stat_info">
                                 <field name="picking_id" widget="statinfo" string="Picking"/>
                             </div>
                         </button>
-                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr,mobile_repair_management.group_repair_accounting">
+                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': [('invoice_id', '=', False)]}">
                             <div class="o_stat_info">
                                 <field name="invoice_id" widget="statinfo" string="Invoice"/>
                             </div>
                         </button>
-                        <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
+                        <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician" modifiers="{'invisible': [('task_id', '=', False)]}">
                             <div class="o_stat_info">
                                 <field name="task_id" widget="statinfo" string="Task"/>
                             </div>
@@ -130,12 +131,13 @@
                     <group string="Overview" col="2">
                         <group string="Customer">
                             <field name="customer_id" domain="[]"/>
-                            <field name="customer_phone"/>
-                            <field name="customer_email"/>
+                            <field name="customer_phone" widget="phone"/>
+                            <field name="customer_email" widget="email"/>
                         </group>
                         <group string="Device Snapshot">
                             <field name="brand_id"/>
-                            <field name="model_id" domain="[('brand_id', '=', brand_id)]"/>
+                            <field name="series_id" domain="[('brand_id', '=', brand_id)]"/>
+                            <field name="model_id" domain="[('series_id', '=', series_id)]"/>
                             <field name="imei"/>
                             <field name="serial_number"/>
                         </group>
@@ -143,18 +145,37 @@
 
                     <group col="2">
                         <group string="Issue &amp; Dates">
-                            <field name="problem_description" colspan="2"/>
+                            <field name="problem_description" placeholder="Describe the issue reported by the customer..." colspan="2"/>
                             <field name="inspection_date"/>
+                            <field name="inspection_type"/>
                             <field name="delivery_type"/>
                             <field name="expected_duration"/>
                         </group>
                         <group string="Warranty &amp; Totals">
                             <field name="warranty"/>
-                            <field name="warranty_number"/>
-                            <field name="warranty_expiry_date"/>
+                            <field name="warranty_number" modifiers="{'invisible': [('warranty', '=', False)]}"/>
+                            <field name="warranty_expiry_date" modifiers="{'invisible': [('warranty', '=', False)]}"/>
                             <field name="service_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+
+                    <group col="2">
+                        <group string="Workflow">
+                            <field name="state" readonly="1"/>
+                            <field name="customer_approval"/>
+                            <field name="quotation_date" modifiers="{'invisible': [('state', '!=', 'quotation')]}"/>
+                            <field name="quotation_valid_until" modifiers="{'invisible': [('state', '!=', 'quotation')]}"/>
+                            <field name="invoice_status" readonly="1"/>
+                            <field name="payment_status" readonly="1"/>
+                        </group>
+                        <group string="Team">
+                            <field name="team_id"/>
+                            <field name="assigned_member_ids" widget="many2many_tags"/>
+                            <field name="start_date" readonly="1"/>
+                            <field name="completion_date" readonly="1"/>
                         </group>
                     </group>
 
@@ -176,7 +197,7 @@
                                 </group>
                             </group>
                             <group>
-                                <field name="device_accessories" colspan="4"/>
+                                <field name="device_accessories" placeholder="Accessories received (charger, case, SIM tray, etc.)" colspan="4"/>
                             </group>
                             <group string="Customer Condemned Parts">
                                 <field name="part_ids"
@@ -190,10 +211,10 @@
                             <field name="service_ids">
                                 <list editable="bottom">
                                     <field name="service_id"/>
-                                    <field name="description"/>
+                                    <field name="description" optional="hide"/>
                                     <field name="quantity"/>
-                                    <field name="price"/>
-                                    <field name="price_total" sum="Total"/>
+                                    <field name="price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
                                 </list>
                             </field>
                             <group class="oe_subtotal_footer">
@@ -205,11 +226,11 @@
                             <field name="part_ids" domain="[('condition_status', '!=', 'condemned')]">
                                 <list editable="bottom">
                                     <field name="product_id"/>
-                                    <field name="description"/>
+                                    <field name="description" optional="hide"/>
                                     <field name="quantity"/>
-                                    <field name="unit_price"/>
-                                    <field name="stock_available"/>
-                                    <field name="price_total" sum="Total"/>
+                                    <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="stock_available" optional="hide"/>
+                                    <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
                                 </list>
                             </field>
                             <group class="oe_subtotal_footer">
@@ -217,7 +238,7 @@
                             </group>
                         </page>
 
-                        <page string="Task &amp; Work Log">
+                        <page string="Task &amp; Work Log" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
                             <field name="task_id">
                                 <form>
                                     <sheet>
@@ -253,7 +274,7 @@
                             </field>
                         </page>
 
-                        <page string="Warehouse Condemned Parts">
+                        <page string="Warehouse Condemned Parts" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement">
                             <field name="part_ids"
                                    domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"
                                    context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'warehouse'}"
@@ -278,14 +299,13 @@
         <field name="arch" type="xml">
             <list editable="bottom" context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'warehouse'}">
                 <field name="product_id"/>
-                <field name="description"/>
+                <field name="description" optional="hide"/>
                 <field name="quantity"/>
-                <field name="unit_price"/>
-                <field name="condition_status"/>
-                <field name="condemned_scope"/>
+                <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="condemned_scope" optional="hide"/>
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
-                <field name="price_total" sum="Total"/>
+                <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
             </list>
         </field>
     </record>
@@ -296,14 +316,13 @@
         <field name="arch" type="xml">
             <list editable="bottom" context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'customer'}">
                 <field name="product_id"/>
-                <field name="description"/>
+                <field name="description" optional="hide"/>
                 <field name="quantity"/>
-                <field name="unit_price"/>
-                <field name="condition_status"/>
-                <field name="condemned_scope"/>
+                <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="condemned_scope" optional="hide"/>
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
-                <field name="price_total" sum="Total"/>
+                <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
             </list>
         </field>
     </record>
@@ -376,7 +395,8 @@
                 <field name="condition_date"/>
                 <field name="condition_reason"/>
                 <field name="condemned_move_id"/>
-                <field name="price_total"/>
+                <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
             </list>
         </field>
     </record>

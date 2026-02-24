@@ -6,6 +6,7 @@ class JobCardServiceLine(models.Model):
     _description = 'Job Card Service Line'
     
     job_card_id = fields.Many2one('job.card', string='Job Card', required=True, ondelete='cascade')
+    currency_id = fields.Many2one('res.currency', string='Currency', related='job_card_id.currency_id', readonly=True)
     service_id = fields.Many2one('repair.service', string='Service', required=True)
     description = fields.Text(string='Description')
     price = fields.Float(string='Price', required=True)
@@ -81,6 +82,7 @@ class JobCardPartLine(models.Model):
     _description = 'Job Card Part Line'
     
     job_card_id = fields.Many2one('job.card', string='Job Card', required=True, ondelete='cascade')
+    currency_id = fields.Many2one('res.currency', string='Currency', related='job_card_id.currency_id', readonly=True)
     product_id = fields.Many2one('product.product', string='Product', required=True)
     description = fields.Text(string='Description')
     quantity = fields.Float(string='Quantity', required=True, default=1)

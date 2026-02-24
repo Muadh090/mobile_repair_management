@@ -10,7 +10,7 @@
                         <field name="job_card_id" invisible="1"/>
                         <group>
                             <field name="team_id" required="1"/>
-                            <field name="assigned_member_ids" widget="many2many_tags" required="1"/>
+                            <field name="assigned_member_ids" widget="many2many_tags" domain="[('id', 'in', team_id.member_ids)]" required="1"/>
                             <field name="expected_duration" required="1"/>
                         </group>
                     </group>
