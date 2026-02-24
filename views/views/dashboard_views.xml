@@ -69,5 +69,13 @@
         <field name="view_mode">dashboard,pivot,graph</field>
         <field name="view_id" ref="view_repair_dashboard"/>
         <field name="target">current</field>
+        <field name="groups_id" eval="[(6, 0, [
+            ref('mobile_repair_management.group_repair_manager'),
+            ref('mobile_repair_management.group_repair_lead'),
+            ref('mobile_repair_management.group_repair_technician'),
+            ref('mobile_repair_management.group_repair_csr'),
+            ref('mobile_repair_management.group_repair_procurement'),
+            ref('mobile_repair_management.group_repair_accounting'),
+        ])]"/>
     </record>
 </odoo>
