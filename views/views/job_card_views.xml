@@ -243,38 +243,17 @@
                         </page>
 
                         <page string="Task &amp; Work Log" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
-                            <field name="task_id">
-                                <form>
-                                    <sheet>
-                                        <group>
-                                            <group>
-                                                <field name="name"/>
-                                                <field name="project_id"/>
-                                                <field name="user_ids" widget="many2many_tags"/>
-                                            </group>
-                                            <group>
-                                                <field name="stage_id"/>
-                                                <field name="priority"/>
-                                                <field name="date_deadline"/>
-                                            </group>
-                                        </group>
-                                        <notebook>
-                                            <page string="Description">
-                                                <field name="description"/>
-                                            </page>
-                                            <page string="Timesheets">
-                                                <field name="timesheet_ids">
-                                                    <list>
-                                                        <field name="date"/>
-                                                        <field name="name"/>
-                                                        <field name="user_id"/>
-                                                        <field name="unit_amount"/>
-                                                    </list>
-                                                </field>
-                                            </page>
-                                        </notebook>
-                                    </sheet>
-                                </form>
+                            <group>
+                                <field name="task_id" readonly="1"/>
+                            </group>
+                            <field name="timesheet_ids">
+                                <list editable="bottom">
+                                    <field name="date"/>
+                                    <field name="user_id"/>
+                                    <field name="duration"/>
+                                    <field name="is_billable"/>
+                                    <field name="description"/>
+                                </list>
                             </field>
                         </page>
 
