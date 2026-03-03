@@ -68,15 +68,16 @@
         <field name="name">job.card.list</field>
         <field name="model">job.card</field>
         <field name="arch" type="xml">
-            <list string="Job Cards">
+            <list string="Job Cards" decoration-info="state == 'requested'" decoration-warning="state == 'quotation'" decoration-success="state in ('approved', 'completed')" decoration-primary="state == 'in_progress'" decoration-danger="state == 'rejected'">
                 <field name="name" string="Job Card No."/>
-                <field name="state" widget="badge"/>
+                <field name="state" widget="badge" decoration-info="state == 'requested'" decoration-warning="state == 'quotation'" decoration-success="state in ('approved', 'completed')" decoration-primary="state == 'in_progress'" decoration-danger="state == 'rejected'"/>
                 <field name="customer_id"/>
                 <field name="brand_id"/>
-                <field name="model_id"/>
+                <field name="model_id" optional="hide"/>
                 <field name="team_id"/>
                 <field name="total_amount" sum="Total Amount"/>
-                <field name="invoice_status"/>
+                <field name="invoice_status" optional="show"/>
+                <field name="payment_status" optional="hide"/>
                 <field name="create_date"/>
             </list>
         </field>
@@ -91,16 +92,16 @@
                 <field name="currency_id" invisible="1"/>
                 <header>
                     <button name="action_mark_requested" string="Mark Requested" type="object" class="btn-primary" invisible="state != 'draft'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
-                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" invisible="warranty or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
+                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" invisible="warranty or state not in ('requested', 'quotation', 'approved')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
                     <button name="action_customer_approve" string="Customer Approve" type="object" class="btn-primary" invisible="state != 'quotation'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
-                    <button name="action_customer_reject" string="Customer Reject" type="object" class="btn-danger" invisible="state != 'quotation'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
+                    <button name="action_customer_reject" string="Customer Reject" type="object" class="btn-danger" invisible="state != 'quotation'" confirm="Are you sure the customer rejected this quotation? This will cancel the job card." groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
                     <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" invisible="warranty or invoice_id or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_accounting"/>
                     <button name="action_assign_team" string="Assign Team" type="object" class="btn-primary" invisible="state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
                     <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" invisible="warranty or not invoice_id or payment_status == 'paid' or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_accounting"/>
-                    <button name="action_fix_missing_condemned_scope" string="Fix Condemned For" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager"/>
+                    <button name="action_fix_missing_condemned_scope" string="Fix Condemned For" type="object" class="btn-link" groups="mobile_repair_management.group_repair_manager"/>
                     <button name="action_start_repair" string="Start Repair" type="object" class="btn-primary" invisible="state in ('in_progress', 'completed', 'rejected') or not team_id or (not warranty and (not invoice_id or payment_status != 'paid'))" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician"/>
                     <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary" invisible="state != 'in_progress'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician"/>
-                    <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" invisible="state == 'completed'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
+                    <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" invisible="state == 'completed'" confirm="Are you sure you want to cancel this job card? This action cannot be undone." groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,requested,quotation,approved,in_progress,completed"/>
                 </header>
 
@@ -252,6 +253,10 @@
                             </group>
                         </page>
 
+                        <page string="Internal Notes" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
+                            <field name="internal_notes" placeholder="Add internal observations, repair notes, or handover instructions here..."/>
+                        </page>
+
                         <page string="Task &amp; Work Log" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
                             <group>
                                 <field name="task_id" readonly="1"/>
@@ -311,7 +316,11 @@
                 <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
                 <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
                 <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="Rejected" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter string="My Job Cards" name="my_jobs" domain="[('assigned_member_ids', 'in', uid)]"/>
                 <filter string="Warranty Repairs" name="warranty" domain="[('warranty', '=', True)]"/>
+                <separator/>
                 <filter string="Today" name="today" domain="[('create_date', '>=', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter string="This Week" name="this_week" domain="[('create_date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
                 <group expand="0" string="Group By">
@@ -330,7 +339,7 @@
         <field name="res_model">job.card</field>
         <field name="view_mode">kanban,list,form,pivot,graph</field>
         <field name="search_view_id" ref="view_job_card_search"/>
-        <field name="context">{'search_default_draft': 1}</field>
+        <field name="context">{}</field>
         <field name="groups_id" eval="[(6, 0, [
             ref('mobile_repair_management.group_repair_manager'),
             ref('mobile_repair_management.group_repair_lead'),

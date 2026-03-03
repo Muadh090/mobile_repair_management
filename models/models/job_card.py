@@ -112,6 +112,9 @@ class JobCard(models.Model):
     # Timesheets
     timesheet_ids = fields.One2many('repair.timesheet', 'job_card_id', string='Timesheets')
     
+    # Notes
+    internal_notes = fields.Html(string='Internal Notes')
+    
     # Company
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', related='company_id.currency_id')
