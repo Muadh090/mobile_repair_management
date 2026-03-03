@@ -9,8 +9,8 @@ Mobile Repair Management System
 Comprehensive solution for mobile repair operations: job cards, quotations,
 spare parts, teams, pickings, invoicing and reports.
 """,
-    'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
+    'author': 'Muadh090',
+    'website': 'https://github.com/Muadh090/mobile_repair_management',
     'images': ['static/description/icon.png'],
     'depends': [
         'base',
@@ -42,7 +42,6 @@ spare parts, teams, pickings, invoicing and reports.
     'assets': {
         'web.assets_backend': [
             'mobile_repair_management/static/src/css/repair_style.css',
-            'mobile_repair_management/static/src/js/repair_dashboard.js',
         ],
     },
     'demo': [],

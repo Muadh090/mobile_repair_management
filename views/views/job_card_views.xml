@@ -90,30 +90,33 @@
             <form string="Job Card">
                 <field name="currency_id" invisible="1"/>
                 <header>
-                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr" modifiers="{'invisible': ['|', ('warranty', '=', True), ('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': ['|','|', ('warranty', '=', True), ('invoice_id', '!=', False), ('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_assign_team" string="Assign Team" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead" modifiers="{'invisible': [('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
-                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': ['|','|','|', ('warranty', '=', True), ('invoice_id', '=', False), ('payment_status', '=', 'paid'), ('state', 'in', ['in_progress', 'completed', 'rejected'])]}"/>
+                    <button name="action_mark_requested" string="Mark Requested" type="object" class="btn-primary" invisible="state != 'draft'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
+                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" invisible="warranty or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
+                    <button name="action_customer_approve" string="Customer Approve" type="object" class="btn-primary" invisible="state != 'quotation'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
+                    <button name="action_customer_reject" string="Customer Reject" type="object" class="btn-danger" invisible="state != 'quotation'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
+                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" invisible="warranty or invoice_id or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_accounting"/>
+                    <button name="action_assign_team" string="Assign Team" type="object" class="btn-primary" invisible="state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
+                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" invisible="warranty or not invoice_id or payment_status == 'paid' or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_accounting"/>
                     <button name="action_fix_missing_condemned_scope" string="Fix Condemned For" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager"/>
-                    <button name="action_start_repair" string="Start Repair" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician" modifiers="{'invisible': ['|','|', ('state','in',['in_progress','completed','rejected']), ('team_id','=',False), '&amp;', ('warranty','=',False), '|', ('invoice_id','=',False), ('payment_status','!=','paid')]}"/>
-                    <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician" modifiers="{'invisible': [('state', '!=', 'in_progress')]}"/>
-                    <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr" modifiers="{'invisible': [('state', '=', 'completed')]}"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,quotation,approved,in_progress,completed,rejected"/>
+                    <button name="action_start_repair" string="Start Repair" type="object" class="btn-primary" invisible="state in ('in_progress', 'completed', 'rejected') or not team_id or (not warranty and (not invoice_id or payment_status != 'paid'))" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician"/>
+                    <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary" invisible="state != 'in_progress'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician"/>
+                    <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" invisible="state == 'completed'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,requested,quotation,approved,in_progress,completed"/>
                 </header>
 
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement" modifiers="{'invisible': [('picking_id', '=', False)]}">
+                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" invisible="not picking_id" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement">
                             <div class="o_stat_info">
                                 <field name="picking_id" widget="statinfo" string="Picking"/>
                             </div>
                         </button>
-                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr,mobile_repair_management.group_repair_accounting" modifiers="{'invisible': [('invoice_id', '=', False)]}">
+                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money" invisible="not invoice_id" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr,mobile_repair_management.group_repair_accounting">
                             <div class="o_stat_info">
                                 <field name="invoice_id" widget="statinfo" string="Invoice"/>
                             </div>
                         </button>
-                        <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician" modifiers="{'invisible': [('task_id', '=', False)]}">
+                        <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks" invisible="not task_id" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
                             <div class="o_stat_info">
                                 <field name="task_id" widget="statinfo" string="Task"/>
                             </div>
@@ -131,7 +134,6 @@
 
                     <group col="2">
                         <group string="Customer &amp; Device">
-                            <field name="customer_id" domain="[]"/>
                             <field name="customer_phone" widget="phone"/>
                             <field name="customer_email" widget="email"/>
                             <field name="brand_id"/>
@@ -141,8 +143,8 @@
                         <group string="Issue &amp; Warranty">
                             <field name="problem_description" placeholder="Describe the issue reported by the customer..."/>
                             <field name="warranty"/>
-                            <field name="warranty_number" modifiers="{'invisible': [('warranty', '=', False)]}"/>
-                            <field name="warranty_expiry_date" modifiers="{'invisible': [('warranty', '=', False)]}"/>
+                            <field name="warranty_number" invisible="not warranty"/>
+                            <field name="warranty_expiry_date" invisible="not warranty"/>
                             <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                         </group>
                     </group>
@@ -228,8 +230,8 @@
                                 <group string="Workflow">
                                     <field name="state" readonly="1"/>
                                     <field name="customer_approval"/>
-                                    <field name="quotation_date" modifiers="{'invisible': [('state', '!=', 'quotation')]}"/>
-                                    <field name="quotation_valid_until" modifiers="{'invisible': [('state', '!=', 'quotation')]}"/>
+                                    <field name="quotation_date" invisible="state != 'quotation'"/>
+                                    <field name="quotation_valid_until" invisible="state != 'quotation'"/>
                                     <field name="invoice_status" readonly="1"/>
                                     <field name="payment_status" readonly="1"/>
                                 </group>
@@ -311,7 +313,7 @@
                 <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
                 <filter string="Warranty Repairs" name="warranty" domain="[('warranty', '=', True)]"/>
                 <filter string="Today" name="today" domain="[('create_date', '>=', context_today().strftime('%Y-%m-%d'))]"/>
-                <filter string="This Week" name="this_week" domain="[('create_date', '>=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Week" name="this_week" domain="[('create_date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
                 <group expand="0" string="Group By">
                     <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
                     <filter string="Brand" name="group_brand" context="{'group_by': 'brand_id'}"/>
