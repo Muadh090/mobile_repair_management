@@ -129,62 +129,37 @@
                         </h2>
                     </div>
 
-                    <group string="Overview" col="2">
-                        <group string="Customer">
+                    <group col="2">
+                        <group string="Customer &amp; Device">
                             <field name="customer_id" domain="[]"/>
                             <field name="customer_phone" widget="phone"/>
                             <field name="customer_email" widget="email"/>
-                        </group>
-                        <group string="Device Snapshot">
                             <field name="brand_id"/>
                             <field name="series_id" domain="[('brand_id', '=', brand_id)]"/>
                             <field name="model_id" domain="[('series_id', '=', series_id)]"/>
-                            <field name="imei"/>
-                            <field name="serial_number"/>
                         </group>
-                    </group>
-
-                    <group col="2">
-                        <group string="Issue &amp; Dates">
-                            <field name="problem_description" placeholder="Describe the issue reported by the customer..." colspan="2"/>
-                            <field name="inspection_date"/>
-                            <field name="inspection_type"/>
-                            <field name="delivery_type"/>
-                            <field name="expected_duration"/>
-                        </group>
-                        <group string="Warranty &amp; Totals">
+                        <group string="Issue &amp; Warranty">
+                            <field name="problem_description" placeholder="Describe the issue reported by the customer..."/>
                             <field name="warranty"/>
                             <field name="warranty_number" modifiers="{'invisible': [('warranty', '=', False)]}"/>
                             <field name="warranty_expiry_date" modifiers="{'invisible': [('warranty', '=', False)]}"/>
-                            <field name="service_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                        </group>
-                    </group>
-
-                    <group col="2">
-                        <group string="Workflow">
-                            <field name="state" readonly="1"/>
-                            <field name="customer_approval"/>
-                            <field name="quotation_date" modifiers="{'invisible': [('state', '!=', 'quotation')]}"/>
-                            <field name="quotation_valid_until" modifiers="{'invisible': [('state', '!=', 'quotation')]}"/>
-                            <field name="invoice_status" readonly="1"/>
-                            <field name="payment_status" readonly="1"/>
-                        </group>
-                        <group string="Team">
-                            <field name="team_id"/>
-                            <field name="assigned_member_ids" widget="many2many_tags"/>
-                            <field name="start_date" readonly="1"/>
-                            <field name="completion_date" readonly="1"/>
                         </group>
                     </group>
 
                     <notebook>
                         <page string="Device Details">
-                            <group>
-                                <group string="Condition">
+                            <group col="2">
+                                <group string="Identification">
+                                    <field name="imei"/>
+                                    <field name="serial_number"/>
                                     <field name="device_condition"/>
+                                </group>
+                                <group string="Inspection &amp; Delivery">
+                                    <field name="inspection_date"/>
+                                    <field name="inspection_type"/>
+                                    <field name="delivery_type"/>
+                                    <field name="expected_duration"/>
                                 </group>
                             </group>
                             <group>
@@ -220,8 +195,11 @@
                                     <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
                                 </list>
                             </field>
-                            <group class="oe_subtotal_footer">
-                                <field name="service_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <group col="2">
+                                <div/>
+                                <group>
+                                    <field name="service_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
                             </group>
                         </page>
 
@@ -237,8 +215,38 @@
                                     <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
                                 </list>
                             </field>
-                            <group class="oe_subtotal_footer">
-                                <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <group col="2">
+                                <div/>
+                                <group>
+                                    <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Workflow &amp; Team" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr,mobile_repair_management.group_repair_accounting">
+                            <group col="2">
+                                <group string="Workflow">
+                                    <field name="state" readonly="1"/>
+                                    <field name="customer_approval"/>
+                                    <field name="quotation_date" modifiers="{'invisible': [('state', '!=', 'quotation')]}"/>
+                                    <field name="quotation_valid_until" modifiers="{'invisible': [('state', '!=', 'quotation')]}"/>
+                                    <field name="invoice_status" readonly="1"/>
+                                    <field name="payment_status" readonly="1"/>
+                                </group>
+                                <group string="Team">
+                                    <field name="team_id"/>
+                                    <field name="assigned_member_ids" widget="many2many_tags"/>
+                                    <field name="start_date" readonly="1"/>
+                                    <field name="completion_date" readonly="1"/>
+                                </group>
+                            </group>
+                            <group col="2">
+                                <group string="Totals">
+                                    <field name="service_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="part_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
                             </group>
                         </page>
 
@@ -277,11 +285,7 @@
                     </notebook>
                 </sheet>
 
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                </div>
+                <chatter/>
             </form>
         </field>
     </record>
