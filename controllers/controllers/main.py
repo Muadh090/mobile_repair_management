@@ -8,15 +8,7 @@ class MobileRepairController(http.Controller):
     def get_dashboard_data(self):
         """Return dashboard data for charts"""
         user = request.env.user
-        allowed = any([
-            user.has_group('mobile_repair_management.group_repair_manager'),
-            user.has_group('mobile_repair_management.group_repair_lead'),
-            user.has_group('mobile_repair_management.group_repair_technician'),
-            user.has_group('mobile_repair_management.group_repair_csr'),
-            user.has_group('mobile_repair_management.group_repair_procurement'),
-            user.has_group('mobile_repair_management.group_repair_accounting'),
-        ])
-        if not allowed:
+        if not user.has_group('mobile_repair_management.group_repair_user'):
             raise AccessError('Not allowed')
 
         JobCard = request.env['job.card']

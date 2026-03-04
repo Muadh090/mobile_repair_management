@@ -65,10 +65,7 @@
         <field name="name">Brands</field>
         <field name="res_model">repair.brand</field>
         <field name="view_mode">list,form</field>
-        <field name="groups_id" eval="[(6, 0, [
-            ref('mobile_repair_management.group_repair_manager'),
-            ref('mobile_repair_management.group_repair_lead'),
-        ])]"/>
+        <field name="groups_id" eval="[(4, ref('mobile_repair_management.group_repair_manager'))]"/>
     </record>
 
     <!-- Series Views -->
@@ -120,10 +117,7 @@
         <field name="name">Series</field>
         <field name="res_model">repair.series</field>
         <field name="view_mode">list,form</field>
-        <field name="groups_id" eval="[(6, 0, [
-            ref('mobile_repair_management.group_repair_manager'),
-            ref('mobile_repair_management.group_repair_lead'),
-        ])]"/>
+        <field name="groups_id" eval="[(4, ref('mobile_repair_management.group_repair_manager'))]"/>
     </record>
 
     <!-- Model Views -->
@@ -183,9 +177,6 @@
         <field name="name">Models</field>
         <field name="res_model">repair.model</field>
         <field name="view_mode">list,form</field>
-        <field name="groups_id" eval="[(6, 0, [
-            ref('mobile_repair_management.group_repair_manager'),
-            ref('mobile_repair_management.group_repair_lead'),
-        ])]"/>
+        <field name="groups_id" eval="[(4, ref('mobile_repair_management.group_repair_manager'))]"/>
     </record>
 </odoo>

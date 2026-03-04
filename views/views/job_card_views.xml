@@ -91,33 +91,33 @@
             <form string="Job Card">
                 <field name="currency_id" invisible="1"/>
                 <header>
-                    <button name="action_mark_requested" string="Mark Requested" type="object" class="btn-primary" invisible="state != 'draft'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
-                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" invisible="warranty or state not in ('requested', 'quotation', 'approved')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
-                    <button name="action_customer_approve" string="Customer Approve" type="object" class="btn-primary" invisible="state != 'quotation'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
-                    <button name="action_customer_reject" string="Customer Reject" type="object" class="btn-danger" invisible="state != 'quotation'" confirm="Are you sure the customer rejected this quotation? This will cancel the job card." groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
-                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" invisible="warranty or invoice_id or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_accounting"/>
-                    <button name="action_assign_team" string="Assign Team" type="object" class="btn-primary" invisible="state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead"/>
-                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" invisible="warranty or not invoice_id or payment_status == 'paid' or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_accounting"/>
+                    <button name="action_mark_requested" string="Mark Requested" type="object" class="btn-primary" invisible="state != 'draft'" groups="mobile_repair_management.group_repair_user"/>
+                    <button name="action_generate_quotation" string="Generate Quotation" type="object" class="btn-secondary" invisible="warranty or state not in ('requested', 'quotation', 'approved')" groups="mobile_repair_management.group_repair_user"/>
+                    <button name="action_customer_approve" string="Customer Approve" type="object" class="btn-primary" invisible="state != 'quotation'" groups="mobile_repair_management.group_repair_user"/>
+                    <button name="action_customer_reject" string="Customer Reject" type="object" class="btn-danger" invisible="state != 'quotation'" confirm="Are you sure the customer rejected this quotation? This will cancel the job card." groups="mobile_repair_management.group_repair_user"/>
+                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" invisible="warranty or invoice_id or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager"/>
+                    <button name="action_assign_team" string="Assign Team" type="object" class="btn-primary" invisible="state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager"/>
+                    <button name="action_register_payment" string="Register Payment" type="object" class="btn-secondary" invisible="warranty or not invoice_id or payment_status == 'paid' or state in ('in_progress', 'completed', 'rejected')" groups="mobile_repair_management.group_repair_manager"/>
                     <button name="action_fix_missing_condemned_scope" string="Fix Condemned For" type="object" class="btn-link" groups="mobile_repair_management.group_repair_manager"/>
-                    <button name="action_start_repair" string="Start Repair" type="object" class="btn-primary" invisible="state in ('in_progress', 'completed', 'rejected') or not team_id or (not warranty and (not invoice_id or payment_status != 'paid'))" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician"/>
-                    <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary" invisible="state != 'in_progress'" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician"/>
-                    <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" invisible="state == 'completed'" confirm="Are you sure you want to cancel this job card? This action cannot be undone." groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr"/>
+                    <button name="action_start_repair" string="Start Repair" type="object" class="btn-primary" invisible="state in ('in_progress', 'completed', 'rejected') or not team_id or (not warranty and (not invoice_id or payment_status != 'paid'))" groups="mobile_repair_management.group_repair_technician"/>
+                    <button name="action_complete_repair" string="Complete Repair" type="object" class="btn-primary" invisible="state != 'in_progress'" groups="mobile_repair_management.group_repair_technician"/>
+                    <button name="action_cancel_repair" string="Cancel" type="object" class="btn-secondary" invisible="state == 'completed'" confirm="Are you sure you want to cancel this job card? This action cannot be undone." groups="mobile_repair_management.group_repair_user"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,requested,quotation,approved,in_progress,completed"/>
                 </header>
 
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" invisible="not picking_id" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement">
+                        <button name="action_view_picking" type="object" class="oe_stat_button" icon="fa-truck" invisible="not picking_id" groups="mobile_repair_management.group_repair_manager">
                             <div class="o_stat_info">
                                 <field name="picking_id" widget="statinfo" string="Picking"/>
                             </div>
                         </button>
-                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money" invisible="not invoice_id" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr,mobile_repair_management.group_repair_accounting">
+                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money" invisible="not invoice_id" groups="mobile_repair_management.group_repair_user">
                             <div class="o_stat_info">
                                 <field name="invoice_id" widget="statinfo" string="Invoice"/>
                             </div>
                         </button>
-                        <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks" invisible="not task_id" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
+                        <button name="action_view_task" type="object" class="oe_stat_button" icon="fa-tasks" invisible="not task_id" groups="mobile_repair_management.group_repair_technician">
                             <div class="o_stat_info">
                                 <field name="task_id" widget="statinfo" string="Task"/>
                             </div>
@@ -226,7 +226,7 @@
                             </group>
                         </page>
 
-                        <page string="Workflow &amp; Team" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_csr,mobile_repair_management.group_repair_accounting">
+                        <page string="Workflow &amp; Team" groups="mobile_repair_management.group_repair_user">
                             <group col="2">
                                 <group string="Workflow">
                                     <field name="state" readonly="1"/>
@@ -253,11 +253,11 @@
                             </group>
                         </page>
 
-                        <page string="Internal Notes" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
+                        <page string="Internal Notes" groups="mobile_repair_management.group_repair_technician">
                             <field name="internal_notes" placeholder="Add internal observations, repair notes, or handover instructions here..."/>
                         </page>
 
-                        <page string="Task &amp; Work Log" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_technician">
+                        <page string="Task &amp; Work Log" groups="mobile_repair_management.group_repair_technician">
                             <group>
                                 <field name="task_id" readonly="1"/>
                             </group>
@@ -272,7 +272,7 @@
                             </field>
                         </page>
 
-                        <page string="Warehouse Condemned Parts" groups="mobile_repair_management.group_repair_manager,mobile_repair_management.group_repair_lead,mobile_repair_management.group_repair_procurement">
+                        <page string="Warehouse Condemned Parts" groups="mobile_repair_management.group_repair_manager">
                             <field name="part_ids"
                                    domain="[('condition_status', '=', 'condemned'), ('condemned_scope', '=', 'warehouse')]"
                                    context="{'default_condition_status': 'condemned', 'default_condemned_scope': 'warehouse'}">
@@ -340,14 +340,7 @@
         <field name="view_mode">kanban,list,form,pivot,graph</field>
         <field name="search_view_id" ref="view_job_card_search"/>
         <field name="context">{}</field>
-        <field name="groups_id" eval="[(6, 0, [
-            ref('mobile_repair_management.group_repair_manager'),
-            ref('mobile_repair_management.group_repair_lead'),
-            ref('mobile_repair_management.group_repair_technician'),
-            ref('mobile_repair_management.group_repair_csr'),
-            ref('mobile_repair_management.group_repair_procurement'),
-            ref('mobile_repair_management.group_repair_accounting'),
-        ])]"/>
+        <field name="groups_id" eval="[(4, ref('mobile_repair_management.group_repair_user'))]"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your first job card!
@@ -404,10 +397,6 @@
         <field name="view_mode">list,pivot,graph</field>
         <field name="domain">[('condition_status', '=', 'condemned')]</field>
         <field name="search_view_id" ref="view_job_card_part_line_search"/>
-        <field name="groups_id" eval="[(6, 0, [
-            ref('mobile_repair_management.group_repair_manager'),
-            ref('mobile_repair_management.group_repair_lead'),
-            ref('mobile_repair_management.group_repair_procurement'),
-        ])]"/>
+        <field name="groups_id" eval="[(4, ref('mobile_repair_management.group_repair_manager'))]"/>
     </record>
 </odoo>
